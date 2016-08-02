@@ -10,6 +10,7 @@ public class App extends Application{
 
     public static boolean is_loged = false;
     public static User user;
+    public static String base_url = "";
 
     @Override
     public void onCreate() {
