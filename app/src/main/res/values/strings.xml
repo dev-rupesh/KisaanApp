@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KisaanApp</string>
+    <string name="app_name">Agro App</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -7,7 +7,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="title_activity_fullscreen">ActivitySpalash</string>
-    <string name="dummy_content">Welcome\nApp Name</string>
+    <string name="dummy_content">Welcome\nAgro App</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
