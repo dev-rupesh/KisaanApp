@@ -11,9 +11,9 @@ import rsoni.kisaanApp.R;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class FullscreenActivity extends AppCompatActivity {
+public class WelcomeActivity extends AppCompatActivity {
 
-    private final int SPLASH_DISPLAY_LENGTH = 1000;
+    private final int SPLASH_DISPLAY_LENGTH = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +25,9 @@ public class FullscreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(FullscreenActivity.this,LoginActivity.class);
-                FullscreenActivity.this.startActivity(mainIntent);
-                FullscreenActivity.this.finish();
+                Intent mainIntent = new Intent(WelcomeActivity.this,LoginActivity.class);
+                WelcomeActivity.this.startActivity(mainIntent);
+                WelcomeActivity.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
 

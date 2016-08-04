@@ -9,6 +9,7 @@ import rsoni.modal.User;
 public class App extends Application{
 
     public static boolean is_loged = false;
+    public static boolean is_registered = false;
     public static User user;
     public static String base_url = "";
 
