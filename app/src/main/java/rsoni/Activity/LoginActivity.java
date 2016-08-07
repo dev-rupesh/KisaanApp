@@ -26,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,15 +38,21 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private UserLoginTask mAuthTask = null;
 
     // UI references.
     private EditText mMobileView;
     private EditText mPasswordView;
+
+
+
     private View mProgressView;
     private View mLoginFormView;
+    private TextView mForgotPass;
+    private TextView mRegister;
+    private Button mEmailSignInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,16 +61,17 @@ public class LoginActivity extends AppCompatActivity {
         // Set up the login form.
         mMobileView = (EditText) findViewById(R.id.mobile);
         mPasswordView = (EditText) findViewById(R.id.password);
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+        mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton.setOnClickListener(this);
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        mForgotPass = (TextView) findViewById(R.id.m_forgot_pass);
+        mForgotPass.setOnClickListener(this);
+        mRegister = (TextView) findViewById(R.id.m_register);
+        mRegister.setOnClickListener(this);
+
     }
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -161,6 +169,25 @@ public class LoginActivity extends AppCompatActivity {
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        if(v == mForgotPass){
+            Intent i = new Intent(this,ForgotPassActivity.class);
+            startActivity(i);
+            finish();
+        }else if(v == mRegister){
+            Intent i = new Intent(this,RegisterActivity.class);
+            startActivity(i);
+            finish();
+        }else if(v == mEmailSignInButton){
+            attemptLogin();
+        }else if(v == mForgotPass){
+
+        }
+
     }
 
 

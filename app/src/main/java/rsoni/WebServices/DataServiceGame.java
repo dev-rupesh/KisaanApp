@@ -1,15 +1,17 @@
 package rsoni.WebServices;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.pi.Application.App;
-import com.pi.Utils.DataResult;
-import com.pi.Utils.Task;
-import com.pi.entity.AppUser;
+import java.util.ArrayList;
+import java.util.HashMap;
+;
+
+import rsoni.Utils.DataResult;
+import rsoni.Utils.Task;
+import rsoni.kisaanApp.App;
+import rsoni.modal.AppUser;
+
 
 public class DataServiceGame {
 	
@@ -17,7 +19,7 @@ public class DataServiceGame {
 	DataParserGame dataParser = new DataParserGame();
 
 	
-	public DataResult UserAuth(Task task,String device_id,AppUser appUser){
+	public DataResult UserAuth(Task task, String device_id, AppUser appUser){
 		String url = App.ServiceUrl ;
 		String json = "";
 		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
@@ -429,10 +431,6 @@ public class DataServiceGame {
 			dataResult = connection.invalidResponse();
 		
 		switch (mode) {
-		
-		case topscorers:
-			dataResult = dataParser.TopScorer(json, mode);		
-			break;
 			
 		case email_login:
 		case fb_login:

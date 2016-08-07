@@ -4,17 +4,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.pi.Utils.DataResult;
-import com.pi.Utils.Task;
-import com.pi.entity.AppUser;
-import com.pi.entity.Area;
-import com.pi.entity.Category;
-import com.pi.entity.Cuisines;
-import com.pi.entity.Feature;
-import com.pi.entity.Filter;
-import com.pi.entity.Rating;
-import com.pi.entity.Restaurant;
-import com.pi.entity.Review;
+import rsoni.Utils.DataResult;
+import rsoni.Utils.Task;
+import rsoni.modal.AppUser;
+import rsoni.modal.Category;
+
 
 public class DataParserGame {
 	String error_msg = "";
@@ -99,7 +93,6 @@ public class DataParserGame {
 		}
 		return jsonResponse;
 	}
-	
 	public DataResult Search(String json, Task mode) {
 		JSONObject response = null;
 		DataResult result = new DataResult();
@@ -111,19 +104,19 @@ public class DataParserGame {
 					result.Data = Category.getDealsFromJsonAray(response.getJSONArray("categories"))	;
 					break;
 				case cuisines_search:
-					result.Data = Cuisines.getCuisinesFromJsonAray(response.getJSONArray("cuisines"))	;
+					//result.Data = Cuisines.getCuisinesFromJsonAray(response.getJSONArray("cuisines"))	;
 					break;
 				case areas_search:
-					result.Data = Area.getAreasFromJsonAray(response.getJSONArray("areas"))	;
+					//result.Data = Area.getAreasFromJsonAray(response.getJSONArray("areas"))	;
 					break;
 				case features_search:
-					result.Data = Feature.getFeaturesFromJsonAray(response.getJSONArray("filters"))	;
+					//result.Data = Feature.getFeaturesFromJsonAray(response.getJSONArray("filters"))	;
 					break;
 				case filters_search:
-					result.Data = Filter.getFiltersFromJsonAray(response.getJSONArray("filters"))	;
+					//result.Data = Filter.getFiltersFromJsonAray(response.getJSONArray("filters"))	;
 					break;
 				case restaurants_search:
-					result.Data = Restaurant.getRestaurantsFromJsonAray(response.getJSONArray("restaurants"))	;
+					//result.Data = Restaurant.getRestaurantsFromJsonAray(response.getJSONArray("restaurants"))	;
 					break;
 				default:
 					break;
@@ -195,27 +188,27 @@ public class DataParserGame {
 			try {
 				
 				if (mode == Task.restaurant_click ) {
-					result.Data = com.pi.entity.Team.getTeamByJsonObject(response.getJSONObject("data"));					
+					result.Data = Category.getDealsFromJsonAray(response.getJSONArray("categories"))	;
 				}else if (mode == Task.restaurant_rate_get ) {
-					result.Data = com.pi.entity.Team.getTeamByJsonObject(response.getJSONObject("data"));					
+					//result.Data = com.pi.entity.Team.getTeamByJsonObject(response.getJSONObject("data"));
 				}else if (mode == Task.restaurant_rate_post ) {
 					boolean is_rate_done = response.optBoolean("is_rate_done");
-					if(is_rate_done){
-						result.Data = Rating.getRatingByJsonObject(response.getJSONObject("rating"));	
-					}else{
-						result.Status = false;
-						result.msg = response.optString("error");
-					}				
+//					if(is_rate_done){
+//						result.Data = Rating.getRatingByJsonObject(response.getJSONObject("rating"));
+//					}else{
+//						result.Status = false;
+//						result.msg = response.optString("error");
+//					}
 				}else if (mode == Task.restaurant_review_get ) {
 					System.out.println("in restaurant_review_get parsing mode");
-					result.Data = Review.getReviewsFromJsonAray(response.optJSONArray("reviews"));					
+					//result.Data = Review.getReviewsFromJsonAray(response.optJSONArray("reviews"));
 				}else if (mode == Task.restaurant_review_post ) {
 					boolean is_review_done = response.optBoolean("is_review_done");
 					if(is_review_done){
-						result.Data = Review.getReviewsFromJsonAray(response.optJSONArray("reviews"));	
+						//result.Data = Review.getReviewsFromJsonAray(response.optJSONArray("reviews"));
 					}else{
-						result.Status = false;
-						result.msg = response.optString("error");
+						//result.Status = false;
+						//result.msg = response.optString("error");
 					}
 				}
 				
@@ -250,25 +243,7 @@ public class DataParserGame {
 		}
 		return result;
 	}
-	public DataResult TopScorer(String json, Task mode) {
-		JSONObject response = null;
-		DataResult result = new DataResult();
-		response = Start(json, result);
-		if (result.Status ) {
-			try {
-				if (mode == Task.topscorers ) {					
-					result.Data = com.pi.entity.Team.getTeamByJsonObject(response.getJSONObject("data"));	
-				} 
 
-			} catch (JSONException e) {
-				result.Status = false;
-				result.msg = "" + e;
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
-	
 	
 	public DataResult Profile(String json, Task mode) {
 		JSONObject response = null;

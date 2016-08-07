@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import com.pi.entity.Comment;
 
 
 import android.content.ContentValues;
