@@ -2,7 +2,7 @@ package rsoni.Utils;
 
 public enum Task {
 	email_login,fb_login,g_login,mobile_login,
-	email_register,fb_register,g_register,
+	email_register,fb_register,g_register,mobile_register,
 	forgot_pass,
 	
 	cuisines_search,areas_search,categories_search,features_search,filters_search,restaurants_search,

@@ -16,7 +16,7 @@ import rsoni.modal.AppUser;
 public class NetworkService {
 
 	WebConnection connection = new WebConnection();
-	DataParserGame dataParser = new DataParserGame();
+	DataParser dataParser = new DataParser();
 
 
 	public DataResult UserAuth(Task task,AppUser appUser){
@@ -24,8 +24,15 @@ public class NetworkService {
 		String json = "";
 		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
 
-		if (task == Task.email_login){
-			url+="accounts/login";
+		if (task == Task.mobile_login){
+			url+="auth.php";
+			//param.add(new BasicNameValuePair("deviceId", device_id));
+			param.add(new BasicNameValuePair("opt", "sign-in"));
+			param.add(new BasicNameValuePair("mobile", appUser.username));
+			param.add(new BasicNameValuePair("pass", appUser.password));
+			return getResponce(url,Task.post,task,param);
+		} else if (task == Task.email_login){
+			url+="auth.php";
 			//param.add(new BasicNameValuePair("deviceId", device_id));
 			param.add(new BasicNameValuePair("deviceType", "android"));
 			param.add(new BasicNameValuePair("email", appUser.email));
@@ -421,9 +428,9 @@ public class NetworkService {
 	private DataResult getResponce(String url,Task url_type ,Task mode, ArrayList<NameValuePair> param) {
 		System.out.println("getResponce()...");
 		String json = null;
-		if(url_type == Task.post)
+		if(url_type == Task.post) {
 			json = connection.getJsonFromUrl2(url, param);
-		else
+		}else
 			json = connection.getJsonFromUrlGet(url, param);
 
 		DataResult dataResult = null;
@@ -432,12 +439,14 @@ public class NetworkService {
 
 		switch (mode) {
 
+		case mobile_login:
 		case email_login:
 		case fb_login:
 		case g_login:
 			dataResult = dataParser.UserAuth(json, mode);
 			break;
 
+		case mobile_register:
 		case email_register:
 		case fb_register:
 		case g_register:

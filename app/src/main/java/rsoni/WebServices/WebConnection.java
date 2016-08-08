@@ -1,7 +1,17 @@
 package rsoni.WebServices;
 
+import android.net.http.HttpAuthHeader;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -9,6 +19,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -37,6 +49,8 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.net.ssl.HttpsURLConnection;
+
 import rsoni.Utils.DataResult;
 
 
@@ -63,7 +77,10 @@ public class WebConnection {
 			HttpClient httpclient = new DefaultHttpClient();
 			System.out.println("URL : " + url);
 			HttpPost httppost = new HttpPost(url);
+			httppost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			httppost.setHeader("Content-Type", "application/x-www-form-urlencoded");
 			httppost.setEntity(new UrlEncodedFormEntity(param));
+
 
 			// Execute HTTP Post Request
 			HttpResponse response = httpclient.execute(httppost);
@@ -140,6 +157,62 @@ public class WebConnection {
 		return json;
 	}
 
+	public String sendPostRequest(String requestURL,HashMap<String, String> postDataParams) {
+
+		URL url;
+		String response = "";
+		try {
+			url = new URL(requestURL);
+
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setReadTimeout(15000);
+			conn.setConnectTimeout(15000);
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			conn.setDoInput(true);
+			conn.setDoOutput(true);
+
+
+			OutputStream os = conn.getOutputStream();
+			BufferedWriter writer = new BufferedWriter(
+					new OutputStreamWriter(os, "UTF-8"));
+			writer.write(getPostDataString(postDataParams));
+
+			writer.flush();
+			writer.close();
+			os.close();
+			int responseCode=conn.getResponseCode();
+
+			if (responseCode == HttpsURLConnection.HTTP_OK) {
+				BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
+				response = br.readLine();
+			}
+			else {
+				response="Error Registering";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return response;
+	}
+
+	private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
+		StringBuilder result = new StringBuilder();
+		boolean first = true;
+		for(Map.Entry<String, String> entry : params.entrySet()){
+			if (first)
+				first = false;
+			else
+				result.append("&");
+
+			result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+			result.append("=");
+			result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+		}
+
+		return result.toString();
+	}
 	
 
 	

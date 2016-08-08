@@ -54,7 +54,7 @@ public class App extends Application{
     // //Rupesh Ip
     // public static String ServiceUrl = "http://54.213.71.101/ISL/api/";
     // public static String ServiceUrl = "http://pointpi.com/Rupeemax/";
-    public static String ServiceUrl = "http://dealjolly.com/";
+    public static String ServiceUrl = "http://rupeshs.in/justagriagro/api/";
 
     // public static String ServiceUrl =
     // "http://192.168.1.142:8080/SoccerBuddy/api/"; // deepak IP

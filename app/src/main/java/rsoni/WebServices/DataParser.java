@@ -10,7 +10,7 @@ import rsoni.modal.AppUser;
 import rsoni.modal.Category;
 
 
-public class DataParserGame {
+public class DataParser {
 	String error_msg = "";
 
 	private JSONObject Start(String json, DataResult result) {
@@ -24,7 +24,7 @@ public class DataParserGame {
 		try {
 			json.trim();
 			jsonResponse = new JSONObject(json);
-			result.Status = jsonResponse.optBoolean("is_processed");
+			result.Status = jsonResponse.optBoolean("status");
 			//System.out.println("jsonResponse.getString(Status) : "
 			//		+ jsonResponse.optString("Status"));
 			System.out.println("result.Status : "+result.Status);
@@ -78,7 +78,7 @@ public class DataParserGame {
 		try {
 			json.trim();
 			jsonResponse = new JSONObject(json);
-			boolean success = jsonResponse.optBoolean("success");
+			boolean success = jsonResponse.optBoolean("status");
 			result.Status = success;
 			System.out.println("success : "+success);
 			//System.out.println("jsonResponse.getString(Status) : "
@@ -230,9 +230,8 @@ public class DataParserGame {
 		response = Start(json, result);
 		if (result.Status ) {
 			try {
-				if (mode == Task.email_login || mode == Task.fb_login || mode == Task.g_login  ) {					
-					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("user"))	;
-					
+				if ( mode == Task.mobile_login || mode == Task.mobile_register || mode == Task.fb_login || mode == Task.g_login  ) {
+					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("user"));
 				} 
 
 			} catch (JSONException e) {

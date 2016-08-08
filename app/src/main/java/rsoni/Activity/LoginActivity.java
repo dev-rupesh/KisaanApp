@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button mEmailSignInButton;
 
     // Activity reference
-    private AppUser appUser;
+    private AppUser appUser = new AppUser();
     private Context context;
 
     @Override
@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             cancel = true;
         }
 
-        // Check for a valid email address.
+        /*// Check for a valid email address.
         if (TextUtils.isEmpty(appUser.username)) {
             mMobileView.setError(getString(R.string.error_field_required));
             focusView = mMobileView;
@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             mMobileView.setError(getString(R.string.error_invalid_email));
             focusView = mMobileView;
             cancel = true;
-        }
+        }*/
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 2;
     }
 
     /**
