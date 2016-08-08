@@ -13,68 +13,68 @@ import rsoni.kisaanApp.App;
 import rsoni.modal.AppUser;
 
 
-public class DataServiceGame {
-	
+public class NetworkService {
+
 	WebConnection connection = new WebConnection();
 	DataParserGame dataParser = new DataParserGame();
 
-	
-	public DataResult UserAuth(Task task, String device_id, AppUser appUser){
+
+	public DataResult UserAuth(Task task,AppUser appUser){
 		String url = App.ServiceUrl ;
 		String json = "";
 		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
 
 		if (task == Task.email_login){
-			url+="accounts/login";			
-			param.add(new BasicNameValuePair("deviceId", device_id));
+			url+="accounts/login";
+			//param.add(new BasicNameValuePair("deviceId", device_id));
 			param.add(new BasicNameValuePair("deviceType", "android"));
-			param.add(new BasicNameValuePair("email", appUser.email));	
-			param.add(new BasicNameValuePair("password", appUser.password));	
+			param.add(new BasicNameValuePair("email", appUser.email));
+			param.add(new BasicNameValuePair("password", appUser.password));
 			return getResponce(url,Task.post,task,param);
 		} else if (task == Task.fb_login){
-			url+="accounts/fblogin";			
+			url+="accounts/fblogin";
 			param.add(new BasicNameValuePair("user_name", appUser.username));
-			param.add(new BasicNameValuePair("user_id",appUser.socisal_id ));
-			param.add(new BasicNameValuePair("email", appUser.email));	
-			
+			//param.add(new BasicNameValuePair("user_id",appUser.socisal_id ));
+			param.add(new BasicNameValuePair("email", appUser.email));
+
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.g_login){
-			url+="accounts/forgot-password";			
-			param.add(new BasicNameValuePair("deviceId", device_id));
+			url+="accounts/forgot-password";
+			//param.add(new BasicNameValuePair("deviceId", device_id));
 			param.add(new BasicNameValuePair("deviceType", "android"));
-			param.add(new BasicNameValuePair("email", appUser.email));	
-			
+			param.add(new BasicNameValuePair("email", appUser.email));
+
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.email_register){
-			url+="accounts/register";			
-			param.add(new BasicNameValuePair("deviceId", device_id));
+			url+="accounts/register";
+			//param.add(new BasicNameValuePair("deviceId", device_id));
 			param.add(new BasicNameValuePair("deviceType", "android"));
 			param.add(new BasicNameValuePair("username", appUser.username));
-			param.add(new BasicNameValuePair("email", appUser.email));	
+			param.add(new BasicNameValuePair("email", appUser.email));
 			param.add(new BasicNameValuePair("password1", appUser.password));
-			param.add(new BasicNameValuePair("password2", appUser.password));	
-			
+			param.add(new BasicNameValuePair("password2", appUser.password));
+
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.forgot_pass){
-			url+="accounts/forgot-password";			
-			param.add(new BasicNameValuePair("deviceId", device_id));
+			url+="accounts/forgot-password";
+			//param.add(new BasicNameValuePair("deviceId", device_id));
 			param.add(new BasicNameValuePair("deviceType", "android"));
-			param.add(new BasicNameValuePair("email", appUser.email));	
-			
+			param.add(new BasicNameValuePair("email", appUser.email));
+
 			return getResponce(url,Task.post,task,param);
 		}
-		
-		return null;	
+
+		return null;
 
 	}
-	
+
 	public DataResult Search(Task task,int area_id, int cuisine_id, String search) {
 		String url = App.ServiceUrl;
 		String json = "";
 		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
 		param.add(new BasicNameValuePair("search", search));
 
-		switch (task) {	
+		switch (task) {
 		case categories_search:
 		case categories_search_json:
 			url += "api/categories";
@@ -116,7 +116,7 @@ public class DataServiceGame {
 		return null;
 
 	}
-	
+
 	public DataResult Restaurant(Task task,HashMap<String, String> data){
 		String url = App.ServiceUrl ;
 		String json = "";
@@ -125,33 +125,33 @@ public class DataServiceGame {
 		if (task == Task.restaurant_click){
 			url+="accounts/deals/1/10/";
 			System.out.println("url :"+url);
-			//param.add(new BasicNameValuePair("deviceType", "android"));	
+			//param.add(new BasicNameValuePair("deviceType", "android"));
 			return getResponce(url,Task.post,task,param);
 		} else if (task == Task.restaurant_rate_post){
-			url+="api/restaurant/"+data.get("restaurant_id")+"/rate/create";				
+			url+="api/restaurant/"+data.get("restaurant_id")+"/rate/create";
 			param.add(new BasicNameValuePair("rating", data.get("rating")));
-			param.add(new BasicNameValuePair("appUser_id", ""+App.getLogedAppUser().id));	
+			param.add(new BasicNameValuePair("appUser_id", ""+App.getLogedAppUser().id));
 			return getResponce(url,Task.post,task,param);
 		} else if (task == Task.restaurant_review_post){
-			url+="api/restaurant/"+data.get("restaurant_id")+"/reviews/create";				
-			param.add(new BasicNameValuePair("review_text", data.get("review_text")));	
-			param.add(new BasicNameValuePair("rating", data.get("rating")));	
+			url+="api/restaurant/"+data.get("restaurant_id")+"/reviews/create";
+			param.add(new BasicNameValuePair("review_text", data.get("review_text")));
+			param.add(new BasicNameValuePair("rating", data.get("rating")));
 			param.add(new BasicNameValuePair("appUser_id", ""+App.getLogedAppUser().id));
 			return getResponce(url,Task.post,task,param);
 		} else if (task == Task.restaurant_rate_get){
-			url+="accounts/fblogin";				
-			
+			url+="accounts/fblogin";
+
 			return getResponce(url,Task.post,task,param);
 		} else if (task == Task.restaurant_review_get){
-			url+="api/restaurant/"+data.get("restaurant_id")+"/reviews/list";				
-			
+			url+="api/restaurant/"+data.get("restaurant_id")+"/reviews/list";
+
 			return getResponce(url,Task.get,task,param);
 		}
-		
-		return null;	
+
+		return null;
 
 	}
-	
+
 	public DataResult TopScorers(Task mode,Object... data) {
 		String url = App.ServiceUrl ;
 		String json = "";
@@ -159,12 +159,12 @@ public class DataServiceGame {
 		param.add(new BasicNameValuePair("deviceId", App.REG_ID));
 		param.add(new BasicNameValuePair("deviceType", "android"));
 		if (mode == Task.topscorers) {
-			url+="topscorers/"+data[0]+"/"+data[1];		
+			url+="topscorers/"+data[0]+"/"+data[1];
 			return getResponce(url,Task.get,mode,param);
-		}		
-		return null;	
-	}	
-	
+		}
+		return null;
+	}
+
 	public DataResult groups(Task mode,Object... data) {
 		String url = App.ServiceUrl ;
 		String json = "";
@@ -174,14 +174,14 @@ public class DataServiceGame {
 		if (mode == Task.group_list) {
 			url+="groups/"+data[0];
 			return getResponce(url,Task.get,mode,param);
-			
+
 		} else if (mode == Task.group) {
 			url+="group/"+data[0];
 			return getResponce(url,Task.get,mode,param);
 		}
-		
-		return null;	
-		
+
+		return null;
+
 //		json = connection.getJsonFromUrlGet(url, param);
 //		//System.out.println("json = " + json);
 //		if (json == null)
@@ -190,7 +190,7 @@ public class DataServiceGame {
 //			return dataParser.Group(json, mode);
 
 	}
-	
+
 	public DataResult Teams(Task mode,Object... data) {
 		String url = App.ServiceUrl ;
 		String json = "";
@@ -201,14 +201,14 @@ public class DataServiceGame {
 			// teamdetails/{teamId}
 			url+="teamdetails/"+data[0];
 			return getResponce(url,Task.get,mode,param);
-			
+
 		} else if (mode == Task.group) {
 			url+="group/"+data[0];
 			return getResponce(url,Task.get,mode,param);
 		}
-		
-		return null;	
-		
+
+		return null;
+
 //		json = connection.getJsonFromUrlGet(url, param);
 //		//System.out.println("json = " + json);
 //		if (json == null)
@@ -217,7 +217,7 @@ public class DataServiceGame {
 //			return dataParser.Group(json, mode);
 
 	}
-	
+
 	public DataResult fixtures(Task mode,Object... data) {
 		System.out.println("fixtures()...");
 		String url = App.ServiceUrl;
@@ -226,13 +226,13 @@ public class DataServiceGame {
 		param.add(new BasicNameValuePair("deviceId", App.REG_ID));
 		param.add(new BasicNameValuePair("deviceType", "android"));
 		if (mode == Task.fixture_list_of_tournament) { //
-			url+="v2/fixtures/bydate/"+data[0];		
+			url+="v2/fixtures/bydate/"+data[0];
 			return getResponce(url,Task.get,mode,param);
 		}else if (mode == Task.upcomming_fixtures) { //
-			url+="v2/fixtures/bydate/upcoming";			
+			url+="v2/fixtures/bydate/upcoming";
 			return getResponce(url,Task.get,mode,param);
 		}else if (mode == Task.last7days_fixtures) { //
-			url+="v2/fixtures/bydate/previous7";			
+			url+="v2/fixtures/bydate/previous7";
 			return getResponce(url,Task.get,mode,param);
 		}else if (mode == Task.fixture_list_of_team) { //
 			url+="fixtures/"+data[0]+"/byteam/"+data[1];
@@ -247,10 +247,10 @@ public class DataServiceGame {
 			url+="matchevents/"+data[0];
 			//param.add(new BasicNameValuePair("quiz_id", ""+data[0]));
 			return getResponce(url,Task.get,mode,param);
-		} 
-		return null;		
+		}
+		return null;
 	}
-	
+
 	public DataResult News(Task task,Object... data) {
 		System.out.println("History()...");
 		String url = App.ServiceUrl;
@@ -279,12 +279,12 @@ public class DataServiceGame {
 		param.add(new BasicNameValuePair("deviceId", App.REG_ID));
 		param.add(new BasicNameValuePair("deviceType", "android"));
 		if (mode == Task.turnament) { //
-			url+="tournaments/"+data[0];			
+			url+="tournaments/"+data[0];
 			return getResponce(url,Task.get,mode,param);
-		} 
-		return null;		
+		}
+		return null;
 	}
-	
+
 	public DataResult Squad(Task task,Object... data) {
 		System.out.println("Squad()...");
 		String url = App.ServiceUrl;
@@ -293,17 +293,17 @@ public class DataServiceGame {
 		param.add(new BasicNameValuePair("deviceType", "android"));
 		//param.add(new BasicNameValuePair("acc_id",""+App.account.acc_id));
 		if (task == Task.players_of_team) { //
-			url+="squad/"+data[0]+"/"+data[1];			
+			url+="squad/"+data[0]+"/"+data[1];
 			return getResponce(url,Task.get,task,param);
 		} else if (task == Task.team) { //
 			url+="";
 			//param.add(new BasicNameValuePair("live_quiz_id", ""+live_quiz_id));
 			//param.add(new BasicNameValuePair("user_id", ""+App.userData.id));
 			return getResponce(url,Task.get,task,param);
-		} 
+		}
 		return null;
 	}
-	
+
 	public DataResult Like(Task task,Object... data) {
 		System.out.println("Squad()...");
 		String url = App.ServiceUrl;
@@ -329,10 +329,10 @@ public class DataServiceGame {
 		} else if (task == Task.unLikeTeam) { //
 			url+="team/"+data[0]+"/unlike";
 			return getResponce(url,Task.get,task,param);
-		} 
+		}
 		return null;
 	}
-	
+
 	public DataResult Follow(Task task,Object... data) {
 		System.out.println("Squad()...");
 		String url = App.ServiceUrl;
@@ -356,10 +356,10 @@ public class DataServiceGame {
 			// /match/{matchId}/unfollow
 			url+="match/"+data[0]+"/unfollow";
 			return getResponce(url,Task.post,task,param);
-		} 
+		}
 		return null;
 	}
-	
+
 	public DataResult Comment(Task task,Object... data) {
 		System.out.println("Squad()...");
 		String url = App.ServiceUrl;
@@ -369,7 +369,7 @@ public class DataServiceGame {
 		//param.add(new BasicNameValuePair("acc_id",""+App.account.acc_id));
 		if (task == Task.commentOnMatch) { //
 			// /match/{matchId}/comments/create
-			url+="match/"+data[0]+"/comments/create";	
+			url+="match/"+data[0]+"/comments/create";
 			param.add(new BasicNameValuePair("comment_text", ""+data[1]));
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.commentOnTeam) { //
@@ -378,7 +378,7 @@ public class DataServiceGame {
 			param.add(new BasicNameValuePair("comment_text", ""+data[1]));
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.viewTeamComments) { //
-			// /team/{teamId}/comments/list			
+			// /team/{teamId}/comments/list
 			url+="team/"+data[0]+"/comments/list";
 			param.add(new BasicNameValuePair("commentId", ""+data[1]));
 			return getResponce(url,Task.get,task,param);
@@ -394,10 +394,10 @@ public class DataServiceGame {
 			param.add(new BasicNameValuePair("comment", ""+data[2]));
 			param.add(new BasicNameValuePair("device_id", ""+data[3]));
 			return getResponce(url,Task.get,task,param);
-		} 
+		}
 		return null;
 	}
-	
+
 	public DataResult Profile(Task task,Object... data) {
 		System.out.println("Squad()...");
 		String url = App.ServiceUrl;
@@ -414,10 +414,10 @@ public class DataServiceGame {
 			// /team/{teamId}/unfollow
 			url+="team/"+data[0]+"/unfollow";
 			return getResponce(url,Task.post,task,param);
-		} 
+		}
 		return null;
 	}
-		
+
 	private DataResult getResponce(String url,Task url_type ,Task mode, ArrayList<NameValuePair> param) {
 		System.out.println("getResponce()...");
 		String json = null;
@@ -425,29 +425,29 @@ public class DataServiceGame {
 			json = connection.getJsonFromUrl2(url, param);
 		else
 			json = connection.getJsonFromUrlGet(url, param);
-		
+
 		DataResult dataResult = null;
 		if (json == null)
 			dataResult = connection.invalidResponse();
-		
+
 		switch (mode) {
-			
+
 		case email_login:
 		case fb_login:
 		case g_login:
-			dataResult = dataParser.UserAuth(json, mode);		
+			dataResult = dataParser.UserAuth(json, mode);
 			break;
-			
+
 		case email_register:
 		case fb_register:
 		case g_register:
-			dataResult = dataParser.UserAuth(json, mode);		
+			dataResult = dataParser.UserAuth(json, mode);
 			break;
-			
+
 		case forgot_pass:
-			dataResult = dataParser.UserAuth(json, mode);		
+			dataResult = dataParser.UserAuth(json, mode);
 			break;
-			
+
 		case cuisines_search:
 		case areas_search:
 		case categories_search:
@@ -456,7 +456,7 @@ public class DataServiceGame {
 		case restaurants_search:
 			dataResult = dataParser.Search(json, mode);
 			break;
-			
+
 		case restaurant_click:
 		case restaurant_rate_get:
 		case restaurant_rate_post:
@@ -464,7 +464,7 @@ public class DataServiceGame {
 		case restaurant_review_post:
 			dataResult = dataParser.Restaurant(json, mode);
 			break;
-			
+
 		case cuisines_search_json:
 		case areas_search_json:
 		case categories_search_json:
@@ -473,15 +473,15 @@ public class DataServiceGame {
 		case restaurants_search_json:
 			dataResult = dataParser.SearchJson(json, mode);
 			break;
-		
+
 		default:
 			break;
 		}
 
 		return dataResult;
 	}
-	
-	
+
+
 
 
 }

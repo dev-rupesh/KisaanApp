@@ -27,6 +27,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -39,33 +41,34 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements OnClickListener{
 
 
     private UserRegisterTask mAuthTask = null;
 
     // UI references.
-    private EditText mEmailView;
-    private EditText mPasswordView;
+    private EditText etEmailView;
+    private EditText etPasswordView;
+    private EditText etMobileView;
+    private Spinner epCategoryView;
     private View mProgressView;
     private View mLoginFormView;
+    private Button mEmailSignInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        // Set up the login form.
-        mEmailView = (EditText) findViewById(R.id.mobile);
-        mPasswordView = (EditText) findViewById(R.id.password);
+        initView();
+    }
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptRegister();
-            }
-        });
-
+    private void initView(){
+        etEmailView = (EditText) findViewById(R.id.et_email);
+        etPasswordView = (EditText) findViewById(R.id.et_password);
+        etMobileView = (EditText) findViewById(R.id.et_mobile);
+        epCategoryView = (Spinner) findViewById(R.id.sp_user_cat);
+        mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton.setOnClickListener(this);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
@@ -76,31 +79,39 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
+        etEmailView.setError(null);
+        etPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        String mobile = etMobileView.getText().toString();
+        String email = etEmailView.getText().toString();
+        String password = etPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
+        // Check for a valid Mobile, if the user entered one.
+        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+            etMobileView.setError(getString(R.string.error_invalid_password));
+            focusView = etMobileView;
+            cancel = true;
+        }
+
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
+            etPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = etPasswordView;
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
+            etEmailView.setError(getString(R.string.error_field_required));
+            focusView = etEmailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
+            etEmailView.setError(getString(R.string.error_invalid_email));
+            focusView = etEmailView;
             cancel = true;
         }
 
@@ -163,6 +174,15 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onClick(View view) {
+        if (view == mEmailSignInButton){
+            attemptRegister();
+        }else if (view == mEmailSignInButton){
+
+        }
+    }
+
 
     /**
      * Represents an asynchronous login/registration task used to authenticate
@@ -200,8 +220,8 @@ public class RegisterActivity extends AppCompatActivity {
             if (success) {
                 finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                etPasswordView.setError(getString(R.string.error_incorrect_password));
+                etPasswordView.requestFocus();
             }
         }
 

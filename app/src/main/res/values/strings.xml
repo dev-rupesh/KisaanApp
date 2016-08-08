@@ -15,6 +15,7 @@
     <string name="prompt_password">Password (optional)</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_mobile">This Mobile no. is invalid</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
@@ -24,11 +25,11 @@
     </string>
     <string name="title_activity_register">Sign up</string>
 
-    <array name="user_type">
-        <item>Type 1</item>
-        <item>Type 2</item>
-        <item>Type 3</item>\
-        <item>Type 4</item>
+    <array name="user_category">
+        <item>Commission Agent</item>
+        <item>Broker</item>
+        <item>Processing Unit</item>\
+        <item>Transport</item>
     </array>
 
 </resources>

@@ -13,9 +13,8 @@ import android.view.inputmethod.InputMethodManager;
 import java.text.SimpleDateFormat;
 
 import rsoni.Utils.DBHelper;
-import rsoni.WebServices.DataServiceGame;
+import rsoni.WebServices.NetworkService;
 import rsoni.modal.AppUser;
-import rsoni.modal.User;
 
 /**
  * Created by DS1 on 03/08/16.
@@ -24,7 +23,7 @@ public class App extends Application{
 
     public static DBHelper mydb;
 
-    public static DataServiceGame dataServiceGame = new DataServiceGame();
+    public static NetworkService networkService = new NetworkService();
     public static String REG_ID = "";
 
 

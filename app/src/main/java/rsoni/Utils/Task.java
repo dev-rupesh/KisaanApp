@@ -1,7 +1,7 @@
 package rsoni.Utils;
 
 public enum Task {
-	email_login,fb_login,g_login,
+	email_login,fb_login,g_login,mobile_login,
 	email_register,fb_register,g_register,
 	forgot_pass,
 	
