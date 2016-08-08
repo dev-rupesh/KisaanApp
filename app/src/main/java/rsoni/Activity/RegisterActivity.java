@@ -3,6 +3,7 @@ package rsoni.Activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -34,7 +35,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import rsoni.Utils.DataResult;
+import rsoni.Utils.Task;
+import rsoni.kisaanApp.App;
 import rsoni.kisaanApp.R;
+import rsoni.modal.AppUser;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -50,10 +55,14 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
     private EditText etEmailView;
     private EditText etPasswordView;
     private EditText etMobileView;
-    private Spinner epCategoryView;
+    private Spinner spCategoryView;
     private View mProgressView;
     private View mLoginFormView;
     private Button mEmailSignInButton;
+
+    // Activity reference
+    private AppUser appUser = new AppUser();
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +75,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
         etEmailView = (EditText) findViewById(R.id.et_email);
         etPasswordView = (EditText) findViewById(R.id.et_password);
         etMobileView = (EditText) findViewById(R.id.et_mobile);
-        epCategoryView = (Spinner) findViewById(R.id.sp_user_cat);
+        spCategoryView = (Spinner) findViewById(R.id.sp_user_cat);
         mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(this);
         mLoginFormView = findViewById(R.id.login_form);
@@ -82,34 +91,34 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
         etEmailView.setError(null);
         etPasswordView.setError(null);
 
-        // Store values at the time of the login attempt.
-        String mobile = etMobileView.getText().toString();
-        String email = etEmailView.getText().toString();
-        String password = etPasswordView.getText().toString();
+        appUser.username = etMobileView.getText().toString();
+        appUser.email = etEmailView.getText().toString();
+        appUser.password = etPasswordView.getText().toString();
+        appUser.userCategory = spCategoryView.getSelectedItemPosition();
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid Mobile, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (!TextUtils.isEmpty(appUser.password) && !isPasswordValid(appUser.password)) {
             etMobileView.setError(getString(R.string.error_invalid_password));
             focusView = etMobileView;
             cancel = true;
         }
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (!TextUtils.isEmpty(appUser.username) && !isPasswordValid(appUser.username)) {
             etPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = etPasswordView;
             cancel = true;
         }
 
         // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
+        if (TextUtils.isEmpty(appUser.email)) {
             etEmailView.setError(getString(R.string.error_field_required));
             focusView = etEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
+        } else if (!isEmailValid(appUser.email)) {
             etEmailView.setError(getString(R.string.error_invalid_email));
             focusView = etEmailView;
             cancel = true;
@@ -123,7 +132,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserRegisterTask(email, password);
+            mAuthTask = new UserRegisterTask(appUser);
             mAuthTask.execute((Void) null);
         }
     }
@@ -190,24 +199,16 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
      */
     public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mEmail;
-        private final String mPassword;
-
-        UserRegisterTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
+        AppUser appUser ;
+        DataResult dataResult;
+        UserRegisterTask(AppUser appUser) {
+            this.appUser = appUser;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
+            dataResult = App.networkService.UserAuth(Task.mobile_register,appUser);
             // TODO: register the new account here.
             return true;
         }
