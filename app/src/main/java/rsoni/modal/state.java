@@ -18,14 +18,18 @@ import java.util.List;
 public class State {
     int id = 0;
     public String state_name = "";
-    int country_id = 0;
-    int state_id = 0;
+    public int country_id = 0;
+    public int state_id = 0;
 
     public static List<State> getStateList(Context context) throws IOException {
         Type listType = new TypeToken<List<State>>() {}.getType();
         InputStream input = context.getAssets().open("state.json");
         Reader reader = new InputStreamReader(input, "UTF-8");
         List<State> states = new Gson().fromJson(reader,listType);
-        return states;
+        return states;    }
+
+    @Override
+    public String toString() {
+        return state_name;
     }
 }
