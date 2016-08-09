@@ -22,7 +22,7 @@ public class District {
 
     int id = 0;
     public String district_name = "";
-    int district_id = 0;
+    public int district_id = 0;
     int state_id = 0;
 
     public static Map<Integer,List<District>> getDistrictMap(Context context) throws IOException {
