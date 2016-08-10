@@ -82,10 +82,12 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_news) {
             startActivity(new Intent(this,NewsActivity.class));
         } else if (id == R.id.nav_market_map) {
-            startActivity(new Intent(this,MapsActivity.class));
+            //startActivity(new Intent(this,MapsActivity.class));
         } else if (id == R.id.nav_watch_list) {
             startActivity(new Intent(this,WatchListActivity.class));
-        } else if (id == R.id.nav_profile) {
+        }else if (id == R.id.nav_my_rates) {
+            startActivity(new Intent(this,MyCropRatesActivity.class));
+        }  else if (id == R.id.nav_profile) {
             startActivity(new Intent(this,ProfileActivity.class));
         }
 

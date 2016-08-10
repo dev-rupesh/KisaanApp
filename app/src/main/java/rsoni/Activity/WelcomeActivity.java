@@ -1,5 +1,7 @@
 package rsoni.Activity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,12 +17,14 @@ import rsoni.kisaanApp.R;
 public class WelcomeActivity extends AppCompatActivity {
 
     private final int SPLASH_DISPLAY_LENGTH = 3000;
+    private Activity context;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        context = this;
 
         //startActivity(new Intent(WelcomeActivity.this, ProfileActivity.class));
         //this.finish();
@@ -36,8 +40,8 @@ public class WelcomeActivity extends AppCompatActivity {
                 }else{
                     nextIntent = new Intent(WelcomeActivity.this, LoginActivity.class);
                 }
-                WelcomeActivity.this.startActivity(nextIntent);
-                WelcomeActivity.this.finish();
+                context.startActivity(nextIntent);
+                context.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
 
