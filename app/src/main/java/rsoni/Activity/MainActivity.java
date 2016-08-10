@@ -1,9 +1,7 @@
 package rsoni.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,6 +22,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -73,18 +75,18 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.nav_commodity_rates) {
+            startActivity(new Intent(this,CommodityRatesActivity.class));
+        } else if (id == R.id.nav_weather_report) {
+            startActivity(new Intent(this,WeatherReportActivity.class));
+        } else if (id == R.id.nav_news) {
+            startActivity(new Intent(this,NewsActivity.class));
+        } else if (id == R.id.nav_market_map) {
+            startActivity(new Intent(this,MapsActivity.class));
+        } else if (id == R.id.nav_watch_list) {
+            startActivity(new Intent(this,WatchListActivity.class));
+        } else if (id == R.id.nav_profile) {
+            startActivity(new Intent(this,ProfileActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

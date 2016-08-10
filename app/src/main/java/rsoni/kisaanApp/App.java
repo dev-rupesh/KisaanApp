@@ -10,11 +10,14 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.google.gson.Gson;
+
 import java.text.SimpleDateFormat;
 
 import rsoni.Utils.DBHelper;
 import rsoni.WebServices.NetworkService;
 import rsoni.modal.AppUser;
+import rsoni.modal.UserProfile;
 
 /**
  * Created by DS1 on 03/08/16.
@@ -22,6 +25,8 @@ import rsoni.modal.AppUser;
 public class App extends Application{
 
     public static DBHelper mydb;
+
+    public static Gson gson = new Gson();
 
     public static NetworkService networkService = new NetworkService();
     public static String REG_ID = "";
@@ -48,23 +53,32 @@ public class App extends Application{
         super.onTerminate();
     }
 
-
-
-    //public static String ServiceUrl = "http://192.168.1.112:8081/dealjolly/";
-    // //Rupesh Ip
-    // public static String ServiceUrl = "http://54.213.71.101/ISL/api/";
-    // public static String ServiceUrl = "http://pointpi.com/Rupeemax/";
     public static String ServiceUrl = "http://rupeshs.in/justagriagro/api/";
 
-    // public static String ServiceUrl =
-    // "http://192.168.1.142:8080/SoccerBuddy/api/"; // deepak IP
-    //
-
-
     public static void getAppUser() {
-        appUser.id = mPrefs.getInt("app_user_id", 0);
-        appUser.username = mPrefs.getString("app_user_name", "");
-        appUser.email = mPrefs.getString("app_user_email", "");
+        String json = mPrefs.getString("app_user",null);
+        if(json!=null){
+            appUser = gson.fromJson(json,AppUser.class);
+        }else{
+            appUser = null;
+        }
+    }
+
+    public void getUserProfile() {
+        String json = mPrefs.getString("user_profile",null);
+        if(json!=null){
+            appUser.userProfile = gson.fromJson(json,UserProfile.class);
+        }else{
+            appUser.userProfile = null;
+        }
+    }
+
+    public static void saveUserProfile() {
+        SharedPreferences.Editor editor = mPrefs.edit();
+        String json = gson.toJson(appUser.userProfile);
+        editor.putString("user_profile", json);
+        editor.commit();
+        getAppUser();
     }
 
     public static AppUser getLogedAppUser() {
@@ -77,9 +91,8 @@ public class App extends Application{
 
     public static void saveAppUser(AppUser appUser) {
         SharedPreferences.Editor editor = mPrefs.edit();
-        editor.putInt("app_user_id", appUser.id);
-        editor.putString("app_user_name", appUser.username);
-        editor.putString("app_user_email", appUser.email);
+        String json = gson.toJson(appUser);
+        editor.putString("app_user", json);
         editor.commit();
         getAppUser();
     }

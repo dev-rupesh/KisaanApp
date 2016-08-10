@@ -15,7 +15,7 @@ public class AppUser {
 	public static AppUser getAppUserByJsonObject(JSONObject json_appUser){
 		AppUser appUser = new AppUser();
 		appUser.id = json_appUser.optInt("id");
-		appUser.username = json_appUser.optString("username");
+		appUser.username = json_appUser.optString("mobile");
 		appUser.email = json_appUser.optString("email");
 		appUser.userCategory =  json_appUser.optInt("usercat");
 		return appUser;

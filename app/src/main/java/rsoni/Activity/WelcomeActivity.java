@@ -20,13 +20,11 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_splash);
 
-        startActivity(new Intent(WelcomeActivity.this, ProfileActivity.class));
-        this.finish();
-        if(true) return;
+        //startActivity(new Intent(WelcomeActivity.this, ProfileActivity.class));
+        //this.finish();
+        //if(true) return;
 
         new Handler().postDelayed(new Runnable(){
             @Override

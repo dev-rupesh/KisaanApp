@@ -48,6 +48,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
         context = this;
         // Set up the login form.
         mMobileView = (EditText) findViewById(R.id.mobile);
@@ -171,11 +174,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if(v == mForgotPass){
             Intent i = new Intent(this,ForgotPassActivity.class);
             startActivity(i);
-            finish();
+            //finish();
         }else if(v == mRegister){
             Intent i = new Intent(this,RegisterActivity.class);
             startActivity(i);
-            finish();
+            //finish();
         }else if(v == mEmailSignInButton){
             attemptLogin();
         }else if(v == mForgotPass){
@@ -211,6 +214,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             showProgress(false);
 
             if(dataResult.Status){
+                App.saveAppUser((AppUser) dataResult.Data);
+                App.setAppRegisterd(context);
                 Intent mainIntent = new Intent(LoginActivity.this,MainActivity.class);
                 startActivity(mainIntent);
                 finish();
