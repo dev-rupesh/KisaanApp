@@ -21,18 +21,18 @@ public class States {
     public int country_id = 0;
     public int state_id = 0;
 
-    public State(){}
-    public State(boolean root){
+    public States(){}
+    public States(boolean root){
         this.state_id = -1;
         this.state_name = " -- Select One -- ";
     }
 
 
-    public static List<State> getStateList(Context context) throws IOException {
-        Type listType = new TypeToken<List<State>>() {}.getType();
+    public static List<States> getStateList(Context context) throws IOException {
+        Type listType = new TypeToken<List<States>>() {}.getType();
         InputStream input = context.getAssets().open("state.json");
         Reader reader = new InputStreamReader(input, "UTF-8");
-        List<State> states = new Gson().fromJson(reader,listType);
+        List<States> states = new Gson().fromJson(reader,listType);
         return states;    }
 
     @Override
