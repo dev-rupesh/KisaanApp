@@ -15,24 +15,24 @@ import java.util.List;
 /**
  * Created by DS1 on 09/08/16.
  */
-public class States {
+public class State {
     int id = 0;
     public String state_name = "";
     public int country_id = 0;
     public int state_id = 0;
 
-    public States(){}
-    public States(boolean root){
+    public State(){}
+    public State(boolean root){
         this.state_id = -1;
         this.state_name = " -- Select One -- ";
     }
 
 
-    public static List<States> getStateList(Context context) throws IOException {
-        Type listType = new TypeToken<List<States>>() {}.getType();
+    public static List<State> getStateList(Context context) throws IOException {
+        Type listType = new TypeToken<List<State>>() {}.getType();
         InputStream input = context.getAssets().open("state.json");
         Reader reader = new InputStreamReader(input, "UTF-8");
-        List<States> states = new Gson().fromJson(reader,listType);
+        List<State> states = new Gson().fromJson(reader,listType);
         return states;    }
 
     @Override
