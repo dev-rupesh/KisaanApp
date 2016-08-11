@@ -23,6 +23,7 @@ public class DataParser {
 		}
 		try {
 			json.trim();
+			System.out.println("get json : "+json);
 			jsonResponse = new JSONObject(json);
 			result.Status = jsonResponse.optBoolean("status");
 			//System.out.println("jsonResponse.getString(Status) : "

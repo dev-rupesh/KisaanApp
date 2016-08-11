@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -31,6 +32,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
     private EditText etMobileView;
     private Spinner spCategoryView;
     private View mProgressView;
-    private View mLoginFormView;
+    private View mRegisterFormView;
     private Button mEmailSignInButton;
 
     // Activity reference
@@ -68,7 +70,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
+        context = this;
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.mipmap.ic_launcher);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
@@ -83,8 +85,8 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
         spCategoryView = (Spinner) findViewById(R.id.sp_user_cat);
         mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(this);
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        mRegisterFormView = findViewById(R.id.register_form);
+        mProgressView = findViewById(R.id.register_progress);
     }
 
     private void attemptRegister() {
@@ -93,6 +95,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
         }
 
         // Reset errors.
+        etMobileView.setError(null);
         etEmailView.setError(null);
         etPasswordView.setError(null);
 
@@ -104,30 +107,45 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
         boolean cancel = false;
         View focusView = null;
 
+        // Check for Empty Field.
+        if (TextUtils.isEmpty(appUser.username)) {
+            etMobileView.setError(getString(R.string.error_field_required));
+            focusView = etMobileView;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(appUser.password)) {
+            etPasswordView.setError(getString(R.string.error_field_required));
+            focusView = etPasswordView;
+            cancel = true;
+        }
+
         // Check for a valid Mobile, if the user entered one.
-        if (!TextUtils.isEmpty(appUser.password) && !isPasswordValid(appUser.password)) {
-            etMobileView.setError(getString(R.string.error_invalid_password));
+        if (!TextUtils.isEmpty(appUser.username) && !isMobileValid(appUser.username)) {
+            etMobileView.setError(getString(R.string.error_invalid_mobile));
             focusView = etMobileView;
             cancel = true;
         }
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(appUser.username) && !isPasswordValid(appUser.username)) {
+        if (!TextUtils.isEmpty(appUser.password) && !isPasswordValid(appUser.password)) {
             etPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = etPasswordView;
             cancel = true;
         }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(appUser.email)) {
-            etEmailView.setError(getString(R.string.error_field_required));
-            focusView = etEmailView;
-            cancel = true;
-        } else if (!isEmailValid(appUser.email)) {
+        if (!TextUtils.isEmpty(appUser.email) && !isEmailValid(appUser.email)) {
             etEmailView.setError(getString(R.string.error_invalid_email));
             focusView = etEmailView;
             cancel = true;
         }
+
+        if(appUser.userCategory == 0){
+            Toast.makeText(context,"Select User Category",Toast.LENGTH_SHORT).show();
+            focusView = spCategoryView;
+            cancel = true;
+        }
+
+        //cancel = false;
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -151,6 +169,10 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
         //TODO: Replace this with your own logic
         return password.length() > 4;
     }
+    private boolean isMobileValid(String password) {
+        //TODO: Replace this with your own logic
+        return password.length() == 10;
+    }
 
     /**
      * Shows the progress UI and hides the login form.
@@ -163,12 +185,12 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+            mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mRegisterFormView.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });
 
@@ -184,7 +206,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -213,6 +235,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
+            System.out.println("111111");
             dataResult = App.networkService.UserAuth(Task.mobile_register,appUser);
             // TODO: register the new account here.
             return true;
@@ -222,12 +245,28 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             showProgress(false);
+            if(dataResult.Status){
+                App.saveAppUser((AppUser) dataResult.Data);
+                App.setAppRegisterd(context);
 
-            if (success) {
-                finish();
-            } else {
-                etPasswordView.setError(getString(R.string.error_incorrect_password));
-                etPasswordView.requestFocus();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
+                //Intent startMain = new Intent(getApplicationContext(), MainActivity.class);
+                //startMain.addCategory(Intent.CATEGORY_HOME);
+                //startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                //startActivity(startMain);
+                //finish();
+
+                //Intent intent = new Intent(context, MainActivity.class);
+                //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                //intent.putExtra("enter_by", "register");
+                //startActivity(intent);
+                //finish();
+            }else{
+                Toast.makeText(context,dataResult.msg,Toast.LENGTH_LONG).show();
             }
         }
 

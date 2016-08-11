@@ -23,13 +23,23 @@ public class NetworkService {
 		String url = App.ServiceUrl ;
 		String json = "";
 		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
-
+		System.out.println("22222");
 		if (task == Task.mobile_login){
 			url+="auth.php";
 			//param.add(new BasicNameValuePair("deviceId", device_id));
 			param.add(new BasicNameValuePair("opt", "sign-in"));
 			param.add(new BasicNameValuePair("mobile", appUser.username));
 			param.add(new BasicNameValuePair("pass", appUser.password));
+			return getResponce(url,Task.post,task,param);
+		} else if (task == Task.mobile_register){
+			url+="auth.php";
+			//param.add(new BasicNameValuePair("deviceId", device_id));
+			param.add(new BasicNameValuePair("opt", "sign-up"));
+			param.add(new BasicNameValuePair("mobile", appUser.username));
+			param.add(new BasicNameValuePair("pass", appUser.password));
+			param.add(new BasicNameValuePair("email", appUser.email));
+			param.add(new BasicNameValuePair("usercat", ""+appUser.userCategory));
+			System.out.println("333333");
 			return getResponce(url,Task.post,task,param);
 		} else if (task == Task.email_login){
 			url+="auth.php";
@@ -432,7 +442,7 @@ public class NetworkService {
 			json = connection.getJsonFromUrl2(url, param);
 		}else
 			json = connection.getJsonFromUrlGet(url, param);
-
+		System.out.println("json : "+json);
 		DataResult dataResult = null;
 		if (json == null)
 			dataResult = connection.invalidResponse();

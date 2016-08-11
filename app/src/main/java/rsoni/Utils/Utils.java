@@ -22,18 +22,6 @@ public class Utils {
 		}
 	}
 
-	public static void call(Activity activity, String no) {
-		if (no.isEmpty())
-			return;
-
-		if (no.contains(",")) {
-			String[] nos = no.split(",");
-			no = nos[0];
-		}
-		Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + no));
-		activity.startActivity(intent);
-	}
-
 	private void startActivity(Intent intent) {
 		// TODO Auto-generated method stub
 

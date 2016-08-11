@@ -12,7 +12,7 @@
 
     <!-- Login progress -->
     <ProgressBar
-        android:id="@+id/login_progress"
+        android:id="@+id/register_progress"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_mobile"
-                    android:inputType="textEmailAddress"
+                    android:inputType="phone"
                     android:maxLines="1"
                     android:singleLine="true" />
 
@@ -62,11 +62,32 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <Spinner
-            android:id="@+id/sp_user_cat"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/user_category"/>
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="User Belongs to"/>
+            <Spinner
+                android:id="@+id/sp_user_cat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="2dp"
+                android:entries="@array/user_category"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"
+                android:background="@android:color/black"/>
+        </LinearLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -75,7 +96,7 @@
                 android:id="@+id/et_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/prompt_mobile"
+                android:hint="@string/prompt_email_optional"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:singleLine="true" />
@@ -84,13 +105,14 @@
 
         <Button
             android:id="@+id/email_sign_in_button"
-            style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/action_sign_in"
+            android:text="@string/action_sign_up"
             android:textStyle="bold" />
 
         </LinearLayout>
     </ScrollView>
+
+
 </LinearLayout>

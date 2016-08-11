@@ -29,6 +29,7 @@
     <rsoni.View.RoundedImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:layout_marginTop="10dp"
         android:src="@mipmap/avatar_placeholder"
         android:scaleType="fitXY"
         android:adjustViewBounds="true"

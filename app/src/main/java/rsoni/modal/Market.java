@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class Market {
 
-    int id;
+    public int id;
     public String mandi_name;
     double latitude = 24.097381;
     double longitude = 75.053357;
@@ -29,6 +29,12 @@ public class Market {
     String district;
     String contact_no;
     int email_id = 0;
+
+    public Market (){}
+    public Market(boolean root){
+        id = -1;
+        mandi_name = " -- Select One -- ";
+    }
 
     public static Map<String,List<Market>> getMarketMap(Context context) throws IOException {
         Type listType = new TypeToken<List<Market>>() {}.getType();

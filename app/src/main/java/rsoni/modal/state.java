@@ -21,6 +21,13 @@ public class State {
     public int country_id = 0;
     public int state_id = 0;
 
+    public State(){}
+    public State(boolean root){
+        this.state_id = -1;
+        this.state_name = " -- Select One -- ";
+    }
+
+
     public static List<State> getStateList(Context context) throws IOException {
         Type listType = new TypeToken<List<State>>() {}.getType();
         InputStream input = context.getAssets().open("state.json");

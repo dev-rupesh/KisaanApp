@@ -10,9 +10,15 @@
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
+    <string name="prompt_fname">First Name</string>
+    <string name="prompt_lname">Last Name</string>
     <string name="prompt_email">Email</string>
+    <string name="prompt_email_optional">Email (Optional)</string>
     <string name="prompt_mobile">Mobile No.</string>
     <string name="prompt_password">Password</string>
+    <string name="prompt_address">Address</string>
+    <string name="prompt_pincode">Pincode</string>
+    <string name="action_sign_up">Register</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_mobile">This Mobile no. is invalid</string>
@@ -24,6 +30,7 @@
     <string name="title_activity_register">Sign up</string>
 
     <array name="user_category">
+        <item> -- Select One -- </item>
         <item>Commission Agent</item>
         <item>Broker</item>
         <item>Processing Unit</item>\

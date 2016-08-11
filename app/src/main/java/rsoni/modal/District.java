@@ -25,6 +25,12 @@ public class District {
     public int district_id = 0;
     int state_id = 0;
 
+    public District(){}
+    public District(boolean root){
+        this.district_id = -1;
+        this.district_name = " -- Select One -- ";
+    }
+
     public static Map<Integer,List<District>> getDistrictMap(Context context) throws IOException {
         Type listType = new TypeToken<List<District>>() {}.getType();
         InputStream input = context.getAssets().open("district.json");

@@ -1,5 +1,6 @@
 package rsoni.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -11,14 +12,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import rsoni.kisaanApp.App;
 import rsoni.kisaanApp.R;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -38,6 +43,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -51,7 +62,19 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        MenuItem item = navigationView.getMenu().findItem(R.id.nav_sign_out);
+        item.setVisible(true);
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        //MenuItem item = navigationView.getMenu().findItem(R.id.nav_sign_out);
+        //item.setVisible(false);
+        return super.onPrepareOptionsMenu(menu);
+
     }
 
     @Override
@@ -85,10 +108,14 @@ public class MainActivity extends AppCompatActivity
             //startActivity(new Intent(this,MapsActivity.class));
         } else if (id == R.id.nav_watch_list) {
             startActivity(new Intent(this,WatchListActivity.class));
-        }else if (id == R.id.nav_my_rates) {
+        } else if (id == R.id.nav_my_rates) {
             startActivity(new Intent(this,MyCropRatesActivity.class));
-        }  else if (id == R.id.nav_profile) {
+        } else if (id == R.id.nav_profile) {
             startActivity(new Intent(this,ProfileActivity.class));
+        } else if (id == R.id.nav_sign_out) {
+            App.Logout(context);
+            startActivity(new Intent(this,LoginActivity.class));
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

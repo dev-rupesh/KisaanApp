@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -168,9 +169,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         super.onAttachedToWindow();
         if(edit_mode){
             try {
-                if(states==null)states = State.getStateList(this);
-                if(districtsMap == null)districtsMap = District.getDistrictMap(this);
-                if(marketMap==null)marketMap = Market.getMarketMap(this);
+                if(states==null){
+                    states = State.getStateList(this);
+                    states.add(0,new State(true));
+                }
+                if(districtsMap == null){
+                    districtsMap = District.getDistrictMap(this);
+                    districtsMap.put(-1,new ArrayList<District>());
+                }
+                if(marketMap==null){
+                    marketMap = Market.getMarketMap(this);
+                    marketMap.put("-1",new ArrayList<Market>());
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -197,7 +207,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         if(arrayAdapter == stateArrayAdapter){
             System.out.println("State selected...");
             State state = (State) arrayAdapter.getItem(i);
-            districtArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, districtsMap.get(state.state_id)); //selected item will look like a spinner set from XML
+            List<District> districtList = districtsMap.get(state.state_id);
+            if(districtList.isEmpty() || districtList.get(0).district_id!=-1) districtList.add(0,new District(true));
+            districtArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, districtList); //selected item will look like a spinner set from XML
             districtArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spDistricts.setAdapter(districtArrayAdapter);
             spDistricts.setOnItemSelectedListener(this);
@@ -206,7 +218,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             District district = (District) arrayAdapter.getItem(i);
             System.out.println("district : "+district.district_name);
             if(marketMap.get(district.district_name)!=null) {
-                marketArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, marketMap.get(district.district_name)); //selected item will look like a spinner set from XML
+                List<Market> markets =  marketMap.get(district.district_name);
+                if(markets.size()==0 || markets.get(0).id !=-1) markets.add(0,new Market(true));
+                marketArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,markets); //selected item will look like a spinner set from XML
                 marketArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spMarkets.setAdapter(marketArrayAdapter);
                 spMarkets.setOnItemSelectedListener(this);

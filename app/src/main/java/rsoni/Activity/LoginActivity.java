@@ -73,6 +73,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
+
+
+
         if (mAuthTask != null) {
             return;
         }
@@ -172,14 +175,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
 
         if(v == mForgotPass){
-            Intent i = new Intent(this,ForgotPassActivity.class);
+            Intent i = new Intent(getApplicationContext(),ForgotPassActivity.class);
             startActivity(i);
             //finish();
         }else if(v == mRegister){
-            Intent i = new Intent(this,RegisterActivity.class);
+            Intent i = new Intent(getApplicationContext(),RegisterActivity.class);
             startActivity(i);
             //finish();
         }else if(v == mEmailSignInButton){
+            App.hideSoftKeyBoard(v);
             attemptLogin();
         }else if(v == mForgotPass){
 
