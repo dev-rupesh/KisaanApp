@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by DS1 on 09/08/16.
  */
-public class State {
+public class States {
     int id = 0;
     public String state_name = "";
     public int country_id = 0;
