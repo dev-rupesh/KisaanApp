@@ -35,7 +35,7 @@ public class App extends Application{
     public static SharedPreferences mPrefs;
     public static Context context;
 
-    private static AppUser appUser = new AppUser();
+    public static AppUser appUser = new AppUser();
 
     @Override
     public void onCreate() {
@@ -44,7 +44,6 @@ public class App extends Application{
         mydb = new DBHelper(context);
         mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         getAppUser();
-
         super.onCreate();
     }
 
@@ -64,7 +63,7 @@ public class App extends Application{
         }
     }
 
-    public void getUserProfile() {
+    public static void getUserProfile() {
         String json = mPrefs.getString("user_profile",null);
         if(json!=null){
             appUser.userProfile = gson.fromJson(json,UserProfile.class);

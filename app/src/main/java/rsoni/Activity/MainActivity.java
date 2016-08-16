@@ -100,16 +100,16 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_commodity_rates) {
             startActivity(new Intent(this,CommodityRatesActivity.class));
-        } else if (id == R.id.nav_weather_report) {
+        } /*else if (id == R.id.nav_weather_report) {
             startActivity(new Intent(this,WeatherReportActivity.class));
-        } else if (id == R.id.nav_news) {
+        } */else if (id == R.id.nav_news) {
             startActivity(new Intent(this,NewsActivity.class));
         } else if (id == R.id.nav_market_map) {
             //startActivity(new Intent(this,MapsActivity.class));
-        } else if (id == R.id.nav_watch_list) {
-            startActivity(new Intent(this,WatchListActivity.class));
-        } else if (id == R.id.nav_my_rates) {
-            startActivity(new Intent(this,MyCropRatesActivity.class));
+        } else if (id == R.id.nav_buyer) {
+            startActivity(new Intent(this,BuyerActivity.class));
+        } else if (id == R.id.nav_seller) {
+            startActivity(new Intent(this,SellerActivity.class));
         } else if (id == R.id.nav_profile) {
             startActivity(new Intent(this,ProfileActivity.class));
         } else if (id == R.id.nav_sign_out) {

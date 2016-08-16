@@ -24,6 +24,7 @@
     <string name="error_invalid_mobile">This Mobile no. is invalid</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
+    <string name="error_invalid_pincode">This Pincode should be 6 digit</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
@@ -33,7 +34,8 @@
         <item> -- Select One -- </item>
         <item>Commission Agent</item>
         <item>Broker</item>
-        <item>Processing Unit</item>\
+        <item>Processing Unit</item>
+        <item>Trader</item>
         <item>Transport</item>
     </array>
     <string name="title_activity_maps">Map</string>

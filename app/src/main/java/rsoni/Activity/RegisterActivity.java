@@ -50,7 +50,6 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class RegisterActivity extends AppCompatActivity implements OnClickListener{
 
-
     private UserRegisterTask mAuthTask = null;
 
     // UI references.

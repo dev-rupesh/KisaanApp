@@ -5,11 +5,11 @@ import android.os.Bundle;
 
 import rsoni.kisaanApp.R;
 
-public class MyCropRatesActivity extends AppCompatActivity {
+public class SellerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_crop_rates);
+        setContentView(R.layout.activity_seller);
     }
 }

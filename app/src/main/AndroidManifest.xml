@@ -51,7 +51,7 @@
         <activity android:name="rsoni.Activity.ProfileActivity" />
         <activity android:name="rsoni.Activity.WeatherReportActivity" />
         <activity android:name="rsoni.Activity.NewsActivity" />
-        <activity android:name="rsoni.Activity.WatchListActivity" />
+        <activity android:name="rsoni.Activity.BuyerActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -65,7 +65,7 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name="rsoni.Activity.CommodityRatesActivity" />
-        <activity android:name="rsoni.Activity.MyCropRatesActivity"></activity>
+        <activity android:name="rsoni.Activity.SellerActivity"></activity>
     </application>
 
 </manifest>

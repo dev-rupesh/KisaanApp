@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -29,6 +30,7 @@ import rsoni.modal.District;
 import rsoni.modal.Market;
 import rsoni.modal.State;
 import rsoni.modal.UserProfile;
+import rsoni.modal.UserSubCategory;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemSelectedListener {
 
@@ -40,24 +42,30 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private EditText et_lname;
     private Spinner spStates;
     private Spinner spDistricts;
+    private Spinner spUserSubCategory;
     private Spinner spMarkets;
     private EditText et_address;
     private EditText et_pincode;
     private Button btn_update_profile;
+    private TextView tv_user_sub_cat_label;
 
     // View only Mode
-
-
 
     // UI references.
     private boolean edit_mode = false;
     private List<State> states = null;
+    private List<UserSubCategory> userSubCategories;
+    private List<Market> markets;
+    private List<District> districtList;
     private Map<Integer,List<District>> districtsMap = null;
     private Map<String,List<Market>> marketMap = null;
+    private Map<Integer,List<UserSubCategory>> userSubCategoryMap = null;
 
     private ArrayAdapter<State> stateArrayAdapter;
     private ArrayAdapter<District> districtArrayAdapter;
     private ArrayAdapter<Market> marketArrayAdapter;
+    private ArrayAdapter<UserSubCategory> userSubCategoryArrayAdapter;
+
 
     // Activity reference
     private AppUser appUser;
@@ -83,9 +91,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         spDistricts = (Spinner)findViewById(R.id.sp_districts);
 
         spMarkets = (Spinner)findViewById(R.id.sp_markets);
+        spUserSubCategory = (Spinner)findViewById(R.id.spUserSubCategory);
 
         et_address = (EditText)findViewById(R.id.et_address);
         et_pincode = (EditText)findViewById(R.id.et_pincode);
+        tv_user_sub_cat_label = (TextView)findViewById(R.id.tv_user_sub_cat_label);
         btn_update_profile = (Button) findViewById(R.id.btn_update_profile);
         btn_update_profile.setOnClickListener(this);
         edit_mode = true;
@@ -109,6 +119,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         userProfile.lname = et_lname.getText().toString();
         userProfile.districtid = ((District)spDistricts.getSelectedItem()).district_id;
         userProfile.marketid = spDistricts.getSelectedItemPosition();
+        userProfile.usersubcatid = ((UserSubCategory)spUserSubCategory.getSelectedItem()).usersubcat_id;
         userProfile.address = et_address.getText().toString();
         String pincode = et_pincode.getText().toString();
 
@@ -134,13 +145,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             cancel = true;
         }
         if (TextUtils.isEmpty(pincode)) {
-            et_pincode.setError(getString(R.string.error_invalid_password));
+            et_pincode.setError(getString(R.string.error_field_required));
             focusView = et_pincode;
             cancel = true;
         }
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(pincode) && !isPinCodeValid(pincode)) {
-            et_pincode.setError(getString(R.string.error_invalid_password));
+            et_pincode.setError(getString(R.string.error_invalid_pincode));
             focusView = et_pincode;
             cancel = true;
         }
@@ -154,19 +165,27 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             // perform the user login attempt.
             //showProgress(true);
             userProfile.pincode = Integer.parseInt(pincode);
-            mUserProfileTask = new UserProfileTask(userProfile);
-            mUserProfileTask.execute((Void) null);
+            //mUserProfileTask = new UserProfileTask(userProfile);
+            //mUserProfileTask.execute((Void) null);
+
+            userProfile.print();
+
+            App.appUser.userProfile = userProfile;
+            App.saveUserProfile();
+            App.appUser.userProfile.print();
         }
     }
 
     private boolean isPinCodeValid(String pin){
-        return pin.length() == 4;
+        return pin.length() == 6;
     }
 
 
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
+        App.getUserProfile();
+
         if(edit_mode){
             try {
                 if(states==null){
@@ -181,6 +200,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     marketMap = Market.getMarketMap(this);
                     marketMap.put("-1",new ArrayList<Market>());
                 }
+                if(userSubCategories==null){
+                    userSubCategoryMap = UserSubCategory.getUserSubCategoryMap(this);
+                    System.out.println("UserCAtegory : "+ App.appUser.userCategory);
+                    userSubCategories = userSubCategoryMap.get(App.appUser.userCategory);
+                    if(userSubCategories==null){
+                        userSubCategories = new ArrayList<UserSubCategory>();
+                    }
+                    userSubCategories.add(0,new UserSubCategory(true));
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -189,6 +217,20 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             stateArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spStates.setAdapter(stateArrayAdapter);
             spStates.setOnItemSelectedListener(this);
+
+            userSubCategoryArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, userSubCategories); //selected item will look like a spinner set from XML
+            userSubCategoryArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spUserSubCategory.setAdapter(userSubCategoryArrayAdapter);
+            //spUserSubCategory.setOnItemSelectedListener(this);
+            String lbl = "";
+            if(App.appUser.userCategory==1)lbl="Commission Agent For";
+            else if(App.appUser.userCategory==2)lbl="Broker in";
+            else if(App.appUser.userCategory==3)lbl="Processing Unit Type";
+            else if(App.appUser.userCategory==4)lbl="Treading in";
+            else if(App.appUser.userCategory==4)lbl="Transport Type";
+
+            tv_user_sub_cat_label.setText(lbl);
+
         }else{
 
         }
@@ -207,7 +249,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         if(arrayAdapter == stateArrayAdapter){
             System.out.println("State selected...");
             State state = (State) arrayAdapter.getItem(i);
-            List<District> districtList = districtsMap.get(state.state_id);
+            districtList = districtsMap.get(state.state_id);
             if(districtList.isEmpty() || districtList.get(0).district_id!=-1) districtList.add(0,new District(true));
             districtArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, districtList); //selected item will look like a spinner set from XML
             districtArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -218,7 +260,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             District district = (District) arrayAdapter.getItem(i);
             System.out.println("district : "+district.district_name);
             if(marketMap.get(district.district_name)!=null) {
-                List<Market> markets =  marketMap.get(district.district_name);
+                markets =  marketMap.get(district.district_name);
                 if(markets.size()==0 || markets.get(0).id !=-1) markets.add(0,new Market(true));
                 marketArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,markets); //selected item will look like a spinner set from XML
                 marketArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -266,6 +308,56 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         protected void onCancelled() {
             mUserProfileTask = null;
             //showProgress(false);
+        }
+    }
+
+    public void setSelectedItemsInForm(String mode,int id){
+        int position = 0;
+        switch (mode){
+            case "state":
+                if(App.appUser.userProfile!=null && App.appUser.userProfile.state_id!=-1){
+                    for(State state : states){
+                        if(state.state_id == id){
+                            spStates.setSelection(position);
+                        }
+                        position++;
+                    }
+                }
+                break;
+            case "district":
+                if(App.appUser.userProfile!=null && App.appUser.userProfile.districtid!=-1){
+                    for(District district : districtList){
+                        if(district.district_id == id){
+                            spDistricts.setSelection(position);
+                            break;
+                        }
+                        position++;
+                    }
+                }
+                break;
+            case "market":
+                if(App.appUser.userProfile!=null && App.appUser.userProfile.marketid!=-1){
+                    for(Market market : markets){
+                        if(market.mandi_id == id){
+                            spMarkets.setSelection(position);
+                            break;
+                        }
+                        position++;
+                    }
+                }
+                break;
+            case "usersubcat":
+                if(App.appUser.userProfile!=null && App.appUser.userProfile.usersubcatid!=-1){
+                    for(UserSubCategory userSubCategory : userSubCategories){
+                        if(userSubCategory.usersubcat_id == id){
+                            spUserSubCategory.setSelection(position);
+                            break;
+                        }
+                        position++;
+                    }
+                }
+                break;
+
         }
     }
 

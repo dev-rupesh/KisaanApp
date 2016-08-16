@@ -19,7 +19,7 @@ public class State {
     int id = 0;
     public String state_name = "";
     public int country_id = 0;
-    public int state_id = 0;
+    public int state_id = -1;
 
     public State(){}
     public State(boolean root){

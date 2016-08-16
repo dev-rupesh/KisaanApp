@@ -22,6 +22,7 @@ public class Market {
 
     public int id;
     public String mandi_name;
+    public int mandi_id = -1;
     double latitude = 24.097381;
     double longitude = 75.053357;
     String city;
