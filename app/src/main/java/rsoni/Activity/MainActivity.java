@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import rsoni.kisaanApp.App;
 import rsoni.kisaanApp.R;
@@ -45,6 +46,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
+
+        if(App.appUser.userProfile==null){
+            Toast.makeText(context,"Please add your profile to continue...",Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this,ProfileActivity.class));
+        }
 
     }
 

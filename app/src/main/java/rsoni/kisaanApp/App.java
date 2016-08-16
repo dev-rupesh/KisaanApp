@@ -77,7 +77,7 @@ public class App extends Application{
         String json = gson.toJson(appUser.userProfile);
         editor.putString("user_profile", json);
         editor.commit();
-        getAppUser();
+        getUserProfile();
     }
 
     public static AppUser getLogedAppUser() {

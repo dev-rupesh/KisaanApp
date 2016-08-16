@@ -12,9 +12,12 @@ public class UserProfile {
     public String mobile = "";
     public String fname = "";
     public String lname = "";
-    public int state_id = -1;
+    public int stateid = -1;
+    public String statename = "";
     public int districtid = -1;
+    public String districtname = "";
     public int marketid = -1;
+    public String marketname = "";
     public int usersubcatid = -1;
     public String address = "";
     public int pincode = 0;
@@ -24,6 +27,7 @@ public class UserProfile {
         userProfile.id = json_userProfile.optInt("id");
         userProfile.fname = json_userProfile.optString("fname");
         userProfile.lname = json_userProfile.optString("lname");
+        userProfile.stateid = json_userProfile.optInt("districtid");
         userProfile.districtid = json_userProfile.optInt("districtid");
         userProfile.marketid =  json_userProfile.optInt("marketid");
         userProfile.usersubcatid =  json_userProfile.optInt("usersubcatid");
@@ -41,5 +45,20 @@ public class UserProfile {
         System.out.println("usersubcat : "+usersubcatid);
         System.out.println("address : "+address);
         System.out.println("pincode : "+pincode);
+    }
+
+    public void copy(UserProfile userProfile){
+
+        this.fname = userProfile.fname;
+        this.lname = userProfile.lname;
+        this.stateid = userProfile.stateid;
+        this.statename = userProfile.statename;
+        this.districtid = userProfile.districtid;
+        this.districtname = userProfile.districtname;
+        this.marketid = userProfile.marketid;
+        this.marketname = userProfile.marketname;
+        this.address = userProfile.address;
+        this.pincode = userProfile.pincode;
+        this.usersubcatid = userProfile.usersubcatid;
     }
 }

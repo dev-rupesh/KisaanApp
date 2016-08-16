@@ -117,8 +117,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         userProfile.fname = et_fname.getText().toString();
         userProfile.lname = et_lname.getText().toString();
+
+        userProfile.stateid = ((State)spStates.getSelectedItem()).state_id;
+        userProfile.statename = ((State)spStates.getSelectedItem()).state_name;
+
         userProfile.districtid = ((District)spDistricts.getSelectedItem()).district_id;
-        userProfile.marketid = spDistricts.getSelectedItemPosition();
+        userProfile.districtname = ((District)spDistricts.getSelectedItem()).district_name;
+
+        userProfile.marketid = ((Market)spMarkets.getSelectedItem()).mandi_id;
+        userProfile.marketname = ((Market)spMarkets.getSelectedItem()).mandi_name;
+
         userProfile.usersubcatid = ((UserSubCategory)spUserSubCategory.getSelectedItem()).usersubcat_id;
         userProfile.address = et_address.getText().toString();
         String pincode = et_pincode.getText().toString();
@@ -170,7 +178,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
             userProfile.print();
 
-            App.appUser.userProfile = userProfile;
+            App.appUser.userProfile = new UserProfile();
+            App.appUser.userProfile.copy(userProfile);
             App.saveUserProfile();
             App.appUser.userProfile.print();
         }
@@ -315,7 +324,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         int position = 0;
         switch (mode){
             case "state":
-                if(App.appUser.userProfile!=null && App.appUser.userProfile.state_id!=-1){
+                if(App.appUser.userProfile!=null && App.appUser.userProfile.stateid!=-1){
                     for(State state : states){
                         if(state.state_id == id){
                             spStates.setSelection(position);
