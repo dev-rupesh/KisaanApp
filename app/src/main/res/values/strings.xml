@@ -31,7 +31,7 @@
     <string name="title_activity_register">Sign up</string>
 
     <array name="user_category">
-        <item> -- Select One -- </item>
+        <item>-- Select One --</item>
         <item>Commission Agent</item>
         <item>Broker</item>
         <item>Processing Unit</item>

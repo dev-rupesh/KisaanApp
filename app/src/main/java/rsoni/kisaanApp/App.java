@@ -44,6 +44,7 @@ public class App extends Application{
         mydb = new DBHelper(context);
         mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         getAppUser();
+        getUserProfile();
         super.onCreate();
     }
 

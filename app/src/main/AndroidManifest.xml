@@ -65,7 +65,9 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name="rsoni.Activity.CommodityRatesActivity" />
-        <activity android:name="rsoni.Activity.SellerActivity"></activity>
+        <activity android:name="rsoni.Activity.SellerActivity" />
+        <activity android:name="rsoni.Activity.ContactUsActivity" />
+        <activity android:name="rsoni.Activity.AboutUsActivity"></activity>
     </application>
 
 </manifest>

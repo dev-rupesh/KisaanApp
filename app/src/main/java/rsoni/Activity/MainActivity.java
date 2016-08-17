@@ -2,6 +2,7 @@ package rsoni.Activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import rsoni.kisaanApp.App;
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Context context;
+    TextView user_name,user_mobile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
     @Override
@@ -71,6 +76,14 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         MenuItem item = navigationView.getMenu().findItem(R.id.nav_sign_out);
         item.setVisible(true);
+
+        user_name = (TextView) findViewById(R.id.user_name);
+        user_mobile = (TextView) findViewById(R.id.user_mobile);
+        user_mobile.setText(App.appUser.username);
+        if(App.appUser.userProfile!=null){
+            user_name.setText(App.appUser.userProfile.fname);
+        }
+
         return true;
     }
 
@@ -122,6 +135,14 @@ public class MainActivity extends AppCompatActivity
             App.Logout(context);
             startActivity(new Intent(this,LoginActivity.class));
             finish();
+        } else if (id == R.id.nav_share) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.android.example"));
+            startActivity(intent);
+        } else if (id == R.id.nav_contact_us) {
+            startActivity(new Intent(this,ContactUsActivity.class));
+        } else if (id == R.id.nav_about_us) {
+            startActivity(new Intent(this,AboutUsActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
