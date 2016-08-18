@@ -6,12 +6,12 @@ import android.view.MenuItem;
 
 import rsoni.kisaanApp.R;
 
-public class ForgotPassActivity extends AppCompatActivity {
+public class FindActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_pass);
+        setContentView(R.layout.activity_find);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.mipmap.ic_launcher);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
@@ -29,4 +29,5 @@ public class ForgotPassActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="55dip"
+    android:orientation="vertical"     
+    android:padding="20dp"
+    android:background="@android:color/background_light">
+
+    <TextView
+        android:id="@+id/tv_historytitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17dip"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textStyle="bold"
+        android:textColor="#000000"/>
+    <!-- <TextView
+        android:id="@+id/tv_new_date"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17dip"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textStyle="bold"
+        android:textColor="#000000"/> -->
+    <ImageView         
+        android:id="@+id/iv_news_thumb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:scaleType="fitStart"/>
+    
+    <TextView
+        android:id="@+id/tv_historydesc"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17dip"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textColor="#000000"/>    
+
+</LinearLayout>

@@ -79,9 +79,12 @@ public class MainActivity extends AppCompatActivity
 
         user_name = (TextView) findViewById(R.id.user_name);
         user_mobile = (TextView) findViewById(R.id.user_mobile);
-        user_mobile.setText(App.appUser.username);
+
+        user_mobile.setText(App.appUser.mobile);
         if(App.appUser.userProfile!=null){
             user_name.setText(App.appUser.userProfile.company_name);
+        }else{
+            user_name.setText("Welcome");
         }
 
         return true;
@@ -125,6 +128,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(this,NewsActivity.class));
         } else if (id == R.id.nav_market_map) {
             //startActivity(new Intent(this,MapsActivity.class));
+        } else if (id == R.id.nav_find) {
+            startActivity(new Intent(this,FindActivity.class));
         } else if (id == R.id.nav_buyer) {
             startActivity(new Intent(this,BuyerActivity.class));
         } else if (id == R.id.nav_seller) {

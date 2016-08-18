@@ -7,14 +7,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,10 +52,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private Spinner spMarkets;
     private EditText et_address;
     private EditText et_pincode;
-    private Button btn_update_profile;
+    private Button btn_update_profile,btn_cancel_update_profile;
     private TextView tv_user_sub_cat_label;
+    private LinearLayout ll_user_profile_edit;
 
     // View only Mode
+    private TextView tv_name_of_company,tv_name_of_proprietor,tv_address,tv_district,tv_pincode,tv_market,tv_mobile;
+    private LinearLayout ll_user_profile;
+    private Button btn_edit_profile;
 
     // UI references.
     private boolean edit_mode = false;
@@ -85,6 +92,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.mipmap.ic_launcher);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         context = this;
         from = getIntent().getStringExtra("from");
         initView();
@@ -92,6 +100,19 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private void initView(){
         mProgressView = findViewById(R.id.profile_progress);
+
+        ll_user_profile = (LinearLayout) findViewById(R.id.ll_user_profile);
+        tv_name_of_company = (TextView) findViewById(R.id.tv_name_of_company);
+        tv_name_of_proprietor = (TextView) findViewById(R.id.tv_name_of_proprietor);
+        tv_address = (TextView) findViewById(R.id.tv_address);
+        tv_district = (TextView) findViewById(R.id.tv_district);
+        tv_pincode = (TextView) findViewById(R.id.tv_pincode);
+        tv_market = (TextView) findViewById(R.id.tv_market);
+        tv_mobile = (TextView) findViewById(R.id.tv_mobile);
+        btn_edit_profile = (Button) findViewById(R.id.btn_edit_profile);
+        btn_edit_profile.setOnClickListener(this);
+
+        ll_user_profile_edit = (LinearLayout) findViewById(R.id.ll_user_profile_edit);
         mProfileFormView = findViewById(R.id.profile_form);
         et_fname = (EditText)findViewById(R.id.et_fname);
         et_lname = (EditText)findViewById(R.id.et_lname);
@@ -107,11 +128,17 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         tv_user_sub_cat_label = (TextView)findViewById(R.id.tv_user_sub_cat_label);
         btn_update_profile = (Button) findViewById(R.id.btn_update_profile);
         btn_update_profile.setOnClickListener(this);
-        edit_mode = true;
+        btn_cancel_update_profile = (Button) findViewById(R.id.btn_cancel_update_profile);
+        btn_cancel_update_profile.setOnClickListener(this);
+
+        if((from!=null && from.equalsIgnoreCase("start")) || App.appUser.userProfile==null) {
+            edit_mode = true;
+        }else{
+            edit_mode = false;
+        }
     }
 
-    private void setViewMode(){
-    }
+
 
     private void attemptProfileUpdate() {
         if (mUserProfileTask != null) {
@@ -192,7 +219,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             App.saveUserProfile();
             App.appUser.userProfile.print();
             showProgress(true);
-            new UserProfileTask(App.appUser.userProfile).execute((Void) null);
+            new UserProfileTask(App.appUser).execute((Void) null);
 
         }
     }
@@ -206,8 +233,78 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         App.getUserProfile();
+        setViewMode();
+    }
 
+    @Override
+    public void onClick(View view) {
+        if(view == btn_edit_profile){
+            edit_mode = true;
+            setViewMode();
+        }else if(view == btn_update_profile){
+            attemptProfileUpdate();
+        }else if(view == btn_cancel_update_profile){
+            edit_mode = false;
+            setViewMode();
+        }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        ArrayAdapter arrayAdapter = (ArrayAdapter) adapterView.getAdapter();
+        if(arrayAdapter == stateArrayAdapter){
+            System.out.println("State selected...");
+            State state = (State) arrayAdapter.getItem(i);
+            districtList = districtsMap.get(state.state_id);
+            if(districtList.isEmpty() || districtList.get(0).district_id!=-1) districtList.add(0,new District(true));
+            districtArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, districtList); //selected item will look like a spinner set from XML
+            districtArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spDistricts.setAdapter(districtArrayAdapter);
+            spDistricts.setOnItemSelectedListener(this);
+            int index = 0;
+            if(App.appUser.userProfile!=null){
+                for(District district : districtList){
+                    if(district.district_id==App.appUser.userProfile.district_id){
+                        spDistricts.setSelection(index);
+                        break;
+                    }
+                    index++;
+                }
+            }
+        }else if(arrayAdapter == districtArrayAdapter){
+            System.out.println("State selected...");
+            District district = (District) arrayAdapter.getItem(i);
+            System.out.println("district : "+district.district_name);
+            if(marketMap.get(district.district_name)!=null) {
+                markets =  marketMap.get(district.district_name);
+                if(markets.size()==0 || markets.get(0).id !=-1) markets.add(0,new Market(true));
+                marketArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,markets); //selected item will look like a spinner set from XML
+                marketArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spMarkets.setAdapter(marketArrayAdapter);
+                spMarkets.setOnItemSelectedListener(this);
+                int index = 0;
+                if(App.appUser.userProfile!=null){
+                    for(Market market : markets){
+                        if(market.mandi_name.equalsIgnoreCase(App.appUser.userProfile.market_name)){
+                            spMarkets.setSelection(index);
+                            break;
+                        }
+                        index++;
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+    private void setViewMode(){
         if(edit_mode){
+            ll_user_profile_edit.setVisibility(View.VISIBLE);
+            ll_user_profile.setVisibility(View.GONE);
             try {
                 if(states==null){
                     states = State.getStateList(this);
@@ -239,6 +336,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             spStates.setAdapter(stateArrayAdapter);
             spStates.setOnItemSelectedListener(this);
 
+
+
             userSubCategoryArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, userSubCategories); //selected item will look like a spinner set from XML
             userSubCategoryArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spUserSubCategory.setAdapter(userSubCategoryArrayAdapter);
@@ -251,63 +350,61 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             else if(App.appUser.userCategory==4)lbl="Transport Type";
 
             tv_user_sub_cat_label.setText(lbl);
+            int index = 0;
+
+            if(App.appUser.userProfile!=null){
+
+                et_fname.setText(App.appUser.userProfile.company_name);
+                et_lname.setText(App.appUser.userProfile.owner_name);
+                et_address.setText(App.appUser.userProfile.address);
+                et_pincode.setText(""+App.appUser.userProfile.pincode);
+
+
+                for(State state : states){
+                    if(state.state_name.equalsIgnoreCase(App.appUser.userProfile.state_name)){
+                        spStates.setSelection(index);
+                        break;
+                    }
+                    index++;
+                }
+                index = 0;
+                for(UserSubCategory category : userSubCategories){
+                    if(category.usersubcat_id == App.appUser.userProfile.usersubcat_id){
+                        spUserSubCategory.setSelection(index);
+                        break;
+                    }
+                    index++;
+                }
+            }
 
         }else{
-
-        }
-    }
-
-    @Override
-    public void onClick(View view) {
-        if(view == btn_update_profile){
-            attemptProfileUpdate();
-        }
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        ArrayAdapter arrayAdapter = (ArrayAdapter) adapterView.getAdapter();
-        if(arrayAdapter == stateArrayAdapter){
-            System.out.println("State selected...");
-            State state = (State) arrayAdapter.getItem(i);
-            districtList = districtsMap.get(state.state_id);
-            if(districtList.isEmpty() || districtList.get(0).district_id!=-1) districtList.add(0,new District(true));
-            districtArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, districtList); //selected item will look like a spinner set from XML
-            districtArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spDistricts.setAdapter(districtArrayAdapter);
-            spDistricts.setOnItemSelectedListener(this);
-        }else if(arrayAdapter == districtArrayAdapter){
-            System.out.println("State selected...");
-            District district = (District) arrayAdapter.getItem(i);
-            System.out.println("district : "+district.district_name);
-            if(marketMap.get(district.district_name)!=null) {
-                markets =  marketMap.get(district.district_name);
-                if(markets.size()==0 || markets.get(0).id !=-1) markets.add(0,new Market(true));
-                marketArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,markets); //selected item will look like a spinner set from XML
-                marketArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spMarkets.setAdapter(marketArrayAdapter);
-                spMarkets.setOnItemSelectedListener(this);
+            ll_user_profile.setVisibility(View.VISIBLE);
+            ll_user_profile_edit.setVisibility(View.GONE);
+            if(App.appUser.userProfile!=null) {
+                ll_user_profile.setVisibility(View.VISIBLE);
+                tv_name_of_company.setText(App.appUser.userProfile.company_name);
+                tv_name_of_proprietor.setText(App.appUser.userProfile.owner_name);
+                tv_address.setText(App.appUser.userProfile.address);
+                tv_district.setText(""+App.appUser.userProfile.state_name+" - "+App.appUser.userProfile.district_name);
+                tv_pincode.setText("Pin Code - "+App.appUser.userProfile.pincode);
+                tv_mobile.setText(App.appUser.mobile);
+                tv_market.setText(App.appUser.userProfile.market_name);
             }
         }
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
-
     public class UserProfileTask extends AsyncTask<Void, Void, Boolean> {
-        UserProfile userProfile;
+        AppUser appUser;
         DataResult dataResult;
-        UserProfileTask(UserProfile userProfile) {
-            this.userProfile = userProfile;
+        UserProfileTask(AppUser appUser) {
+            this.appUser = appUser;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            dataResult = App.networkService.Profile(Task.update_profile,userProfile);
+            dataResult = App.networkService.Profile(Task.update_profile,appUser);
 
             // TODO: register the new account here.
             return true;
@@ -324,11 +421,17 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 finish();
             }
 
+            edit_mode = false;
+            setViewMode();
+
             /*if(dataResult.Status){
 
             }else{
                 Toast.makeText(context,"Wrong Password",Toast.LENGTH_LONG).show();
             }*/
+
+            mUserProfileTask = null;
+            showProgress(false);
         }
 
         @Override
@@ -418,6 +521,17 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mProfileFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

@@ -131,7 +131,6 @@ public class App extends Application{
 
                                 public void onClick(DialogInterface dialog,
                                                     int whichButton) {
-                                    ;
                                 }
                             }).setNegativeButton(android.R.string.no, null)
                     .show();

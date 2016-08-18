@@ -5,7 +5,6 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-;
 
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
@@ -137,7 +136,7 @@ public class NetworkService {
 
 
 
-	public DataResult Profile(Task task,UserProfile userProfile) {
+	public DataResult Profile(Task task,AppUser appUser) {
 		System.out.println("Squad()...");
 		String url = App.ServiceUrl;
 		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
@@ -153,19 +152,19 @@ public class NetworkService {
 			url+="auth.php";
 			//param.add(new BasicNameValuePair("deviceId", update-profile));
 			param.add(new BasicNameValuePair("opt", "update-profile"));
-			param.add(new BasicNameValuePair("id", ""+userProfile.id));
-			param.add(new BasicNameValuePair("mobile", userProfile.mobile));
-			param.add(new BasicNameValuePair("company_name", userProfile.company_name));
-			param.add(new BasicNameValuePair("owner_name", userProfile.owner_name));
-			param.add(new BasicNameValuePair("address", userProfile.address));
-			param.add(new BasicNameValuePair("pincode", ""+userProfile.pincode));
-			param.add(new BasicNameValuePair("state_id", ""+userProfile.state_id));
-			param.add(new BasicNameValuePair("state_name", userProfile.state_name));
-			param.add(new BasicNameValuePair("district_id", ""+userProfile.district_id));
-			param.add(new BasicNameValuePair("district_name", userProfile.district_name));
-			param.add(new BasicNameValuePair("market_id", ""+userProfile.market_id));
-			param.add(new BasicNameValuePair("market_name", userProfile.market_name));
-			param.add(new BasicNameValuePair("usersubcat_id", ""+userProfile.usersubcat_id));
+			param.add(new BasicNameValuePair("id", ""+appUser.id));
+			param.add(new BasicNameValuePair("mobile", appUser.mobile));
+			param.add(new BasicNameValuePair("company_name", appUser.userProfile.company_name));
+			param.add(new BasicNameValuePair("owner_name", appUser.userProfile.owner_name));
+			param.add(new BasicNameValuePair("address", appUser.userProfile.address));
+			param.add(new BasicNameValuePair("pincode", ""+appUser.userProfile.pincode));
+			param.add(new BasicNameValuePair("state_id", ""+appUser.userProfile.state_id));
+			param.add(new BasicNameValuePair("state_name", appUser.userProfile.state_name));
+			param.add(new BasicNameValuePair("district_id", ""+appUser.userProfile.district_id));
+			param.add(new BasicNameValuePair("district_name", appUser.userProfile.district_name));
+			param.add(new BasicNameValuePair("market_id", ""+appUser.userProfile.market_id));
+			param.add(new BasicNameValuePair("market_name", appUser.userProfile.market_name));
+			param.add(new BasicNameValuePair("usersubcat_id", ""+appUser.userProfile.usersubcat_id));
 			System.out.println("333333");
 			return getResponce(url,Task.post,task,param);
 		}

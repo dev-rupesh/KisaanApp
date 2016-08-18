@@ -67,7 +67,8 @@
         <activity android:name="rsoni.Activity.CommodityRatesActivity" />
         <activity android:name="rsoni.Activity.SellerActivity" />
         <activity android:name="rsoni.Activity.ContactUsActivity" />
-        <activity android:name="rsoni.Activity.AboutUsActivity"></activity>
+        <activity android:name="rsoni.Activity.AboutUsActivity" />
+        <activity android:name="rsoni.Activity.FindActivity" />
     </application>
 
 </manifest>

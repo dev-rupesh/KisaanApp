@@ -26,16 +26,148 @@
         android:layout_alignParentStart="true"
         android:fillViewport="false">
 
-
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/ll_user_profile"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Name of company"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:padding="10dp"
+                    android:textColor="#fff"
+                    android:background="#9BCD9B"
+                    android:textStyle="bold"
+                    android:id="@+id/tv_name_of_company" />
+                <!--android:drawableLeft="@drawable/ic_store_mall_directory_black_24dp"
+                    android:drawablePadding="10dp"-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:text="Name : " />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/tv_name_of_proprietor" />
+                <!--android:drawableLeft="@drawable/ic_perm_identity_black_24dp"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:text="Address : " />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/tv_address" />
+                <!--
+                    android:drawableLeft="@drawable/ic_location_on_black_24dp"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/tv_district" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/tv_pincode" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:text="Contact : " />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/tv_mobile" />
+                <!--
+                    android:drawableLeft="@drawable/ic_call_black_24dp"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:text="Contact : " />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/tv_email" />
+                <!--
+                    android:drawableLeft="@drawable/ic_mail_outline_black_24dp"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:text="Mandi : " />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/tv_market" />
+                <!--
+                    android:drawableLeft="@drawable/ic_local_grocery_store_black_24dp"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"-->
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Edit Profile"
+                    android:id="@+id/btn_edit_profile" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_user_profile_edit"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -205,13 +337,25 @@
             </LinearLayout>
 
 
-            <Button
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Update Profile"
-                android:id="@+id/btn_update_profile" />
+                android:orientation="horizontal">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Update Profile"
+                    android:id="@+id/btn_update_profile" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Cancel"
+                    android:id="@+id/btn_cancel_update_profile" />
+        </LinearLayout>
 
         </LinearLayout>
+
     </FrameLayout>
     </ScrollView>
 
