@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity
         user_mobile = (TextView) findViewById(R.id.user_mobile);
         user_mobile.setText(App.appUser.username);
         if(App.appUser.userProfile!=null){
-            user_name.setText(App.appUser.userProfile.fname);
+            user_name.setText(App.appUser.userProfile.company_name);
         }
 
         return true;

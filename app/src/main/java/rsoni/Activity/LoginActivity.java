@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //String email = mMobileView.getText().toString();
         //String password = mPasswordView.getText().toString();
 
-        appUser.username = mMobileView.getText().toString();
+        appUser.mobile = mMobileView.getText().toString();
         appUser.password = mPasswordView.getText().toString();
 
         boolean cancel = false;
@@ -220,8 +220,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if(dataResult.Status){
                 App.saveAppUser((AppUser) dataResult.Data);
                 App.setAppRegisterd(context);
+                Intent nextIntent = null;
+                if(App.appUser.userProfile==null){
+                    nextIntent = new Intent(context, ProfileActivity.class);
+                    nextIntent.putExtra("from","start");
+                }else{
+                    nextIntent = new Intent(context, MainActivity.class);
+                }
                 Intent mainIntent = new Intent(LoginActivity.this,MainActivity.class);
-                startActivity(mainIntent);
+                startActivity(nextIntent);
                 finish();
             }else{
                 Toast.makeText(context,"Wrong Password",Toast.LENGTH_LONG).show();

@@ -1,13 +1,16 @@
 package rsoni.Activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -65,11 +68,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private ArrayAdapter<District> districtArrayAdapter;
     private ArrayAdapter<Market> marketArrayAdapter;
     private ArrayAdapter<UserSubCategory> userSubCategoryArrayAdapter;
+    private View mProgressView;
+    private View mProfileFormView;
 
 
     // Activity reference
     private AppUser appUser;
     private UserProfile userProfile = new UserProfile();
+    private String from;
     private Context context;
 
     @Override
@@ -80,10 +86,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         getSupportActionBar().setLogo(R.mipmap.ic_launcher);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         context = this;
+        from = getIntent().getStringExtra("from");
         initView();
     }
 
     private void initView(){
+        mProgressView = findViewById(R.id.profile_progress);
+        mProfileFormView = findViewById(R.id.profile_form);
         et_fname = (EditText)findViewById(R.id.et_fname);
         et_lname = (EditText)findViewById(R.id.et_lname);
         spStates = (Spinner)findViewById(R.id.sp_states);
@@ -115,19 +124,19 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         et_pincode.setError(null);
 
 
-        userProfile.fname = et_fname.getText().toString();
-        userProfile.lname = et_lname.getText().toString();
+        userProfile.company_name = et_fname.getText().toString();
+        userProfile.owner_name = et_lname.getText().toString();
 
-        userProfile.stateid = ((State)spStates.getSelectedItem()).state_id;
-        userProfile.statename = ((State)spStates.getSelectedItem()).state_name;
+        userProfile.state_id = ((State)spStates.getSelectedItem()).state_id;
+        userProfile.state_name = ((State)spStates.getSelectedItem()).state_name;
 
-        userProfile.districtid = ((District)spDistricts.getSelectedItem()).district_id;
-        userProfile.districtname = ((District)spDistricts.getSelectedItem()).district_name;
+        userProfile.district_id = ((District)spDistricts.getSelectedItem()).district_id;
+        userProfile.district_name = ((District)spDistricts.getSelectedItem()).district_name;
 
-        userProfile.marketid = ((Market)spMarkets.getSelectedItem()).mandi_id;
-        userProfile.marketname = ((Market)spMarkets.getSelectedItem()).mandi_name;
+        userProfile.market_id = ((Market)spMarkets.getSelectedItem()).mandi_id;
+        userProfile.market_name = ((Market)spMarkets.getSelectedItem()).mandi_name;
 
-        userProfile.usersubcatid = ((UserSubCategory)spUserSubCategory.getSelectedItem()).usersubcat_id;
+        userProfile.usersubcat_id = ((UserSubCategory)spUserSubCategory.getSelectedItem()).usersubcat_id;
         userProfile.address = et_address.getText().toString();
         String pincode = et_pincode.getText().toString();
 
@@ -135,14 +144,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a empty fname.
-        if (TextUtils.isEmpty(userProfile.fname)) {
+        // Check for a empty company_name.
+        if (TextUtils.isEmpty(userProfile.company_name)) {
             et_fname.setError(getString(R.string.error_invalid_password));
             focusView = et_fname;
             cancel = true;
         }
         // Check for a valid password, if the user entered one.
-        if (TextUtils.isEmpty(userProfile.lname)) {
+        if (TextUtils.isEmpty(userProfile.owner_name)) {
             et_lname.setError(getString(R.string.error_invalid_password));
             focusView = et_lname;
             cancel = true;
@@ -182,6 +191,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             App.appUser.userProfile.copy(userProfile);
             App.saveUserProfile();
             App.appUser.userProfile.print();
+            showProgress(true);
+            new UserProfileTask(App.appUser.userProfile).execute((Void) null);
+
         }
     }
 
@@ -295,7 +307,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            dataResult = App.networkService.UserAuth(Task.mobile_login,appUser);
+            dataResult = App.networkService.Profile(Task.update_profile,userProfile);
 
             // TODO: register the new account here.
             return true;
@@ -306,17 +318,23 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             mUserProfileTask = null;
             //showProgress(false);
 
-            if(dataResult.Status){
+            Toast.makeText(context,"Profile has been updated successfully.",Toast.LENGTH_LONG).show();
+            if(from!=null && from.equalsIgnoreCase("start")){
+                startActivity(new Intent(context, MainActivity.class));
+                finish();
+            }
+
+            /*if(dataResult.Status){
 
             }else{
                 Toast.makeText(context,"Wrong Password",Toast.LENGTH_LONG).show();
-            }
+            }*/
         }
 
         @Override
         protected void onCancelled() {
             mUserProfileTask = null;
-            //showProgress(false);
+            showProgress(false);
         }
     }
 
@@ -324,7 +342,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         int position = 0;
         switch (mode){
             case "state":
-                if(App.appUser.userProfile!=null && App.appUser.userProfile.stateid!=-1){
+                if(App.appUser.userProfile!=null && App.appUser.userProfile.state_id !=-1){
                     for(State state : states){
                         if(state.state_id == id){
                             spStates.setSelection(position);
@@ -334,7 +352,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 break;
             case "district":
-                if(App.appUser.userProfile!=null && App.appUser.userProfile.districtid!=-1){
+                if(App.appUser.userProfile!=null && App.appUser.userProfile.district_id !=-1){
                     for(District district : districtList){
                         if(district.district_id == id){
                             spDistricts.setSelection(position);
@@ -345,7 +363,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 break;
             case "market":
-                if(App.appUser.userProfile!=null && App.appUser.userProfile.marketid!=-1){
+                if(App.appUser.userProfile!=null && App.appUser.userProfile.market_id !=-1){
                     for(Market market : markets){
                         if(market.mandi_id == id){
                             spMarkets.setSelection(position);
@@ -356,7 +374,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 break;
             case "usersubcat":
-                if(App.appUser.userProfile!=null && App.appUser.userProfile.usersubcatid!=-1){
+                if(App.appUser.userProfile!=null && App.appUser.userProfile.usersubcat_id !=-1){
                     for(UserSubCategory userSubCategory : userSubCategories){
                         if(userSubCategory.usersubcat_id == id){
                             spUserSubCategory.setSelection(position);
@@ -367,6 +385,39 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 break;
 
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            mProfileFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mProfileFormView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProfileFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProfileFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 

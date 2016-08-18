@@ -10,27 +10,31 @@ public class UserProfile {
 
     public int id = 0;
     public String mobile = "";
-    public String fname = "";
-    public String lname = "";
-    public int stateid = -1;
-    public String statename = "";
-    public int districtid = -1;
-    public String districtname = "";
-    public int marketid = -1;
-    public String marketname = "";
-    public int usersubcatid = -1;
+    public String company_name = "";
+    public String owner_name = "";
+    public int state_id = -1;
+    public String state_name = "";
+    public int district_id = -1;
+    public String district_name = "";
+    public int market_id = -1;
+    public String market_name = "";
+    public int usersubcat_id = -1;
     public String address = "";
     public int pincode = 0;
 
     public static UserProfile getUserProfileByJsonObject(JSONObject json_userProfile){
         UserProfile userProfile = new UserProfile();
         userProfile.id = json_userProfile.optInt("id");
-        userProfile.fname = json_userProfile.optString("fname");
-        userProfile.lname = json_userProfile.optString("lname");
-        userProfile.stateid = json_userProfile.optInt("districtid");
-        userProfile.districtid = json_userProfile.optInt("districtid");
-        userProfile.marketid =  json_userProfile.optInt("marketid");
-        userProfile.usersubcatid =  json_userProfile.optInt("usersubcatid");
+        userProfile.mobile = json_userProfile.optString("user_name");
+        userProfile.company_name = json_userProfile.optString("company_name");
+        userProfile.owner_name = json_userProfile.optString("owner_name");
+        userProfile.state_id = json_userProfile.optInt("state_id");
+        userProfile.state_name = json_userProfile.optString("state_name");
+        userProfile.district_id = json_userProfile.optInt("district_id");
+        userProfile.district_name = json_userProfile.optString("district_name");
+        userProfile.market_id =  json_userProfile.optInt("market_id");
+        userProfile.market_name = json_userProfile.optString("market_name");
+        userProfile.usersubcat_id =  json_userProfile.optInt("usersubcat_id");
         userProfile.address = json_userProfile.optString("address");
         userProfile.pincode =  json_userProfile.optInt("pincode");
         return userProfile;
@@ -38,27 +42,27 @@ public class UserProfile {
 
     public void print(){
         System.out.println("user_id : "+id);
-        System.out.println("fname : "+fname);
-        System.out.println("lname : "+lname);
-        System.out.println("districtid : "+districtid);
-        System.out.println("marketid : "+marketid);
-        System.out.println("usersubcat : "+usersubcatid);
+        System.out.println("company_name : "+ company_name);
+        System.out.println("owner_name : "+ owner_name);
+        System.out.println("district_id : "+ district_id);
+        System.out.println("market_id : "+ market_id);
+        System.out.println("usersubcat : "+ usersubcat_id);
         System.out.println("address : "+address);
         System.out.println("pincode : "+pincode);
     }
 
     public void copy(UserProfile userProfile){
 
-        this.fname = userProfile.fname;
-        this.lname = userProfile.lname;
-        this.stateid = userProfile.stateid;
-        this.statename = userProfile.statename;
-        this.districtid = userProfile.districtid;
-        this.districtname = userProfile.districtname;
-        this.marketid = userProfile.marketid;
-        this.marketname = userProfile.marketname;
+        this.company_name = userProfile.company_name;
+        this.owner_name = userProfile.owner_name;
+        this.state_id = userProfile.state_id;
+        this.state_name = userProfile.state_name;
+        this.district_id = userProfile.district_id;
+        this.district_name = userProfile.district_name;
+        this.market_id = userProfile.market_id;
+        this.market_name = userProfile.market_name;
         this.address = userProfile.address;
         this.pincode = userProfile.pincode;
-        this.usersubcatid = userProfile.usersubcatid;
+        this.usersubcat_id = userProfile.usersubcat_id;
     }
 }

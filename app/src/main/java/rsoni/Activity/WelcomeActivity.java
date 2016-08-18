@@ -36,7 +36,12 @@ public class WelcomeActivity extends AppCompatActivity {
                 Intent nextIntent = null;
                 /* Create an Intent that will start the Menu-Activity. */
                 if(App.isAppRegistered(getApplicationContext())) {
-                    nextIntent = new Intent(WelcomeActivity.this, MainActivity.class);
+                    if(App.appUser.userProfile==null){
+                        nextIntent = new Intent(WelcomeActivity.this, ProfileActivity.class);
+                        nextIntent.putExtra("from","start");
+                    }else{
+                        nextIntent = new Intent(WelcomeActivity.this, MainActivity.class);
+                    }
                 }else{
                     nextIntent = new Intent(WelcomeActivity.this, LoginActivity.class);
                 }

@@ -94,7 +94,7 @@ public class DataParser {
 		}
 		return jsonResponse;
 	}
-	public DataResult Search(String json, Task mode) {
+	/*public DataResult Search(String json, Task mode) {
 		JSONObject response = null;
 		DataResult result = new DataResult();
 		response = StartForSuccessBoolean(json, result);
@@ -129,11 +129,11 @@ public class DataParser {
 			}
 		}
 		return result;
-	}
+	}*/
 	
 	
 	
-	public DataResult SearchJson(String json, Task mode) {
+	/*public DataResult SearchJson(String json, Task mode) {
 		JSONObject response = null;
 		DataResult result = new DataResult();
 		if(mode == Task.cuisines_search_json || mode == Task.cuisines_search){
@@ -179,50 +179,9 @@ public class DataParser {
 			}
 		}
 		return result;
-	}
+	}*/
 
-	public DataResult Restaurant(String json, Task mode) {
-		JSONObject response = null;
-		DataResult result = new DataResult();
-		response = StartForSuccessBoolean(json, result);
-		if (result.Status) {
-			try {
-				
-				if (mode == Task.restaurant_click ) {
-					result.Data = Category.getDealsFromJsonAray(response.getJSONArray("categories"))	;
-				}else if (mode == Task.restaurant_rate_get ) {
-					//result.Data = com.pi.entity.Team.getTeamByJsonObject(response.getJSONObject("data"));
-				}else if (mode == Task.restaurant_rate_post ) {
-					boolean is_rate_done = response.optBoolean("is_rate_done");
-//					if(is_rate_done){
-//						result.Data = Rating.getRatingByJsonObject(response.getJSONObject("rating"));
-//					}else{
-//						result.Status = false;
-//						result.msg = response.optString("error");
-//					}
-				}else if (mode == Task.restaurant_review_get ) {
-					System.out.println("in restaurant_review_get parsing mode");
-					//result.Data = Review.getReviewsFromJsonAray(response.optJSONArray("reviews"));
-				}else if (mode == Task.restaurant_review_post ) {
-					boolean is_review_done = response.optBoolean("is_review_done");
-					if(is_review_done){
-						//result.Data = Review.getReviewsFromJsonAray(response.optJSONArray("reviews"));
-					}else{
-						//result.Status = false;
-						//result.msg = response.optString("error");
-					}
-				}
-				
-			} catch (JSONException e) {
-				result.Status = false;
-				result.msg = "" + e;
-				e.printStackTrace();
-			}
-		}
-		//System.out.println("size of list : " + result.Data);
-		return result;
-	}
-	
+
 	
 	
 	public DataResult UserAuth(String json, Task mode) {
@@ -251,10 +210,9 @@ public class DataParser {
 		response = Start(json, result);
 		if (result.Status ) {
 			try {
-				if (mode == Task.profile ) {					
+				if (mode == Task.get_profile || mode == Task.update_profile ) {
 					result.Data = response.getJSONObject("data");
-				} 
-
+				}
 			} catch (JSONException e) {
 				result.Status = false;
 				result.msg = "" + e;

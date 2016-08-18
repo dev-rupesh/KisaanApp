@@ -68,8 +68,6 @@ public class App extends Application{
         String json = mPrefs.getString("user_profile",null);
         if(json!=null){
             appUser.userProfile = gson.fromJson(json,UserProfile.class);
-        }else{
-            appUser.userProfile = null;
         }
     }
 

@@ -2,10 +2,17 @@ package rsoni.Activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import rsoni.kisaanApp.App;
 import rsoni.kisaanApp.R;
 
 public class BuyerActivity extends AppCompatActivity {
+
+    TextView tv_name_of_company,tv_name_of_proprietor,tv_address,tv_district,tv_mobile;
+    LinearLayout ll_user_profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,5 +21,35 @@ public class BuyerActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.mipmap.ic_launcher);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
+
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        initView();
+        setProfileData();
+    }
+
+    private void initView() {
+        ll_user_profile = (LinearLayout) findViewById(R.id.ll_user_profile);
+        tv_name_of_company = (TextView) findViewById(R.id.tv_name_of_company);
+        tv_name_of_proprietor = (TextView) findViewById(R.id.tv_name_of_proprietor);
+        tv_address = (TextView) findViewById(R.id.tv_address);
+        tv_district = (TextView) findViewById(R.id.tv_district);
+        tv_mobile = (TextView) findViewById(R.id.tv_mobile);
+    }
+
+    private void setProfileData(){
+
+        if(App.appUser.userProfile!=null) {
+            ll_user_profile.setVisibility(View.VISIBLE);
+            tv_name_of_company.setText(App.appUser.userProfile.company_name);
+            tv_name_of_proprietor.setText(App.appUser.userProfile.owner_name);
+            tv_address.setText(App.appUser.userProfile.address);
+            tv_district.setText("District : "+App.appUser.userProfile.district_name);
+            tv_mobile.setText("Contact : "+App.appUser.username);
+        }
+
     }
 }

@@ -247,8 +247,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
             if(dataResult.Status){
                 App.saveAppUser((AppUser) dataResult.Data);
                 App.setAppRegisterd(context);
-
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
