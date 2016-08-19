@@ -100,7 +100,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
         etEmailView.setError(null);
         etPasswordView.setError(null);
 
-        appUser.username = etMobileView.getText().toString();
+        appUser.mobile = etMobileView.getText().toString();
         appUser.email = etEmailView.getText().toString();
         appUser.password = etPasswordView.getText().toString();
         appUser.userCategory = spCategoryView.getSelectedItemPosition();
@@ -109,7 +109,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
         View focusView = null;
 
         // Check for Empty Field.
-        if (TextUtils.isEmpty(appUser.username)) {
+        if (TextUtils.isEmpty(appUser.mobile)) {
             etMobileView.setError(getString(R.string.error_field_required));
             focusView = etMobileView;
             cancel = true;

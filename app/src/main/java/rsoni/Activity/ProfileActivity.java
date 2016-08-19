@@ -57,7 +57,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private LinearLayout ll_user_profile_edit;
 
     // View only Mode
-    private TextView tv_name_of_company,tv_name_of_proprietor,tv_address,tv_district,tv_pincode,tv_market,tv_mobile;
+    private TextView tv_name_of_company,tv_name_of_proprietor,tv_address,tv_district,tv_pincode,tv_market,tv_mobile,tv_email;
     private LinearLayout ll_user_profile;
     private Button btn_edit_profile;
 
@@ -109,6 +109,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         tv_pincode = (TextView) findViewById(R.id.tv_pincode);
         tv_market = (TextView) findViewById(R.id.tv_market);
         tv_mobile = (TextView) findViewById(R.id.tv_mobile);
+        tv_email = (TextView) findViewById(R.id.tv_email);
         btn_edit_profile = (Button) findViewById(R.id.btn_edit_profile);
         btn_edit_profile.setOnClickListener(this);
 
@@ -388,6 +389,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 tv_district.setText(""+App.appUser.userProfile.state_name+" - "+App.appUser.userProfile.district_name);
                 tv_pincode.setText("Pin Code - "+App.appUser.userProfile.pincode);
                 tv_mobile.setText(App.appUser.mobile);
+                tv_email.setText(App.appUser.email);
                 tv_market.setText(App.appUser.userProfile.market_name);
             }
         }

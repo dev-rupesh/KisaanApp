@@ -13,7 +13,7 @@ import java.util.List;
 import rsoni.Adapter.SellListAdaptor;
 import rsoni.kisaanApp.App;
 import rsoni.kisaanApp.R;
-import rsoni.modal.SellNote;
+import rsoni.modal.SaleNode;
 
 public class SellerActivity extends AppCompatActivity {
 
@@ -21,7 +21,7 @@ public class SellerActivity extends AppCompatActivity {
     LinearLayout ll_user_profile;
     ListView lv_sells;
     SellListAdaptor listAdaptor;
-    List<SellNote> sellNotes;
+    List<SaleNode> sellNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

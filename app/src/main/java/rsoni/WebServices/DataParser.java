@@ -203,6 +203,71 @@ public class DataParser {
 		return result;
 	}
 
+	public DataResult SaleNode(String json, Task mode) {
+		JSONObject response = null;
+		DataResult result = new DataResult();
+		response = Start(json, result);
+		if (result.Status ) {
+			try {
+				if ( mode == Task.add_sale_node || mode == Task.add_sale_node ) {
+					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
+				}else if ( mode == Task.list_sale_node) {
+					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
+				}else if ( mode == Task.delete_sale_node || mode == Task.add_sale_node ) {
+					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
+				}
+			} catch (JSONException e) {
+				result.Status = false;
+				result.msg = "" + e;
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	public DataResult BuyNode(String json, Task mode) {
+		JSONObject response = null;
+		DataResult result = new DataResult();
+		response = Start(json, result);
+		if (result.Status ) {
+			try {
+				if ( mode == Task.add_buy_node || mode == Task.add_buy_node ) {
+					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
+				}else if ( mode == Task.list_buy_node) {
+					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
+				}else if ( mode == Task.delete_buy_node) {
+					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
+				}
+			} catch (JSONException e) {
+				result.Status = false;
+				result.msg = "" + e;
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+
+	public DataResult News(String json, Task mode) {
+		JSONObject response = null;
+		DataResult result = new DataResult();
+		response = Start(json, result);
+		if (result.Status ) {
+			try {
+				if ( mode == Task.add_news || mode==Task.get_news_details) {
+					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
+				}else if ( mode == Task.news_list_sort) {
+					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
+				}else if ( mode == Task.delete_news) {
+					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
+				}
+			} catch (JSONException e) {
+				result.Status = false;
+				result.msg = "" + e;
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+
 	
 	public DataResult Profile(String json, Task mode) {
 		JSONObject response = null;

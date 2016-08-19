@@ -11,11 +11,9 @@ import android.widget.TextView;
 import java.util.List;
 
 import rsoni.Adapter.NewsListAdaptor;
-import rsoni.Adapter.SellListAdaptor;
 import rsoni.kisaanApp.App;
 import rsoni.kisaanApp.R;
 import rsoni.modal.NewsItem;
-import rsoni.modal.SellNote;
 
 public class NewsActivity extends AppCompatActivity {
 

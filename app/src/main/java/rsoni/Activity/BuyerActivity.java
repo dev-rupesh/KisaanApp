@@ -2,7 +2,6 @@ package rsoni.Activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.view.menu.ListMenuItemView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -14,8 +13,7 @@ import java.util.List;
 import rsoni.Adapter.BuyListAdaptor;
 import rsoni.kisaanApp.App;
 import rsoni.kisaanApp.R;
-import rsoni.modal.BuyNote;
-import rsoni.modal.SellNote;
+import rsoni.modal.BuyNode;
 
 public class BuyerActivity extends AppCompatActivity {
 
@@ -23,7 +21,7 @@ public class BuyerActivity extends AppCompatActivity {
     LinearLayout ll_user_profile;
     ListView lv_buys;
     BuyListAdaptor listAdaptor;
-    List<BuyNote> buyNotes;
+    List<BuyNode> buyNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
