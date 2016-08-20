@@ -1,5 +1,7 @@
 package rsoni.modal;
 
+import android.database.Cursor;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -44,6 +46,23 @@ public class NewsItem {
 		return newsItem;
 		
 	}
+
+	public static NewsItem getNewsItem(Cursor cursor){
+
+		NewsItem newsItem = new NewsItem(cursor.getInt(cursor.getColumnIndex("id")),
+				cursor.getString(cursor.getColumnIndex("author")),
+				cursor.getString(cursor.getColumnIndex("link")),
+				cursor.getString(cursor.getColumnIndex("pub_date")),
+				cursor.getString(cursor.getColumnIndex("title")),
+				cursor.getString(cursor.getColumnIndex("description")),
+				cursor.getInt(cursor.getColumnIndex("news_id")),
+				cursor.getString(cursor.getColumnIndex("thumburl")));
+
+		return newsItem;
+
+	}
+
+
 	
 	public static ArrayList<NewsItem> getNewsItems(JSONArray jsson_array_news) {
 		ArrayList<NewsItem> newsItems = new ArrayList<NewsItem>();

@@ -1,5 +1,7 @@
 package rsoni.Activity;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -7,21 +9,28 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
+import rsoni.Adapter.BuyListAdaptor;
 import rsoni.Adapter.SellListAdaptor;
+import rsoni.Utils.DataResult;
+import rsoni.Utils.Task;
 import rsoni.kisaanApp.App;
 import rsoni.kisaanApp.R;
+import rsoni.modal.BuyNode;
 import rsoni.modal.SaleNode;
 
-public class SellerActivity extends AppCompatActivity {
+public class SalerActivity extends AppCompatActivity {
 
     TextView tv_name_of_company,tv_name_of_proprietor,tv_address,tv_district,tv_mobile;
     LinearLayout ll_user_profile;
     ListView lv_sells;
     SellListAdaptor listAdaptor;
-    List<SaleNode> sellNotes;
+    List<SaleNode> saleNodes;
+    BackgroundTask backgroundTask;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +40,7 @@ public class SellerActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.mipmap.ic_launcher);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        this.context = this;
     }
 
 
@@ -72,4 +82,48 @@ public class SellerActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    public class BackgroundTask extends AsyncTask<Void, Void, Boolean> {
+
+        DataResult dataResult;
+        Task task;
+
+        public  BackgroundTask(Task task){
+            this.task = task;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            switch(task){
+                case news_list_sort:
+                    dataResult = new DataResult(true,"",App.mydb.getAllNews());
+                    break;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            backgroundTask = null;
+            //showProgress(false);
+            switch(task) {
+                case news_list_sort:
+                    if (dataResult.Status) {
+                        saleNodes = (List<SaleNode>) dataResult.Data;
+                        listAdaptor =  new SellListAdaptor(context,saleNodes);
+                        lv_sells.setAdapter(listAdaptor);
+                    } else {
+                        Toast.makeText(context, "Wrong Password", Toast.LENGTH_LONG).show();
+                    }
+                    break;
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            backgroundTask = null;
+            //showProgress(false);
+        }
+    }
+
 }

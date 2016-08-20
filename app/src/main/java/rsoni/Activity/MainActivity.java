@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_buyer) {
             startActivity(new Intent(this,BuyerActivity.class));
         } else if (id == R.id.nav_seller) {
-            startActivity(new Intent(this,SellerActivity.class));
+            startActivity(new Intent(this,SalerActivity.class));
         } else if (id == R.id.nav_profile) {
             startActivity(new Intent(this,ProfileActivity.class));
         } else if (id == R.id.nav_sign_out) {

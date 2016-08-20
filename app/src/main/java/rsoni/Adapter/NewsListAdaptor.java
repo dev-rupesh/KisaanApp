@@ -1,7 +1,7 @@
 package rsoni.Adapter;
 
 import java.util.ArrayList;
-
+import java.util.List;
 
 
 import android.app.Activity;
@@ -20,21 +20,18 @@ import rsoni.modal.NewsItem;
 public class NewsListAdaptor extends BaseAdapter {
 
 	//ImageLoader imageLoader;
-	ArrayList<NewsItem> newsItems;
+	List<NewsItem> newsItems;
 	NewsItem newsItem;
-	Activity activity;
+	Context context;
 	LayoutInflater layoutInflater;
 
 	// SimpleDateFormat formatter = new SimpleDateFormat("yyyy-dd-mm");
 
-	public NewsListAdaptor(Activity activity, ArrayList<NewsItem> newsItems) {
-
-		this.activity = activity;
+	public NewsListAdaptor(Context context, List<NewsItem> newsItems) {
+		this.context = context;
 		this.newsItems = newsItems;
 		//imageLoader = new ImageLoader(activity);
-		layoutInflater = (LayoutInflater) activity
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		
+		layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override

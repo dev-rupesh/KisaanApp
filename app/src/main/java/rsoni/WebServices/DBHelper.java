@@ -1,10 +1,10 @@
-package rsoni.Utils;
+package rsoni.WebServices;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-
+import java.util.List;
 
 
 import android.content.ContentValues;
@@ -16,6 +16,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
+
+import rsoni.modal.NewsItem;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -73,6 +75,19 @@ public class DBHelper extends SQLiteOpenHelper {
 		int id = res.getInt(0);
 		db.close();
 		return id;
+	}
+
+	public List<NewsItem> getAllNews() {
+		List<NewsItem> newsItems = new ArrayList<>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery("select * from contacts", null);
+		if (cursor .moveToFirst()) {
+			while (cursor.isAfterLast() == false) {
+				newsItems.add(NewsItem.getNewsItem(cursor));
+				cursor.moveToNext();
+			}
+		}
+		return newsItems;
 	}
 
 	public boolean insertContact(String name, String phone, String email,

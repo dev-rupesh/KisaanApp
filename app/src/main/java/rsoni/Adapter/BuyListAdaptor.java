@@ -13,41 +13,41 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import rsoni.kisaanApp.R;
+import rsoni.modal.BuyNode;
 import rsoni.modal.NewsItem;
 
 
 public class BuyListAdaptor extends BaseAdapter {
 
 	//ImageLoader imageLoader;
-	ArrayList<NewsItem> newsItems;
-	NewsItem newsItem;
-	Activity activity;
+	List<BuyNode> buyNodes;
+	BuyNode buyNode;
+	Context context;
 	LayoutInflater layoutInflater;
 
 	// SimpleDateFormat formatter = new SimpleDateFormat("yyyy-dd-mm");
 
-	public BuyListAdaptor(Activity activity, ArrayList<NewsItem> newsItems) {
+	public BuyListAdaptor(Context context, List<BuyNode> buyNodes) {
 
-		this.activity = activity;
-		this.newsItems = newsItems;
+		this.context = context;
+		this.buyNodes = buyNodes;
 		//imageLoader = new ImageLoader(activity);
-		layoutInflater = (LayoutInflater) activity
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		
+		layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return newsItems.size();
+		return buyNodes.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
 		// TODO Auto-generated method stub
-		return newsItems.get(position);
+		return buyNodes.get(position);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class BuyListAdaptor extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		newsItem = newsItems.get(position);
+		buyNode = buyNodes.get(position);
 
 		viewHolder holder;
 
@@ -70,7 +70,7 @@ public class BuyListAdaptor extends BaseAdapter {
 		} else {
 			holder = (viewHolder) convertView.getTag();
 		}
-		holder.setData(newsItem);
+		holder.setData(buyNode);
 		return convertView;
 	}
 
@@ -89,9 +89,9 @@ public class BuyListAdaptor extends BaseAdapter {
 			// convertView.findViewById(R.id.iv_news_thumb);
 		}
 
-		void setData(NewsItem newsItem) {
-			tv_historytitle.setText(newsItem.title);
-			tv_historydesc.setText(newsItem.description);
+		void setData(BuyNode buyNode) {
+			tv_historytitle.setText(buyNode.buy_note);
+			tv_historydesc.setText(buyNode.buy_note);
 			// tv_new_date.setText(newsItem.pubDate);
 			// try {
 			// tv_new_date.setText(App.MonthDateYearTime.format(formatter.parse(newsItem.pubDate)));

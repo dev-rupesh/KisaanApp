@@ -229,6 +229,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
 
         AppUser appUser ;
         DataResult dataResult;
+        Task task;
         UserRegisterTask(AppUser appUser) {
             this.appUser = appUser;
         }
