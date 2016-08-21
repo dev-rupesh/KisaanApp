@@ -21,6 +21,7 @@ public class UserProfile {
     public int usersubcat_id = -1;
     public String address = "";
     public int pincode = 0;
+    public String business_id = "";
 
     public static UserProfile getUserProfileByJsonObject(JSONObject json_userProfile){
         UserProfile userProfile = new UserProfile();
@@ -37,6 +38,7 @@ public class UserProfile {
         userProfile.usersubcat_id =  json_userProfile.optInt("usersubcat_id");
         userProfile.address = json_userProfile.optString("address");
         userProfile.pincode =  json_userProfile.optInt("pincode");
+        userProfile.business_id =  json_userProfile.optString("business_id");
         return userProfile;
     }
 
@@ -64,5 +66,6 @@ public class UserProfile {
         this.address = userProfile.address;
         this.pincode = userProfile.pincode;
         this.usersubcat_id = userProfile.usersubcat_id;
+        this.business_id = userProfile.business_id;
     }
 }

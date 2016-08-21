@@ -22,6 +22,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +34,14 @@ import rsoni.Utils.Task;
 import rsoni.kisaanApp.App;
 import rsoni.kisaanApp.R;
 import rsoni.modal.AppUser;
+import rsoni.modal.Business;
 import rsoni.modal.District;
 import rsoni.modal.Market;
 import rsoni.modal.State;
 import rsoni.modal.UserProfile;
 import rsoni.modal.UserSubCategory;
 
-public class ProfileActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemSelectedListener {
+public class ProfileActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemSelectedListener,MultiSelectionSpinner.OnMultipleItemsSelectedListener{
 
     private UserProfileTask mUserProfileTask = null;
 
@@ -48,16 +51,17 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private EditText et_lname;
     private Spinner spStates;
     private Spinner spDistricts;
-    private Spinner spUserSubCategory;
+    //private Spinner spUserSubCategory;
     private Spinner spMarkets;
     private EditText et_address;
     private EditText et_pincode;
     private Button btn_update_profile,btn_cancel_update_profile;
     private TextView tv_user_sub_cat_label;
     private LinearLayout ll_user_profile_edit;
+    private MultiSelectionSpinner multiSelectionSpinner;
 
     // View only Mode
-    private TextView tv_name_of_company,tv_name_of_proprietor,tv_address,tv_district,tv_pincode,tv_market,tv_mobile,tv_email;
+    private TextView tv_name_of_company,tv_name_of_proprietor,tv_address,tv_district,tv_pincode,tv_market,tv_mobile,tv_email,tv_business;
     private LinearLayout ll_user_profile;
     private Button btn_edit_profile;
 
@@ -67,14 +71,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private List<UserSubCategory> userSubCategories;
     private List<Market> markets;
     private List<District> districtList;
+
     private Map<Integer,List<District>> districtsMap = null;
     private Map<String,List<Market>> marketMap = null;
-    private Map<Integer,List<UserSubCategory>> userSubCategoryMap = null;
+    //private Map<Integer,List<UserSubCategory>> userSubCategoryMap = null;
+
 
     private ArrayAdapter<State> stateArrayAdapter;
     private ArrayAdapter<District> districtArrayAdapter;
     private ArrayAdapter<Market> marketArrayAdapter;
-    private ArrayAdapter<UserSubCategory> userSubCategoryArrayAdapter;
+    //private ArrayAdapter<UserSubCategory> userSubCategoryArrayAdapter;
     private View mProgressView;
     private View mProfileFormView;
 
@@ -110,6 +116,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         tv_market = (TextView) findViewById(R.id.tv_market);
         tv_mobile = (TextView) findViewById(R.id.tv_mobile);
         tv_email = (TextView) findViewById(R.id.tv_email);
+        tv_business = (TextView) findViewById(R.id.tv_business);
         btn_edit_profile = (Button) findViewById(R.id.btn_edit_profile);
         btn_edit_profile.setOnClickListener(this);
 
@@ -122,7 +129,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         spDistricts = (Spinner)findViewById(R.id.sp_districts);
 
         spMarkets = (Spinner)findViewById(R.id.sp_markets);
-        spUserSubCategory = (Spinner)findViewById(R.id.spUserSubCategory);
+        //spUserSubCategory = (Spinner)findViewById(R.id.spUserSubCategory);
+        multiSelectionSpinner = (MultiSelectionSpinner) findViewById(R.id.mySpinner);
 
         et_address = (EditText)findViewById(R.id.et_address);
         et_pincode = (EditText)findViewById(R.id.et_pincode);
@@ -138,8 +146,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             edit_mode = false;
         }
     }
-
-
 
     private void attemptProfileUpdate() {
         if (mUserProfileTask != null) {
@@ -164,8 +170,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         userProfile.market_id = ((Market)spMarkets.getSelectedItem()).mandi_id;
         userProfile.market_name = ((Market)spMarkets.getSelectedItem()).mandi_name;
 
-        userProfile.usersubcat_id = ((UserSubCategory)spUserSubCategory.getSelectedItem()).usersubcat_id;
+        //userProfile.usersubcat_id = ((UserSubCategory)spUserSubCategory.getSelectedItem()).usersubcat_id;
         userProfile.address = et_address.getText().toString();
+
         String pincode = et_pincode.getText().toString();
 
 
@@ -174,18 +181,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         // Check for a empty company_name.
         if (TextUtils.isEmpty(userProfile.company_name)) {
-            et_fname.setError(getString(R.string.error_invalid_password));
+            et_fname.setError(getString(R.string.error_field_required));
             focusView = et_fname;
             cancel = true;
         }
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(userProfile.owner_name)) {
-            et_lname.setError(getString(R.string.error_invalid_password));
+            et_lname.setError(getString(R.string.error_field_required));
             focusView = et_lname;
             cancel = true;
         }
         if (TextUtils.isEmpty(userProfile.address)) {
-            et_address.setError(getString(R.string.error_invalid_password));
+            et_address.setError(getString(R.string.error_field_required));
             focusView = et_address;
             cancel = true;
         }
@@ -210,6 +217,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             // perform the user login attempt.
             //showProgress(true);
             userProfile.pincode = Integer.parseInt(pincode);
+            userProfile.business_id = App.gson.toJson(multiSelectionSpinner.getSelectedIds());
             //mUserProfileTask = new UserProfileTask(userProfile);
             //mUserProfileTask.execute((Void) null);
 
@@ -303,6 +311,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void setViewMode(){
+
         if(edit_mode){
             ll_user_profile_edit.setVisibility(View.VISIBLE);
             ll_user_profile.setVisibility(View.GONE);
@@ -319,7 +328,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     marketMap = Market.getMarketMap(this);
                     marketMap.put("-1",new ArrayList<Market>());
                 }
-                if(userSubCategories==null){
+                /*if(userSubCategories==null){
                     userSubCategoryMap = UserSubCategory.getUserSubCategoryMap(this);
                     System.out.println("UserCAtegory : "+ App.appUser.userCategory);
                     userSubCategories = userSubCategoryMap.get(App.appUser.userCategory);
@@ -327,7 +336,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         userSubCategories = new ArrayList<UserSubCategory>();
                     }
                     userSubCategories.add(0,new UserSubCategory(true));
-                }
+                }*/
+
+
+
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -337,11 +350,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             spStates.setAdapter(stateArrayAdapter);
             spStates.setOnItemSelectedListener(this);
 
-
-
-            userSubCategoryArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, userSubCategories); //selected item will look like a spinner set from XML
-            userSubCategoryArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spUserSubCategory.setAdapter(userSubCategoryArrayAdapter);
+            //userSubCategoryArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, userSubCategories); //selected item will look like a spinner set from XML
+            //userSubCategoryArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            //spUserSubCategory.setAdapter(userSubCategoryArrayAdapter);
             //spUserSubCategory.setOnItemSelectedListener(this);
             String lbl = "";
             if(App.appUser.userCategory==1)lbl="Commission Agent For";
@@ -353,13 +364,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             tv_user_sub_cat_label.setText(lbl);
             int index = 0;
 
+            multiSelectionSpinner.setItems2(App.businesses);
+
             if(App.appUser.userProfile!=null){
 
                 et_fname.setText(App.appUser.userProfile.company_name);
                 et_lname.setText(App.appUser.userProfile.owner_name);
                 et_address.setText(App.appUser.userProfile.address);
                 et_pincode.setText(""+App.appUser.userProfile.pincode);
-
 
                 for(State state : states){
                     if(state.state_name.equalsIgnoreCase(App.appUser.userProfile.state_name)){
@@ -369,14 +381,24 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     index++;
                 }
                 index = 0;
-                for(UserSubCategory category : userSubCategories){
+                /*for(UserSubCategory category : userSubCategories){
                     if(category.usersubcat_id == App.appUser.userProfile.usersubcat_id){
                         spUserSubCategory.setSelection(index);
                         break;
                     }
                     index++;
+                }*/
+
+                if(App.appUser.userProfile.business_id!=null && !App.appUser.userProfile.business_id.isEmpty()) {
+                    int[] business_ids = App.gson.fromJson(App.appUser.userProfile.business_id, int[].class);
+                    multiSelectionSpinner.setSelection2(business_ids);
+                }else{
+                    multiSelectionSpinner.setSelection2(new int[]{});
                 }
+
             }
+            multiSelectionSpinner.setListener(this);
+
 
         }else{
             ll_user_profile.setVisibility(View.VISIBLE);
@@ -391,6 +413,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 tv_mobile.setText(App.appUser.mobile);
                 tv_email.setText(App.appUser.email);
                 tv_market.setText(App.appUser.userProfile.market_name);
+
+                if(App.appUser.userProfile.business_id!=null && !App.appUser.userProfile.business_id.isEmpty()) {
+                    int[] business_ids = App.gson.fromJson(App.appUser.userProfile.business_id, int[].class);
+
+                    String businesses = "";
+                    for (Integer integer : business_ids) {
+                        businesses += "\n" + App.businessIdMap.get(integer).business;
+                    }
+                    tv_business.setText(businesses.replaceFirst("\n",""));
+                }
             }
         }
     }
@@ -431,6 +463,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }else{
                 Toast.makeText(context,"Wrong Password",Toast.LENGTH_LONG).show();
             }*/
+
+            System.out.println("business_id : "+App.appUser.userProfile.business_id);
 
             mUserProfileTask = null;
             showProgress(false);
@@ -478,7 +512,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     }
                 }
                 break;
-            case "usersubcat":
+            /*case "usersubcat":
                 if(App.appUser.userProfile!=null && App.appUser.userProfile.usersubcat_id !=-1){
                     for(UserSubCategory userSubCategory : userSubCategories){
                         if(userSubCategory.usersubcat_id == id){
@@ -488,7 +522,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         position++;
                     }
                 }
-                break;
+                break;*/
 
         }
     }
@@ -537,5 +571,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    @Override
+    public void selectedIndices(List<Integer> indices) {
 
+    }
+
+    @Override
+    public void selectedStrings(List<String> strings) {
+        Toast.makeText(this, strings.toString(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void selectedIds(List<Integer> ids) {
+        Toast.makeText(this, new Gson().toJson(ids), Toast.LENGTH_LONG).show();
+    }
 }

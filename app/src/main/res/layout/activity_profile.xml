@@ -34,7 +34,8 @@
             android:id="@+id/ll_user_profile"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -69,6 +70,24 @@
                 <!--android:drawableLeft="@drawable/ic_perm_identity_black_24dp"
                     android:gravity="center"
                     android:drawablePadding="10dp"-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:text="Business Type : " />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/tv_business" />
+                <!--
+                    android:drawableLeft="@drawable/ic_location_on_black_24dp"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"-->
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -167,7 +186,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -322,13 +341,18 @@
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
                     android:text=""/>
-                <Spinner
-                    android:id="@+id/spUserSubCategory"
+                <rsoni.Activity.MultiSelectionSpinner
+                    android:id="@+id/mySpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="2dp"
-                    android:entries="@array/user_category"/>
+                    android:layoutMode="opticalBounds"/>
+                <!--<Spinner-->
+                    <!--android:id="@+id/spUserSubCategory"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="4dp"-->
+                    <!--android:layout_marginBottom="2dp"-->
+                    <!--android:entries="@array/user_category"/>-->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"

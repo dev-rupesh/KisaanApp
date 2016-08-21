@@ -17,10 +17,13 @@ import android.view.inputmethod.InputMethodManager;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Map;
 
 import rsoni.WebServices.DBHelper;
 import rsoni.WebServices.NetworkService;
 import rsoni.modal.AppUser;
+import rsoni.modal.Business;
 import rsoni.modal.UserProfile;
 
 /**
@@ -41,6 +44,9 @@ public class App extends Application{
 
     public static AppUser appUser = new AppUser();
 
+    public static Map<Integer,Business> businessIdMap = null;
+    public static List<Business> businesses;
+
     @Override
     public void onCreate() {
 
@@ -49,6 +55,7 @@ public class App extends Application{
         mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         getAppUser();
         getUserProfile();
+        setMasterData();
         super.onCreate();
     }
 
@@ -58,6 +65,15 @@ public class App extends Application{
     }
 
     public static String ServiceUrl = "http://rupeshs.in/justagriagro/api/";
+
+    private void setMasterData(){
+        if(businessIdMap==null){
+            businessIdMap = Business.getBusinessMap(context);
+        }
+        if(businesses==null){
+            businesses = Business.getBusinessList(context);
+        }
+    }
 
     public static void getAppUser() {
         String json = mPrefs.getString("app_user",null);

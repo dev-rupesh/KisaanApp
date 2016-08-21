@@ -141,11 +141,11 @@ public class NetworkService {
 			param.add(new BasicNameValuePair("district_id", ""+saleNode.district_id));
 			param.add(new BasicNameValuePair("market_id", ""+saleNode.market_id));
 			param.add(new BasicNameValuePair("usercat", ""+saleNode.usercat));
-			param.add(new BasicNameValuePair("usersubcat_id", ""+saleNode.usersubcat_id));
 			param.add(new BasicNameValuePair("commodity_cat_id", ""+saleNode.commodity_cat_id));
 			param.add(new BasicNameValuePair("commodity_id", ""+saleNode.commodity_id));
 			param.add(new BasicNameValuePair("date", ""+saleNode.date));
-			param.add(new BasicNameValuePair("buy_note", saleNode.sale_note));
+			param.add(new BasicNameValuePair("sale_note", saleNode.sale_note));
+
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.update_sale_node){
 			url+="sale.php";
@@ -264,6 +264,7 @@ public class NetworkService {
 			param.add(new BasicNameValuePair("market_id", ""+appUser.userProfile.market_id));
 			param.add(new BasicNameValuePair("market_name", appUser.userProfile.market_name));
 			param.add(new BasicNameValuePair("usersubcat_id", ""+appUser.userProfile.usersubcat_id));
+			param.add(new BasicNameValuePair("business_id", ""+appUser.userProfile.business_id));
 			return getResponce(url,Task.post,task,param);
 		}
 		return null;

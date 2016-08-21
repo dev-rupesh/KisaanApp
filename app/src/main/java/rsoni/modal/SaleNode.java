@@ -9,7 +9,7 @@ public class SaleNode {
     public String sale_note;
     public int user_id = 0;
     public int usercat = 0;
-    public int usersubcat_id = 0;
+    public int business_id = 0;
     public int state_id = 0;
     public int district_id = 0;
     public int market_id;

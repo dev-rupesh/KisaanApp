@@ -69,6 +69,7 @@
         <activity android:name="rsoni.Activity.ContactUsActivity" />
         <activity android:name="rsoni.Activity.AboutUsActivity" />
         <activity android:name="rsoni.Activity.FindActivity" />
+        <activity android:name="rsoni.Activity.TestActivity"></activity>
     </application>
 
 </manifest>
