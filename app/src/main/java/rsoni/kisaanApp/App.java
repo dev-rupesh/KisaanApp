@@ -35,6 +35,8 @@ public class App extends Application{
 
     public static Gson gson = new Gson();
 
+    public static SimpleDateFormat dateFormate_DDMMYYY = new SimpleDateFormat("dd MMM yyyy");
+    public static SimpleDateFormat dateFormate_DDMMYYY_Time = new SimpleDateFormat("dd MMM yyyy hh:mm a");
     public static NetworkService networkService = new NetworkService();
     public static String REG_ID = "";
 

@@ -28,13 +28,17 @@
                 android:text="Name of company"
                 android:gravity="center"
                 android:textSize="20sp"
-                android:textColor="#9CCD3B"
+                android:padding="10dp"
+                android:textColor="#fff"
+                android:background="#9BCD9B"
+                android:textStyle="bold"
                 android:id="@+id/tv_name_of_company" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:id="@+id/tv_name_of_proprietor" />
+                android:id="@+id/tv_name_of_proprietor"
+                android:visibility="gone"/>
         </LinearLayout>
         <ListView
             android:id="@+id/lv_sells"

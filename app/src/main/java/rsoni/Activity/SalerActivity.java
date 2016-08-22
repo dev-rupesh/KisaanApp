@@ -130,6 +130,8 @@ public class SalerActivity extends AppCompatActivity implements View.OnClickList
         saleNode.business_id = ((Business)sp_business.getSelectedItem()).business_id;
         saleNode.sale_note = et_sale_note.getText().toString();
 
+
+        toggelAddNodeForm();
         new BackgroundTask(Task.add_sale_node).execute((Void) null);
 
     }
@@ -152,6 +154,7 @@ public class SalerActivity extends AppCompatActivity implements View.OnClickList
         }else if(v == btn_cancel_node){
             toggelAddNodeForm();
         }else if(v == btn_save_node){
+            App.hideSoftKeyBoard(v);
             getSaleNodeAndSave();
         }
     }
@@ -160,6 +163,8 @@ public class SalerActivity extends AppCompatActivity implements View.OnClickList
         if(ll_add_node_form.getVisibility()==View.VISIBLE){
             ll_add_node_form.setVisibility(View.GONE);
         }else{
+            et_sale_note.setText("");
+            sp_business.setSelection(0);
             ll_add_node_form.setVisibility(View.VISIBLE);
         }
     }
