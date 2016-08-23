@@ -8,6 +8,7 @@ import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
 import rsoni.modal.AppUser;
 import rsoni.modal.Category;
+import rsoni.modal.SaleNode;
 
 
 public class DataParser {
@@ -210,9 +211,9 @@ public class DataParser {
 		if (result.Status ) {
 			try {
 				if ( mode == Task.add_sale_node || mode == Task.add_sale_node ) {
-					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
+					result.Data = SaleNode.getSaleNode(response.getJSONObject("data"));
 				}else if ( mode == Task.list_sale_node) {
-					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
+					result.Data = SaleNode.getSaleNodeItems(response.getJSONArray("data"));
 				}else if ( mode == Task.delete_sale_node || mode == Task.add_sale_node ) {
 					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
 				}

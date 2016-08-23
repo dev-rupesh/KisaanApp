@@ -60,7 +60,7 @@ public class SalerActivity extends AppCompatActivity implements View.OnClickList
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         setProfileData();
-        new BackgroundTask(Task.list_buy_node).execute();
+        new BackgroundTask(Task.list_sale_node).execute();
     }
 
     private void initView() {
@@ -172,19 +172,25 @@ public class SalerActivity extends AppCompatActivity implements View.OnClickList
 
         public  BackgroundTask(Task task){
             this.task = task;
+            System.out.println(" BackgroundTask initiated ");
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             switch(task){
                 case add_sale_node:
-                    dataResult = new DataResult(true,"",saleNode);
+                    System.out.println("in add_sale_node...");
+                    dataResult = App.networkService.SaleNode(task, saleNode);
                     break;
                 case list_sale_node:
-                    if(App.dataSyncCheck.salenode)
-                        dataResult = new DataResult(true,"",App.mydb.getSaleNodes());
-                    else
-                        dataResult = App.networkService.SaleNode(task,null);
+                    System.out.println("in list sale node...");
+                    if(App.dataSyncCheck.salenode) {
+                        System.out.println("get list sale node by db");
+                        dataResult = new DataResult(true, "", App.mydb.getSaleNodes());
+                    }else {
+                        System.out.println("get list sale node by server");
+                        dataResult = App.networkService.SaleNode(task, null);
+                    }
                     break;
             }
             return true;
@@ -198,6 +204,7 @@ public class SalerActivity extends AppCompatActivity implements View.OnClickList
                 case add_sale_node:
                     if (dataResult.Status) {
                         saleNode = (SaleNode) dataResult.Data;
+                        App.mydb.saveSaleNodes(saleNode);
                         saleNodes.add(saleNode);
                         listAdaptor =  new SaleListAdaptor(context,saleNodes);
                         lv_sales.setAdapter(listAdaptor);
@@ -205,6 +212,20 @@ public class SalerActivity extends AppCompatActivity implements View.OnClickList
                         Toast.makeText(context, "No sale node found", Toast.LENGTH_LONG).show();
                     }
                     break;
+                case list_sale_node:
+                    if (dataResult.Status) {
+                        saleNodes = (List<SaleNode>) dataResult.Data;
+                        if(!App.dataSyncCheck.salenode) {
+                            App.dataSyncCheck.salenode = true;
+                            App.saveDataSyncCheck();
+                        }
+                        listAdaptor =  new SaleListAdaptor(context,saleNodes);
+                        lv_sales.setAdapter(listAdaptor);
+                    } else {
+                        Toast.makeText(context, "No sale node found", Toast.LENGTH_LONG).show();
+                    }
+                    break;
+
             }
         }
 

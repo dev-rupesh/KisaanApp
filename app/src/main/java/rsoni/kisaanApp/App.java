@@ -60,6 +60,7 @@ public class App extends Application{
         getAppUser();
         getUserProfile();
         setMasterData();
+        getDataSyncCheck();
         super.onCreate();
     }
 
@@ -107,6 +108,8 @@ public class App extends Application{
         String json = mPrefs.getString("data_sync",null);
         if(json!=null){
             dataSyncCheck = gson.fromJson(json,DataSyncCheck.class);
+        }else{
+            dataSyncCheck = new DataSyncCheck();
         }
     }
     public static void saveDataSyncCheck() {

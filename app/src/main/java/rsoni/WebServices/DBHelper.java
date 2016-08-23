@@ -156,11 +156,6 @@ public class DBHelper extends SQLiteOpenHelper {
 		return true;
 	}
 
-
-
-
-
-
 	public boolean insertContact(String name, String phone, String email,
 			String street, String place) {
 		SQLiteDatabase db = this.getWritableDatabase();

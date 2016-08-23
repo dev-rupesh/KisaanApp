@@ -64,7 +64,7 @@ public class SaleNode {
 
     }
 
-    public static ArrayList<SaleNode> getNewsItems(JSONArray json_array_sal_nodes) {
+    public static ArrayList<SaleNode> getSaleNodeItems(JSONArray json_array_sal_nodes) {
         ArrayList<SaleNode> newsItems = new ArrayList<SaleNode>();
         try {
             JSONObject json_sale_node;

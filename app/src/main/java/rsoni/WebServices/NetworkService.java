@@ -127,14 +127,14 @@ public class NetworkService {
 			url+="sale.php";
 			param.add(new BasicNameValuePair("opt", "get-sale-node"));
 			param.add(new BasicNameValuePair("id", ""+saleNode.id));
-			return getResponce(url,Task.get,task,param);
+			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.list_sale_node){
 			url+="sale.php";
 			param.add(new BasicNameValuePair("opt", "list-sale-node"));
 			param.add(new BasicNameValuePair("user_id", ""+App.appUser.id));
-			return getResponce(url,Task.get,task,param);
+			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.add_sale_node){
-			url+="auth.php";
+			url+="sale.php";
 			param.add(new BasicNameValuePair("opt", "add-sale-node"));
 			param.add(new BasicNameValuePair("user_id", ""+saleNode.user_id));
 			param.add(new BasicNameValuePair("state_id", ""+saleNode.state_id));
@@ -143,7 +143,7 @@ public class NetworkService {
 			param.add(new BasicNameValuePair("usercat", ""+saleNode.usercat));
 			param.add(new BasicNameValuePair("commodity_cat_id", ""+saleNode.commodity_cat_id));
 			param.add(new BasicNameValuePair("commodity_id", ""+saleNode.commodity_id));
-			param.add(new BasicNameValuePair("date", ""+saleNode.date));
+			param.add(new BasicNameValuePair("business_id", ""+saleNode.business_id));
 			param.add(new BasicNameValuePair("sale_note", saleNode.sale_note));
 
 			return getResponce(url,Task.post,task,param);
