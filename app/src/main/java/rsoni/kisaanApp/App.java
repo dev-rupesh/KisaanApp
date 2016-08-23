@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
+import rsoni.Utils.DataSyncCheck;
 import rsoni.WebServices.DBHelper;
 import rsoni.WebServices.NetworkService;
 import rsoni.modal.AppUser;
@@ -39,6 +40,7 @@ public class App extends Application{
     public static SimpleDateFormat dateFormate_DDMMYYY_Time = new SimpleDateFormat("dd MMM yyyy hh:mm a");
     public static NetworkService networkService = new NetworkService();
     public static String REG_ID = "";
+    public static DataSyncCheck dataSyncCheck = null;
 
 
     public static SharedPreferences mPrefs;
@@ -99,6 +101,20 @@ public class App extends Application{
         editor.putString("user_profile", json);
         editor.commit();
         getUserProfile();
+    }
+
+    public static void getDataSyncCheck() {
+        String json = mPrefs.getString("data_sync",null);
+        if(json!=null){
+            dataSyncCheck = gson.fromJson(json,DataSyncCheck.class);
+        }
+    }
+    public static void saveDataSyncCheck() {
+        SharedPreferences.Editor editor = mPrefs.edit();
+        String json = gson.toJson(dataSyncCheck);
+        editor.putString("data_sync", json);
+        editor.commit();
+        getDataSyncCheck();
     }
 
     public static AppUser getLogedAppUser() {

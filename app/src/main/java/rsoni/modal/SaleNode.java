@@ -11,6 +11,7 @@ import java.util.ArrayList;
 /**
  * Created by DS1 on 18/08/16.
  */
+
 public class SaleNode {
 
     public int id;
@@ -39,6 +40,10 @@ public class SaleNode {
         this.commodity_id = commodity_id;
         this.commodity_cat_id = commodity_cat_id;
         this.date = date;
+    }
+
+    public SaleNode() {
+
     }
 
 

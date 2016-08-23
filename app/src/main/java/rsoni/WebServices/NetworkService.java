@@ -131,7 +131,7 @@ public class NetworkService {
 		}else if (task == Task.list_sale_node){
 			url+="sale.php";
 			param.add(new BasicNameValuePair("opt", "list-sale-node"));
-			param.add(new BasicNameValuePair("user_id", ""+saleNode.user_id));
+			param.add(new BasicNameValuePair("user_id", ""+App.appUser.id));
 			return getResponce(url,Task.get,task,param);
 		}else if (task == Task.add_sale_node){
 			url+="auth.php";

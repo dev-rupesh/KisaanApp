@@ -53,13 +53,14 @@ public class SalerActivity extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.context = this;
+        initView();
     }
 
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-        initView();
         setProfileData();
+        new BackgroundTask(Task.list_buy_node).execute();
     }
 
     private void initView() {
@@ -180,7 +181,10 @@ public class SalerActivity extends AppCompatActivity implements View.OnClickList
                     dataResult = new DataResult(true,"",saleNode);
                     break;
                 case list_sale_node:
-                    dataResult = new DataResult(true,"",new ArrayList<SaleNode>());
+                    if(App.dataSyncCheck.salenode)
+                        dataResult = new DataResult(true,"",App.mydb.getSaleNodes());
+                    else
+                        dataResult = App.networkService.SaleNode(task,null);
                     break;
             }
             return true;

@@ -18,6 +18,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 
 import rsoni.modal.NewsItem;
+import rsoni.modal.SaleNode;
 import rsoni.modal.State;
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -30,15 +31,11 @@ public class DBHelper extends SQLiteOpenHelper {
 	public static final String TABLE_BUYNODE = "state";
 	public static final String TABLE_NEWS = "state";
 
-
 	private HashMap hp;
-
 	public DBHelper(Context context) {
 		super(context, DATABASE_NAME, null, 1);
 	}
-
-	public DBHelper(Context context, String name, CursorFactory factory,
-			int version) {
+	public DBHelper(Context context, String name, CursorFactory factory,int version) {
 		super(context, name, factory, version);
 		// TODO Auto-generated constructor stub
 	}
@@ -109,6 +106,57 @@ public class DBHelper extends SQLiteOpenHelper {
 		}
 		return states;
 	}
+
+	public List<SaleNode> getSaleNodes(){
+		List<SaleNode> saleNodes = new ArrayList<>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery("select * from salenode", null);
+		if (cursor .moveToFirst()) {
+			while (cursor.isAfterLast() == false) {
+				saleNodes.add(SaleNode.getSaleNode(cursor));
+				cursor.moveToNext();
+			}
+		}
+		return saleNodes;
+	}
+
+	public SaleNode saveSaleNodes(SaleNode saleNode){
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues insertValues = new ContentValues();
+		insertValues.put("id", saleNode.id);
+		insertValues.put("sale_note", saleNode.sale_note);
+		insertValues.put("business_id", saleNode.business_id);
+		insertValues.put("date", saleNode.date);
+		db.insert(TABLE_SALNODE, null, insertValues);
+		return saleNode;
+	}
+
+	public boolean saveSaleNodes(List<SaleNode> saleNodes){
+		SQLiteDatabase db = this.getReadableDatabase();
+		// Begin the transaction
+		db.beginTransaction();
+		try{
+			ContentValues insertValues = new ContentValues();
+			for(SaleNode saleNode : saleNodes){
+				insertValues.clear();
+				insertValues.put("id", saleNode.id);
+				insertValues.put("sale_note", saleNode.sale_note);
+				insertValues.put("business_id", saleNode.business_id);
+				insertValues.put("date", saleNode.date);
+				db.insert(TABLE_SALNODE,null,insertValues);
+			}
+		// Transaction is successful and all the records have been inserted
+			db.setTransactionSuccessful();
+		}catch(Exception e){
+			e.toString();
+		}finally{
+		//End the transaction
+			db.endTransaction();
+		}
+		return true;
+	}
+
+
 
 
 
