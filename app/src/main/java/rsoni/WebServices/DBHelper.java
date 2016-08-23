@@ -18,17 +18,18 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 
 import rsoni.modal.NewsItem;
+import rsoni.modal.State;
 
 public class DBHelper extends SQLiteOpenHelper {
 
 	public static final String DATABASE_NAME = "MyDBName.db";
-	public static final String CONTACTS_TABLE_NAME = "contacts";
-	public static final String CONTACTS_COLUMN_ID = "id";
-	public static final String CONTACTS_COLUMN_NAME = "name";
-	public static final String CONTACTS_COLUMN_EMAIL = "email";
-	public static final String CONTACTS_COLUMN_STREET = "street";
-	public static final String CONTACTS_COLUMN_CITY = "place";
-	public static final String CONTACTS_COLUMN_PHONE = "phone";
+	public static final String TABLE_STATE = "state";
+	public static final String TABLE_DISTRICT = "state";
+	public static final String TABLE_MARKET = "state";
+	public static final String TABLE_SALNODE = "state";
+	public static final String TABLE_BUYNODE = "state";
+	public static final String TABLE_NEWS = "state";
+
 
 	private HashMap hp;
 
@@ -45,12 +46,18 @@ public class DBHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
-		db.execSQL("create table contacts "
-				+ "(id integer primary key, name text,phone text,email text, street text,place text)");
-		db.execSQL("create table team_comments "
-				+ "(id integer primary key, team_id integer, by_name text,comment text,on_date text)");
-		db.execSQL("create table match_comments "
+		db.execSQL("create table state "
 				+ "(id integer primary key, match_id integer, by_name text,comment text,on_date text)");
+		db.execSQL("create table district "
+				+ "(id integer primary key, match_id integer, by_name text,comment text,on_date text)");
+		db.execSQL("create table market "
+				+ "(id integer primary key, match_id integer, by_name text,comment text,on_date text)");
+		db.execSQL("create table business "
+				+ "(id integer primary key, match_id integer, by_name text,comment text,on_date text)");
+		db.execSQL("create table buynode "
+				+ "(id integer primary key, name text,phone text,email text, street text,place text)");
+		db.execSQL("create table salenode "
+				+ "(id integer primary key, team_id integer, by_name text,comment text,on_date text)");
 		db.execSQL("create table news "
 				+ "(newsitemid integer primary key, author text, link text,title text,description text,newsid text, thumburl text, pubdate text)");
 	
@@ -90,6 +97,22 @@ public class DBHelper extends SQLiteOpenHelper {
 		return newsItems;
 	}
 
+	public List<State> getStates(){
+		List<State> states = new ArrayList<>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery("select * from contacts", null);
+		if (cursor .moveToFirst()) {
+			while (cursor.isAfterLast() == false) {
+				states.add(State.getState(cursor));
+				cursor.moveToNext();
+			}
+		}
+		return states;
+	}
+
+
+
+
 	public boolean insertContact(String name, String phone, String email,
 			String street, String place) {
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -116,7 +139,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	public int numberOfRows() {
 		SQLiteDatabase db = this.getReadableDatabase();
 		int numRows = (int) DatabaseUtils.queryNumEntries(db,
-				CONTACTS_TABLE_NAME);
+				TABLE_NEWS);
 		return numRows;
 	}
 
@@ -148,7 +171,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		res.moveToFirst();
 		while (res.isAfterLast() == false) {
 			array_list.add(res.getString(res
-					.getColumnIndex(CONTACTS_COLUMN_NAME)));
+					.getColumnIndex(TABLE_NEWS)));
 			res.moveToNext();
 		}
 		return array_list;

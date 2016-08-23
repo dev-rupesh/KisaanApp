@@ -18,24 +18,20 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import rsoni.Adapter.BuyListAdaptor;
-import rsoni.Adapter.SellListAdaptor;
+import rsoni.Adapter.SaleListAdaptor;
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
 import rsoni.kisaanApp.App;
 import rsoni.kisaanApp.R;
 import rsoni.modal.Business;
-import rsoni.modal.BuyNode;
-import rsoni.modal.District;
 import rsoni.modal.SaleNode;
-import rsoni.modal.State;
 
 public class SalerActivity extends AppCompatActivity implements View.OnClickListener{
 
     TextView tv_name_of_company,tv_name_of_proprietor,tv_address,tv_district,tv_mobile;
     LinearLayout ll_user_profile,ll_add_node_form;
-    ListView lv_sells;
-    SellListAdaptor listAdaptor;
+    ListView lv_sales;
+    SaleListAdaptor listAdaptor;
     List<SaleNode> saleNodes = new ArrayList<>();
     BackgroundTask backgroundTask;
     Context context;
@@ -58,7 +54,6 @@ public class SalerActivity extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.context = this;
     }
-
 
     @Override
     public void onAttachedToWindow() {
@@ -86,7 +81,7 @@ public class SalerActivity extends AppCompatActivity implements View.OnClickList
         //tv_address = (TextView) findViewById(R.id.tv_address);
         //tv_district = (TextView) findViewById(R.id.tv_district);
         //tv_mobile = (TextView) findViewById(R.id.tv_mobile);
-        lv_sells = (ListView) findViewById(R.id.lv_sells);
+        lv_sales = (ListView) findViewById(R.id.lv_sales);
     }
 
     private void setProfileData(){
@@ -200,8 +195,8 @@ public class SalerActivity extends AppCompatActivity implements View.OnClickList
                     if (dataResult.Status) {
                         saleNode = (SaleNode) dataResult.Data;
                         saleNodes.add(saleNode);
-                        listAdaptor =  new SellListAdaptor(context,saleNodes);
-                        lv_sells.setAdapter(listAdaptor);
+                        listAdaptor =  new SaleListAdaptor(context,saleNodes);
+                        lv_sales.setAdapter(listAdaptor);
                     } else {
                         Toast.makeText(context, "No sale node found", Toast.LENGTH_LONG).show();
                     }

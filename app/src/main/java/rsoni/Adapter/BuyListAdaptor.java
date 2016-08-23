@@ -1,23 +1,18 @@
 package rsoni.Adapter;
 
-import android.widget.BaseAdapter;
-
-
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import rsoni.kisaanApp.App;
 import rsoni.kisaanApp.R;
 import rsoni.modal.BuyNode;
-import rsoni.modal.NewsItem;
 
 
 public class BuyListAdaptor extends BaseAdapter {
@@ -31,7 +26,6 @@ public class BuyListAdaptor extends BaseAdapter {
 	// SimpleDateFormat formatter = new SimpleDateFormat("yyyy-dd-mm");
 
 	public BuyListAdaptor(Context context, List<BuyNode> buyNodes) {
-
 		this.context = context;
 		this.buyNodes = buyNodes;
 		//imageLoader = new ImageLoader(activity);
@@ -64,7 +58,7 @@ public class BuyListAdaptor extends BaseAdapter {
 		viewHolder holder;
 
 		if (convertView == null) {
-			convertView = layoutInflater.inflate(R.layout.list_item_news, null);
+			convertView = layoutInflater.inflate(R.layout.list_item_sale, null);
 			holder = new viewHolder(convertView);
 			convertView.setTag(holder);
 		} else {
@@ -76,22 +70,23 @@ public class BuyListAdaptor extends BaseAdapter {
 
 	class viewHolder {
 
-		TextView tv_historytitle, tv_historydesc, tv_new_date;
-		ImageView iv_news_thumb;
+		TextView tv_business_type, tv_note_date, tv_note;
+		//ImageView iv_news_thumb;
 
 		public viewHolder(View convertView) {
-			tv_historytitle = (TextView) convertView
-					.findViewById(R.id.tv_historytitle);
-			tv_historydesc = (TextView) convertView
-					.findViewById(R.id.tv_historydesc);
-			//tv_new_date = (TextView) convertView.findViewById(R.id.tv_new_date);
+			tv_business_type = (TextView) convertView
+					.findViewById(R.id.tv_business_type);
+			tv_note_date = (TextView) convertView
+					.findViewById(R.id.tv_note_date);
+			tv_note = (TextView) convertView.findViewById(R.id.tv_note);
 			// iv_news_thumb = (ImageView)
 			// convertView.findViewById(R.id.iv_news_thumb);
 		}
 
 		void setData(BuyNode buyNode) {
-			tv_historytitle.setText(buyNode.buy_note);
-			tv_historydesc.setText(buyNode.buy_note);
+			tv_business_type.setText("Item related to "+ App.businessIdMap.get(buyNode.business_id).business);
+			tv_note_date.setText("Last update on "+App.dateFormate_DDMMYYY_Time.format(new Date()));
+			tv_note.setText(buyNode.buy_note);
 			// tv_new_date.setText(newsItem.pubDate);
 			// try {
 			// tv_new_date.setText(App.MonthDateYearTime.format(formatter.parse(newsItem.pubDate)));

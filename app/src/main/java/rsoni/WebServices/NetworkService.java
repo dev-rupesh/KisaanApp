@@ -185,7 +185,6 @@ public class NetworkService {
 			param.add(new BasicNameValuePair("district_id", ""+buyNode.district_id));
 			param.add(new BasicNameValuePair("market_id", ""+buyNode.market_id));
 			param.add(new BasicNameValuePair("usercat", ""+buyNode.usercat));
-			param.add(new BasicNameValuePair("usersubcat_id", ""+buyNode.usersubcat_id));
 			param.add(new BasicNameValuePair("commodity_cat_id", ""+buyNode.commodity_cat_id));
 			param.add(new BasicNameValuePair("commodity_id", ""+buyNode.commodity_id));
 			param.add(new BasicNameValuePair("date", ""+buyNode.date));
