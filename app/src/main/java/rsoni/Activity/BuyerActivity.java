@@ -218,8 +218,8 @@ public class BuyerActivity extends AppCompatActivity implements View.OnClickList
                         if(!App.dataSyncCheck.buynode) {
                             App.dataSyncCheck.buynode = true;
                             App.saveDataSyncCheck();
+                            App.mydb.saveBuyNodes(buyNodes);
                         }
-                        App.mydb.saveBuyNodes(buyNodes);
                         listAdaptor =  new BuyListAdaptor(context,buyNodes);
                         lv_buys.setAdapter(listAdaptor);
                     } else {

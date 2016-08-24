@@ -218,8 +218,8 @@ public class SalerActivity extends AppCompatActivity implements View.OnClickList
                         if(!App.dataSyncCheck.salenode) {
                             App.dataSyncCheck.salenode = true;
                             App.saveDataSyncCheck();
+                            App.mydb.saveSaleNodes(saleNodes);
                         }
-                        App.mydb.saveSaleNodes(saleNodes);
                         listAdaptor =  new SaleListAdaptor(context,saleNodes);
                         lv_sales.setAdapter(listAdaptor);
                     } else {

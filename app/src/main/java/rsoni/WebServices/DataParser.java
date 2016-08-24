@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
 import rsoni.modal.AppUser;
+import rsoni.modal.BuyNode;
 import rsoni.modal.Category;
 import rsoni.modal.SaleNode;
 
@@ -232,10 +233,10 @@ public class DataParser {
 		if (result.Status ) {
 			try {
 				if ( mode == Task.add_buy_node || mode == Task.add_buy_node ) {
-					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
+					result.Data = BuyNode.getBuyNode(response.getJSONObject("data"));
 				}else if ( mode == Task.list_buy_node) {
-					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
-				}else if ( mode == Task.delete_buy_node) {
+					result.Data = BuyNode.getBuyNodeItems(response.getJSONArray("data"));
+				}else if ( mode == Task.delete_buy_node || mode == Task.add_buy_node ) {
 					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
 				}
 			} catch (JSONException e) {

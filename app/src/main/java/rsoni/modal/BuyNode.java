@@ -64,7 +64,7 @@ public class BuyNode {
 
     }
 
-    public static ArrayList<BuyNode> getBuyNodeNodeItems(JSONArray json_array_buy_nodes) {
+    public static ArrayList<BuyNode> getBuyNodeItems(JSONArray json_array_buy_nodes) {
         ArrayList<BuyNode> buyNodes = new ArrayList<BuyNode>();
         try {
             JSONObject json_buy_node;
@@ -93,7 +93,7 @@ public class BuyNode {
                 cursor.getInt(cursor.getColumnIndex("market_id")),
                 cursor.getInt(cursor.getColumnIndex("commodity_id")),
                 cursor.getInt(cursor.getColumnIndex("commodity_cat_id")),
-                cursor.getInt(cursor.getColumnIndex("note_date")));
+                cursor.getLong(cursor.getColumnIndex("note_date")));
         return buyNode;
     }
 

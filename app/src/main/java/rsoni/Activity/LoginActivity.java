@@ -218,6 +218,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             showProgress(false);
 
             if(dataResult.Status){
+                System.out.println("data : "+ App.gson.toJson(dataResult.Data));
                 App.saveAppUser((AppUser) dataResult.Data);
                 App.setAppRegisterd(context);
                 Intent nextIntent = null;

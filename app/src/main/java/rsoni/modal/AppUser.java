@@ -35,6 +35,7 @@ public class AppUser {
 			appUser.userProfile.market_id = json_appUser.optInt("market_id");
 			appUser.userProfile.market_name = json_appUser.optString("market_name");
 			appUser.userProfile.usersubcat_id = json_appUser.optInt("usersubcat_id");
+			appUser.userProfile.business_id =  json_appUser.optString("business_id");
 		}
 		return appUser;
 	}

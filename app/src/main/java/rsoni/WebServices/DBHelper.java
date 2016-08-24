@@ -49,9 +49,9 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.execSQL("create table business "
 				+ "(id integer primary key, match_id integer, by_name text,comment text,on_date text)");
 		db.execSQL("create table buynode "
-				+ "(id integer primary key, user_id integer, buy_note text,state_id integer,district integer,market_id integer, commodity_cat_id integer,commodity_id integer,business_id integer,usercat integer,note_date)");
+				+ "(id integer primary key, user_id integer, buy_note text,state_id integer,district_id integer,market_id integer, commodity_cat_id integer,commodity_id integer,business_id integer,usercat integer,note_date integer)");
 		db.execSQL("create table salenode "
-				+ "(id integer primary key, user_id integer, sale_note text,state_id integer,district integer,market_id integer, commodity_cat_id integer,commodity_id integer,business_id integer,usercat integer,note_date)");
+				+ "(id integer primary key, user_id integer, sale_note text,state_id integer,district_id integer,market_id integer, commodity_cat_id integer,commodity_id integer,business_id integer,usercat integer,note_date integer)");
 		db.execSQL("create table news "
 				+ "(newsitemid integer primary key, author text, link text,title text,description text,newsid text, thumburl text, pubdate text)");
 	

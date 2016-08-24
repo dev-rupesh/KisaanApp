@@ -93,7 +93,7 @@ public class SaleNode {
                 cursor.getInt(cursor.getColumnIndex("market_id")),
                 cursor.getInt(cursor.getColumnIndex("commodity_id")),
                 cursor.getInt(cursor.getColumnIndex("commodity_cat_id")),
-                cursor.getInt(cursor.getColumnIndex("note_date")));
+                cursor.getLong(cursor.getColumnIndex("note_date")));
         return saleNode;
     }
 
