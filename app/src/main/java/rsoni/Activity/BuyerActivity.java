@@ -19,13 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rsoni.Adapter.BuyListAdaptor;
-import rsoni.Adapter.BuyListAdaptor;
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
 import rsoni.kisaanApp.App;
 import rsoni.kisaanApp.R;
 import rsoni.modal.Business;
-import rsoni.modal.BuyNode;
 import rsoni.modal.BuyNode;
 
 public class BuyerActivity extends AppCompatActivity implements View.OnClickListener{
@@ -55,13 +53,14 @@ public class BuyerActivity extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.context = this;
+        initView();
     }
 
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-        initView();
         setProfileData();
+        new BackgroundTask(Task.list_buy_node).execute();
     }
 
     private void initView() {
@@ -173,16 +172,25 @@ public class BuyerActivity extends AppCompatActivity implements View.OnClickList
 
         public  BackgroundTask(Task task){
             this.task = task;
+            System.out.println(" BackgroundTask initiated ");
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             switch(task){
                 case add_buy_node:
-                    dataResult = new DataResult(true,"",buyNode);
+                    System.out.println("in add_buy_node...");
+                    dataResult = App.networkService.BuyNode(task, buyNode);
                     break;
                 case list_buy_node:
-                    dataResult = new DataResult(true,"",new ArrayList<BuyNode>());
+                    System.out.println("in list buy node...");
+                    if(App.dataSyncCheck.buynode) {
+                        System.out.println("get list buy node by db");
+                        dataResult = new DataResult(true, "", App.mydb.getBuyNodes());
+                    }else {
+                        System.out.println("get list buy node by server");
+                        dataResult = App.networkService.BuyNode(task, null);
+                    }
                     break;
             }
             return true;
@@ -196,7 +204,22 @@ public class BuyerActivity extends AppCompatActivity implements View.OnClickList
                 case add_buy_node:
                     if (dataResult.Status) {
                         buyNode = (BuyNode) dataResult.Data;
+                        App.mydb.saveBuyNodes(buyNode);
                         buyNodes.add(buyNode);
+                        listAdaptor =  new BuyListAdaptor(context,buyNodes);
+                        lv_buys.setAdapter(listAdaptor);
+                    } else {
+                        Toast.makeText(context, "No buy node found", Toast.LENGTH_LONG).show();
+                    }
+                    break;
+                case list_buy_node:
+                    if (dataResult.Status) {
+                        buyNodes = (List<BuyNode>) dataResult.Data;
+                        if(!App.dataSyncCheck.buynode) {
+                            App.dataSyncCheck.buynode = true;
+                            App.saveDataSyncCheck();
+                            App.mydb.saveBuyNodes(buyNodes);
+                        }
                         listAdaptor =  new BuyListAdaptor(context,buyNodes);
                         lv_buys.setAdapter(listAdaptor);
                     } else {

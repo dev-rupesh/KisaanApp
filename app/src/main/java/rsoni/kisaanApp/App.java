@@ -49,7 +49,7 @@ public class App extends Application{
     public static AppUser appUser = new AppUser();
 
     public static Map<Integer,Business> businessIdMap = null;
-    public static List<Business> businesses;
+    public static List<Business> businesses = null;
 
     @Override
     public void onCreate() {
@@ -82,8 +82,10 @@ public class App extends Application{
 
     public static void getAppUser() {
         String json = mPrefs.getString("app_user",null);
+        System.out.println("get json : "+json);
         if(json!=null){
             appUser = gson.fromJson(json,AppUser.class);
+            System.out.println(""+appUser.userProfile.business_id);
         }else{
             appUser = null;
         }
@@ -131,6 +133,7 @@ public class App extends Application{
     public static void saveAppUser(AppUser appUser) {
         SharedPreferences.Editor editor = mPrefs.edit();
         String json = gson.toJson(appUser);
+        System.out.println("json : "+json);
         editor.putString("app_user", json);
         editor.commit();
         getAppUser();

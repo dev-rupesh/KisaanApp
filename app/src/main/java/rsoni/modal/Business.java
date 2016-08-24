@@ -43,6 +43,7 @@ public class Business {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("states.size() : "+states.size());
         return states;
     }
 

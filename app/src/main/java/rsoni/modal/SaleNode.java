@@ -24,11 +24,11 @@ public class SaleNode {
     public int market_id;
     public int commodity_id = 0;
     public int commodity_cat_id = 0;
-    public long date;
+    public long note_date;
 
     public SaleNode(int id, String sale_note,
                     int user_id, int usercat,int business_id,int state_id,int district_id,int market_id,int commodity_id,int commodity_cat_id,
-                    long date) {
+                    long note_date) {
         this.id = id;
         this.sale_note = sale_note;
         this.user_id = user_id;
@@ -39,7 +39,7 @@ public class SaleNode {
         this.market_id = market_id;
         this.commodity_id = commodity_id;
         this.commodity_cat_id = commodity_cat_id;
-        this.date = date;
+        this.note_date = note_date;
     }
 
     public SaleNode() {
@@ -59,7 +59,7 @@ public class SaleNode {
                 data.optInt("market_id"),
                 data.optInt("commodity_id"),
                 data.optInt("commodity_cat_id"),
-                data.optLong("date"));
+                data.optLong("note_date"));
         return saleNode;
 
     }
@@ -93,7 +93,7 @@ public class SaleNode {
                 cursor.getInt(cursor.getColumnIndex("market_id")),
                 cursor.getInt(cursor.getColumnIndex("commodity_id")),
                 cursor.getInt(cursor.getColumnIndex("commodity_cat_id")),
-                        cursor.getInt(cursor.getColumnIndex("date")));
+                cursor.getLong(cursor.getColumnIndex("note_date")));
         return saleNode;
     }
 

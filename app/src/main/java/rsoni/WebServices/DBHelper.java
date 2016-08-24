@@ -1,9 +1,7 @@
 package rsoni.WebServices;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -11,12 +9,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteStatement;
 
+import rsoni.modal.BuyNode;
 import rsoni.modal.NewsItem;
 import rsoni.modal.SaleNode;
 import rsoni.modal.State;
@@ -25,11 +22,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	public static final String DATABASE_NAME = "MyDBName.db";
 	public static final String TABLE_STATE = "state";
-	public static final String TABLE_DISTRICT = "state";
-	public static final String TABLE_MARKET = "state";
-	public static final String TABLE_SALNODE = "state";
-	public static final String TABLE_BUYNODE = "state";
-	public static final String TABLE_NEWS = "state";
+	public static final String TABLE_DISTRICT = "district";
+	public static final String TABLE_MARKET = "market";
+	public static final String TABLE_SALNODE = "salenode";
+	public static final String TABLE_BUYNODE = "buynode";
+	public static final String TABLE_NEWS = "news";
 
 	private HashMap hp;
 	public DBHelper(Context context) {
@@ -52,9 +49,9 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.execSQL("create table business "
 				+ "(id integer primary key, match_id integer, by_name text,comment text,on_date text)");
 		db.execSQL("create table buynode "
-				+ "(id integer primary key, name text,phone text,email text, street text,place text)");
+				+ "(id integer primary key, user_id integer, buy_note text,state_id integer,district_id integer,market_id integer, commodity_cat_id integer,commodity_id integer,business_id integer,usercat integer,note_date integer)");
 		db.execSQL("create table salenode "
-				+ "(id integer primary key, team_id integer, by_name text,comment text,on_date text)");
+				+ "(id integer primary key, user_id integer, sale_note text,state_id integer,district_id integer,market_id integer, commodity_cat_id integer,commodity_id integer,business_id integer,usercat integer,note_date integer)");
 		db.execSQL("create table news "
 				+ "(newsitemid integer primary key, author text, link text,title text,description text,newsid text, thumburl text, pubdate text)");
 	
@@ -126,7 +123,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		insertValues.put("id", saleNode.id);
 		insertValues.put("sale_note", saleNode.sale_note);
 		insertValues.put("business_id", saleNode.business_id);
-		insertValues.put("date", saleNode.date);
+		insertValues.put("note_date", saleNode.note_date);
 		db.insert(TABLE_SALNODE, null, insertValues);
 		return saleNode;
 	}
@@ -142,7 +139,7 @@ public class DBHelper extends SQLiteOpenHelper {
 				insertValues.put("id", saleNode.id);
 				insertValues.put("sale_note", saleNode.sale_note);
 				insertValues.put("business_id", saleNode.business_id);
-				insertValues.put("date", saleNode.date);
+				insertValues.put("note_date", saleNode.note_date);
 				db.insert(TABLE_SALNODE,null,insertValues);
 			}
 		// Transaction is successful and all the records have been inserted
@@ -151,6 +148,55 @@ public class DBHelper extends SQLiteOpenHelper {
 			e.toString();
 		}finally{
 		//End the transaction
+			db.endTransaction();
+		}
+		return true;
+	}
+
+	public List<BuyNode> getBuyNodes(){
+		List<BuyNode> buyNodes = new ArrayList<>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery("select * from buynode", null);
+		if (cursor .moveToFirst()) {
+			while (cursor.isAfterLast() == false) {
+				buyNodes.add(BuyNode.getBuyNode(cursor));
+				cursor.moveToNext();
+			}
+		}
+		return buyNodes;
+	}
+
+	public BuyNode saveBuyNodes(BuyNode buyNode){
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues insertValues = new ContentValues();
+		insertValues.put("id", buyNode.id);
+		insertValues.put("buy_note", buyNode.buy_note);
+		insertValues.put("business_id", buyNode.business_id);
+		insertValues.put("note_date", buyNode.note_date);
+		db.insert(TABLE_BUYNODE, null, insertValues);
+		return buyNode;
+	}
+
+	public boolean saveBuyNodes(List<BuyNode> buyNodes){
+		SQLiteDatabase db = this.getReadableDatabase();
+		// Begin the transaction
+		db.beginTransaction();
+		try{
+			ContentValues insertValues = new ContentValues();
+			for(BuyNode buyNode : buyNodes){
+				insertValues.clear();
+				insertValues.put("id", buyNode.id);
+				insertValues.put("buy_note", buyNode.buy_note);
+				insertValues.put("business_id", buyNode.business_id);
+				insertValues.put("note_date", buyNode.note_date);
+				db.insert(TABLE_BUYNODE,null,insertValues);
+			}
+			// Transaction is successful and all the records have been inserted
+			db.setTransactionSuccessful();
+		}catch(Exception e){
+			e.toString();
+		}finally{
+			//End the transaction
 			db.endTransaction();
 		}
 		return true;
