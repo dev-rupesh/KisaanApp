@@ -219,13 +219,13 @@ public class SalerActivity extends AppCompatActivity implements View.OnClickList
                             App.dataSyncCheck.salenode = true;
                             App.saveDataSyncCheck();
                         }
+                        App.mydb.saveSaleNodes(saleNodes);
                         listAdaptor =  new SaleListAdaptor(context,saleNodes);
                         lv_sales.setAdapter(listAdaptor);
                     } else {
                         Toast.makeText(context, "No sale node found", Toast.LENGTH_LONG).show();
                     }
                     break;
-
             }
         }
 
