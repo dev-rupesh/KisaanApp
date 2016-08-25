@@ -1,6 +1,5 @@
 package rsoni.WebServices;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -8,8 +7,8 @@ import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
 import rsoni.modal.AppUser;
 import rsoni.modal.BuyNode;
-import rsoni.modal.Category;
 import rsoni.modal.SaleNode;
+import rsoni.modal.SearchResult;
 
 
 public class DataParser {
@@ -96,32 +95,26 @@ public class DataParser {
 		}
 		return jsonResponse;
 	}
-	/*public DataResult Search(String json, Task mode) {
+	public DataResult Search(String json, Task mode) {
 		JSONObject response = null;
 		DataResult result = new DataResult();
 		response = StartForSuccessBoolean(json, result);
 		if (result.Status ) {
 			try {				
 				switch (mode) {	
-				case categories_search:
-					result.Data = Category.getDealsFromJsonAray(response.getJSONArray("categories"))	;
-					break;
-				case cuisines_search:
-					//result.Data = Cuisines.getCuisinesFromJsonAray(response.getJSONArray("cuisines"))	;
-					break;
-				case areas_search:
-					//result.Data = Area.getAreasFromJsonAray(response.getJSONArray("areas"))	;
-					break;
-				case features_search:
-					//result.Data = Feature.getFeaturesFromJsonAray(response.getJSONArray("filters"))	;
-					break;
-				case filters_search:
-					//result.Data = Filter.getFiltersFromJsonAray(response.getJSONArray("filters"))	;
-					break;
-				case restaurants_search:
-					//result.Data = Restaurant.getRestaurantsFromJsonAray(response.getJSONArray("restaurants"))	;
-					break;
-				default:
+					case buyer_or_seller_search:
+						result.Data = SearchResult.getBuyerSerch(response.getJSONObject("data"));
+						break;
+					case buyer_search:
+						result.Data = SearchResult.getBuyerSerch(response.getJSONObject("data"));
+						break;
+					case seller_search:
+						result.Data = SearchResult.getSellerSerch(response.getJSONObject("data"));
+						break;
+					case crop_search:
+						result.Data = SearchResult.getCropSerch(response.getJSONObject("data"));
+						break;
+					default:
 					break;
 				}
 			} catch (JSONException e) {
@@ -131,7 +124,7 @@ public class DataParser {
 			}
 		}
 		return result;
-	}*/
+	}
 	
 	
 	

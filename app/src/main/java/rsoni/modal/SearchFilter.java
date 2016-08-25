@@ -5,7 +5,7 @@ package rsoni.modal;
  */
 public class SearchFilter {
 
-    public int searchFor = 0;    // 0 = buy, 1 = sale
+    public String searchFor = "";    // 0 = buy, 1 = sale
     public int state_id = -1;
     public String state;
     public int district_id = -1;

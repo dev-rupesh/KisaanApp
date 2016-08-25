@@ -15,11 +15,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
+            android:id="@+id/tv_applied_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <Spinner
-            android:id="@+id/sp_districts"
+            android:id="@+id/sp_business"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:entries="@array/user_category"/>
@@ -39,6 +40,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="Seller"/>
             <Button
+                android:id="@+id/btn_find"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -47,11 +49,72 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/lv_sales"
+        android:id="@+id/lv_search_result"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_search_filter_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="State"/>
+            <Spinner
+                android:id="@+id/sp_states"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="2dp"
+                android:entries="@array/user_category"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"
+                android:background="@android:color/black"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="District"/>
+            <Spinner
+                android:id="@+id/sp_districts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="2dp"
+                android:entries="@array/user_category"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"
+                android:background="@android:color/black"/>
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

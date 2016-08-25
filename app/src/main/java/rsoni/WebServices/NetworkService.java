@@ -12,6 +12,7 @@ import rsoni.modal.AppUser;
 import rsoni.modal.BuyNode;
 import rsoni.modal.NewsItem;
 import rsoni.modal.SaleNode;
+import rsoni.modal.SearchFilter;
 
 
 public class NetworkService {
@@ -71,44 +72,37 @@ public class NetworkService {
 
 	}
 
-	/*public DataResult Search(Task task,int area_id, int cuisine_id, String search) {
+	public DataResult Search(Task task, SearchFilter search) {
 		String url = App.ServiceUrl;
 		String json = "";
 		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
-		param.add(new BasicNameValuePair("search", search));
-
 		switch (task) {
-		case categories_search:
-		case categories_search_json:
-			url += "api/categories";
-			return getResponce(url, Task.get, task, param);
+		case buyer_search:
+			url += "api/search";
+			param.add(new BasicNameValuePair("user_id", ""+App.appUser.id));
+			param.add(new BasicNameValuePair("for", search.searchFor));
+			param.add(new BasicNameValuePair("business_id", ""+search.business_id));
+			param.add(new BasicNameValuePair("state_id", ""+search.state_id));
+			param.add(new BasicNameValuePair("district_id", ""+search.district_id));
+			return getResponce(url, Task.post, task, param);
 			//break;
-		case cuisines_search:
-		case cuisines_search_json:
-			url += "api/cuisines";
-			return getResponce(url, Task.get, task, param);
+		case seller_search:
+			url += "api/search";
+			param.add(new BasicNameValuePair("user_id", ""+App.appUser.id));
+			param.add(new BasicNameValuePair("for", search.searchFor));
+			param.add(new BasicNameValuePair("business_id", ""+search.business_id));
+			param.add(new BasicNameValuePair("state_id", ""+search.state_id));
+			param.add(new BasicNameValuePair("district_id", ""+search.district_id));
+			return getResponce(url, Task.post, task, param);
 			//break;
-		case areas_search:
-		case areas_search_json:
-			url += "api/areas";
-			return getResponce(url, Task.get, task, param);
-			//break;
-		case features_search:
-		case features_search_json:
-			url += "api/features";
-			return getResponce(url, Task.get, task, param);
-			//break;
-		case filters_search:
-		case filters_search_json:
-			url += "api/filters";
-			return getResponce(url, Task.get, task, param);
-			//break;
-		case restaurants_search:
-		case restaurants_search_json:
-			url += "api/restaurants";
-			param.add(new BasicNameValuePair("area_id", ""+area_id));
-			param.add(new BasicNameValuePair("cuisine_id", ""+cuisine_id));
-			return getResponce(url, Task.get, task, param);
+		case crop_search:
+			url += "api/search";
+			param.add(new BasicNameValuePair("user_id", ""+App.appUser.id));
+			param.add(new BasicNameValuePair("for", search.searchFor));
+			param.add(new BasicNameValuePair("business_id", ""+search.business_id));
+			param.add(new BasicNameValuePair("state_id", ""+search.state_id));
+			param.add(new BasicNameValuePair("district_id", ""+search.district_id));
+			return getResponce(url, Task.post, task, param);
 			//break;
 
 		default:
@@ -117,7 +111,7 @@ public class NetworkService {
 
 	    return null;
 
-	}*/
+	}
 
 	public DataResult SaleNode(Task task,SaleNode saleNode) {
 		System.out.println("SaleNode()...");
@@ -328,6 +322,13 @@ public class NetworkService {
 			case add_news:
 			case delete_news:
 				dataResult = dataParser.News(json, mode);
+				break;
+
+			case buyer_or_seller_search:
+			case buyer_search:
+			case seller_search:
+			case  crop_search:
+				dataResult = dataParser.Search(json, mode);
 				break;
 
 		default:
