@@ -60,11 +60,13 @@ public class DBHelper extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO Auto-generated method stub
-		db.execSQL("DROP TABLE IF EXISTS contacts");
-		db.execSQL("DROP TABLE IF EXISTS team_comments");
-		db.execSQL("DROP TABLE IF EXISTS match_comments");
-		db.execSQL("DROP TABLE IF EXISTS news");
 		onCreate(db);
+	}
+
+	public void truncateDB(){
+		SQLiteDatabase db = this.getReadableDatabase();
+		db.delete(TABLE_BUYNODE, null, null);
+		db.delete(TABLE_SALNODE, null, null);
 	}
 	
 	public int getLastNewsId() {

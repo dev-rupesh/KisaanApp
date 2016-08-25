@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import rsoni.Utils.DataSyncCheck;
 import rsoni.WebServices.DBHelper;
@@ -159,6 +160,8 @@ public class App extends Application{
         SharedPreferences.Editor editor = mPrefs.edit();
         editor.clear();
         editor.commit();
+        mydb.truncateDB();
+        getDataSyncCheck();
     }
 
     public static boolean checkForLogin(final Context context) {

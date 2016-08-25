@@ -1,6 +1,7 @@
 package rsoni.Activity;
 
 import android.content.Context;
+import android.content.pm.ProviderInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -48,7 +49,7 @@ public class FindActivity extends AppCompatActivity implements View.OnClickListe
     Spinner sp_business;
     RadioGroup rg_radioGroup;
     TextView tv_applied_filter;
-    Button btn_find;
+    Button btn_find,btn_search_form_ok;
     private Spinner spStates;
     private Spinner spDistricts;
 
@@ -56,7 +57,7 @@ public class FindActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayAdapter<District> districtArrayAdapter;
     private ArrayAdapter<Business> businessArrayAdapter;
 
-    private  List<Business> businesses = null;
+    private  List<Business> businesses = new ArrayList<>();
     private List<State> states = null;
     private List<District> districtList;
     private Map<Integer,List<District>> districtsMap = null;
@@ -99,8 +100,13 @@ public class FindActivity extends AppCompatActivity implements View.OnClickListe
         rg_radioGroup = (RadioGroup) findViewById(R.id.rg_radioGroup);
         sp_business = (Spinner) findViewById(R.id.sp_business);
         tv_applied_filter = (TextView) findViewById(R.id.tv_applied_filter);
+        tv_applied_filter.setOnClickListener(this);
         btn_find = (Button) findViewById(R.id.btn_find);
+        btn_find.setOnClickListener(this);
+        btn_search_form_ok = (Button) findViewById(R.id.btn_search_form_ok);
+        btn_search_form_ok.setOnClickListener(this);
         spStates = (Spinner)findViewById(R.id.sp_states);
+
         spDistricts = (Spinner)findViewById(R.id.sp_districts);
     }
 
@@ -128,6 +134,17 @@ public class FindActivity extends AppCompatActivity implements View.OnClickListe
         searchFilter.market_id = App.appUser.userProfile.market_id;
         searchFilter.market = App.appUser.userProfile.market_name;
         searchFilter.searchFor = "";
+        tv_applied_filter.setText(searchFilter.state+" > "+searchFilter.district);
+    }
+
+    private void setSearchFilter(){
+        State state = (State)spStates.getSelectedItem();
+        District district  = (District) spDistricts.getSelectedItem();
+        searchFilter.state_id = state.state_id;
+        searchFilter.state = state.state_name;
+        searchFilter.district_id = district.district_id;
+        searchFilter.district = district.district_name;
+        tv_applied_filter.setText(searchFilter.state+" > "+searchFilter.district);
     }
 
     @Override
@@ -160,12 +177,24 @@ public class FindActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void toggalSearchForm(){
+        if(ll_search_filter_form.getVisibility()==View.VISIBLE){
+            ll_search_filter_form.setVisibility(View.GONE);
+        }else{
+            ll_search_filter_form.setVisibility(View.VISIBLE);
+        }
+
+    }
+
     @Override
     public void onClick(View view) {
         if(view == btn_find){
             // search api call with params
         }else if(view == tv_applied_filter){
-            // open filter form
+            toggalSearchForm();
+        }else if(view == btn_search_form_ok){
+            toggalSearchForm();
+            setSearchFilter();
         }
     }
 
