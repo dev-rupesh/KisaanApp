@@ -29,8 +29,11 @@ public class NewsActivity extends AppCompatActivity {
     ListView lv_news;
     NewsListAdaptor listAdaptor;
     List<NewsItem> newsItems;
+    List<NewsItem> newsItemsTemp;
     BackgroundTask backgroundTask;
     Context context;
+    int latest_invoice_no = 0;
+    NewsItem newsItemTemp = new NewsItem();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +51,7 @@ public class NewsActivity extends AppCompatActivity {
         super.onAttachedToWindow();
         initView();
         setProfileData();
-        backgroundTask = new BackgroundTask(Task.news_list_sort);
+        backgroundTask = new BackgroundTask(Task.news_list_db);
         backgroundTask.execute((Void) null);
     }
 
@@ -95,8 +98,13 @@ public class NewsActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
 
             switch(task){
-                case news_list_sort:
-                    dataResult = new DataResult(true,"",App.mydb.getAllNews());
+                case news_list_db:
+                    newsItemsTemp.clear();
+                    newsItemsTemp = App.mydb.getNews(20);
+                    break;
+                case news_list_web:
+                    newsItemTemp.setId(latest_invoice_no);
+                    dataResult = App.networkService.News(Task.news_list_web,newsItemTemp);
                     break;
             }
             return true;
@@ -107,11 +115,23 @@ public class NewsActivity extends AppCompatActivity {
             backgroundTask = null;
             //showProgress(false);
             switch(task) {
-                case news_list_sort:
-                    if (dataResult.Status) {
-                        newsItems = (List<NewsItem>) dataResult.Data;
+                case news_list_db:
+                    if(!newsItemsTemp.isEmpty()){
+                        latest_invoice_no = newsItemsTemp.get(0).getId();
                         listAdaptor =  new NewsListAdaptor(context,newsItems);
                         lv_news.setAdapter(listAdaptor);
+                    }
+                    backgroundTask = new BackgroundTask(Task.news_list_web);
+                    backgroundTask.execute((Void) null);
+                    break;
+                case news_list_web:
+                    if (dataResult.Status) {
+                        newsItemsTemp.clear();
+                        newsItemsTemp = (List<NewsItem>) dataResult.Data;
+                        if(!newsItemsTemp.isEmpty()){
+                            newsItems.addAll(0,newsItemsTemp);
+                            listAdaptor.notifyDataSetChanged();
+                        }
                     } else {
                         Toast.makeText(context, "Wrong Password", Toast.LENGTH_LONG).show();
                     }

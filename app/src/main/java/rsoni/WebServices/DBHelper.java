@@ -53,7 +53,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.execSQL("create table salenode "
 				+ "(id integer primary key, user_id integer, sale_note text,state_id integer,district_id integer,market_id integer, commodity_cat_id integer,commodity_id integer,business_id integer,usercat integer,note_date integer)");
 		db.execSQL("create table news "
-				+ "(newsitemid integer primary key, author text, link text,title text,description text,newsid text, thumburl text, pubdate text)");
+				+ "(id integer primary key, author text, link text,news_title text,news_test text,news_ing text, news_date text)");
 	
 	}
 
@@ -192,6 +192,45 @@ public class DBHelper extends SQLiteOpenHelper {
 				insertValues.put("business_id", buyNode.business_id);
 				insertValues.put("note_date", buyNode.note_date);
 				db.insert(TABLE_BUYNODE,null,insertValues);
+			}
+			// Transaction is successful and all the records have been inserted
+			db.setTransactionSuccessful();
+		}catch(Exception e){
+			e.toString();
+		}finally{
+			//End the transaction
+			db.endTransaction();
+		}
+		return true;
+	}
+
+	public List<NewsItem> getNews(int count){
+		List<NewsItem> newsItems = new ArrayList<>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery("select * from news ORDER BY id DESC", null);
+		if (cursor .moveToFirst()) {
+			while (cursor.isAfterLast() == false) {
+				newsItems.add(NewsItem.getNewsItem(cursor));
+				cursor.moveToNext();
+			}
+		}
+		return newsItems;
+	}
+	public boolean saveNews(List<NewsItem> newsItems){
+		SQLiteDatabase db = this.getReadableDatabase();
+		// Begin the transaction
+		db.beginTransaction();
+		try{
+			ContentValues insertValues = new ContentValues();
+			for(NewsItem newsItem : newsItems){
+				insertValues.clear();
+				insertValues.put("id", newsItem.id);
+				insertValues.put("news_title", newsItem.news_title);
+				insertValues.put("news_text", newsItem.news_text);
+				insertValues.put("news_img", newsItem.news_img);
+				insertValues.put("news_date", newsItem.news_date);
+				insertValues.put("link", newsItem.link);
+				db.insert(TABLE_NEWS,null,insertValues);
 			}
 			// Transaction is successful and all the records have been inserted
 			db.setTransactionSuccessful();

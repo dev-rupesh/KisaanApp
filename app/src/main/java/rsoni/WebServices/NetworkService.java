@@ -217,13 +217,13 @@ public class NetworkService {
 		}else if (task == Task.add_news){
 			url+="news.php";
 			param.add(new BasicNameValuePair("opt", "add-news"));
-			param.add(new BasicNameValuePair("news_id", ""+newsItem.news_id));
-			param.add(new BasicNameValuePair("state_id", ""+newsItem.author));
-			param.add(new BasicNameValuePair("district_id", ""+newsItem.description));
-			param.add(new BasicNameValuePair("market_id", ""+newsItem.pub_date));
-			param.add(new BasicNameValuePair("usercat", ""+newsItem.link));
-			param.add(new BasicNameValuePair("usersubcat_id", ""+newsItem.thumburl));
-			param.add(new BasicNameValuePair("commodity_cat_id", ""+newsItem.title));
+			//param.add(new BasicNameValuePair("news_id", ""+newsItem.news_id));
+			//param.add(new BasicNameValuePair("state_id", ""+newsItem.author));
+			//param.add(new BasicNameValuePair("district_id", ""+newsItem.description));
+			//param.add(new BasicNameValuePair("market_id", ""+newsItem.pub_date));
+			//param.add(new BasicNameValuePair("usercat", ""+newsItem.link));
+			//param.add(new BasicNameValuePair("usersubcat_id", ""+newsItem.thumburl));
+			//param.add(new BasicNameValuePair("commodity_cat_id", ""+newsItem.title));
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.delete_news){
 			url+="news.php";

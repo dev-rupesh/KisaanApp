@@ -12,36 +12,31 @@ import org.json.JSONObject;
 public class NewsItem {
 
 	public int id;
-	public String author;
+	public String news_title;
+	public String news_text;
+	public String news_img;
+	public String news_date;
 	public String link;
-	public String pub_date;
-	public String title;
-	public String description;
-	public int news_id;
-	public String thumburl;
-	
-	public NewsItem(int id, String author, String link, String pub_date,
-			String title, String description, int news_id, String thumburl) {
+
+	public NewsItem(){}
+	public NewsItem(int id, String news_title, String news_text, String news_img,
+			String news_date, String link) {
 		this.id = id;
-		this.author = author;
+		this.news_title = news_title;
+		this.news_text = news_text;
+		this.news_img = news_img;
+		this.news_date = news_date;
 		this.link = link;
-		this.pub_date = pub_date;
-		this.title = title;
-		this.description = description;
-		this.news_id = news_id;
-		this.thumburl = thumburl;
 	}
 
 	public static NewsItem getNewsItem(JSONObject data){		
 		
 		NewsItem newsItem = new NewsItem(data.optInt("id"),
-				data.optString("author"),				
-				data.optString("link"),
-				data.optString("pub_date"),
-				data.optString("title"),
-				data.optString("description"),
-				data.optInt("news_id"),
-				data.optString("thumburl"));
+				data.optString("news_title"),
+				data.optString("news_text"),
+				data.optString("news_img"),
+				data.optString("news_date"),
+				data.optString("link"));
 		
 		return newsItem;
 		
@@ -50,13 +45,11 @@ public class NewsItem {
 	public static NewsItem getNewsItem(Cursor cursor){
 
 		NewsItem newsItem = new NewsItem(cursor.getInt(cursor.getColumnIndex("id")),
-				cursor.getString(cursor.getColumnIndex("author")),
-				cursor.getString(cursor.getColumnIndex("link")),
-				cursor.getString(cursor.getColumnIndex("pub_date")),
-				cursor.getString(cursor.getColumnIndex("title")),
-				cursor.getString(cursor.getColumnIndex("description")),
-				cursor.getInt(cursor.getColumnIndex("news_id")),
-				cursor.getString(cursor.getColumnIndex("thumburl")));
+				cursor.getString(cursor.getColumnIndex("news_title")),
+				cursor.getString(cursor.getColumnIndex("news_text")),
+				cursor.getString(cursor.getColumnIndex("news_img")),
+				cursor.getString(cursor.getColumnIndex("news_date")),
+				cursor.getString(cursor.getColumnIndex("link")));
 
 		return newsItem;
 

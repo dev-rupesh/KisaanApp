@@ -2,6 +2,7 @@ package rsoni.Activity;
 
 import android.content.Context;
 import android.content.pm.ProviderInfo;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -15,6 +16,10 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,12 +41,12 @@ import rsoni.modal.SearchFilter;
 import rsoni.modal.State;
 import rsoni.modal.UserSubCategory;
 
-public class FindActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemSelectedListener {
+public class FindActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     SearchFilter searchFilter = new SearchFilter();
     Context context;
 
-    LinearLayout ll_search_filter,ll_search_filter_form;
+    LinearLayout ll_search_filter, ll_search_filter_form;
     ListView lv_search_result;
     List<SaleNode> saleNodes = new ArrayList<>();
     List<BuyNode> buyNodes = new ArrayList<>();
@@ -49,7 +54,7 @@ public class FindActivity extends AppCompatActivity implements View.OnClickListe
     Spinner sp_business;
     RadioGroup rg_radioGroup;
     TextView tv_applied_filter;
-    Button btn_find,btn_search_form_ok;
+    Button btn_find, btn_search_form_ok;
     private Spinner spStates;
     private Spinner spDistricts;
 
@@ -57,10 +62,15 @@ public class FindActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayAdapter<District> districtArrayAdapter;
     private ArrayAdapter<Business> businessArrayAdapter;
 
-    private  List<Business> businesses = new ArrayList<>();
+    private List<Business> businesses = new ArrayList<>();
     private List<State> states = null;
     private List<District> districtList;
-    private Map<Integer,List<District>> districtsMap = null;
+    private Map<Integer, List<District>> districtsMap = null;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
 
     @Override
@@ -73,19 +83,22 @@ public class FindActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.context = this;
         initView();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         try {
-            if(states==null){
+            if (states == null) {
                 states = State.getStateList(this);
-                states.add(0,new State(true));
+                states.add(0, new State(true));
             }
-            if(districtsMap == null){
+            if (districtsMap == null) {
                 districtsMap = District.getDistrictMap(this);
-                districtsMap.put(-1,new ArrayList<District>());
+                districtsMap.put(-1, new ArrayList<District>());
             }
 
         } catch (IOException e) {
@@ -105,15 +118,15 @@ public class FindActivity extends AppCompatActivity implements View.OnClickListe
         btn_find.setOnClickListener(this);
         btn_search_form_ok = (Button) findViewById(R.id.btn_search_form_ok);
         btn_search_form_ok.setOnClickListener(this);
-        spStates = (Spinner)findViewById(R.id.sp_states);
+        spStates = (Spinner) findViewById(R.id.sp_states);
 
-        spDistricts = (Spinner)findViewById(R.id.sp_districts);
+        spDistricts = (Spinner) findViewById(R.id.sp_districts);
     }
 
-    private void resetSearchFilter(){
+    private void resetSearchFilter() {
 
-        businesses.addAll( App.businesses);
-        businesses.add(0,new Business(true));
+        businesses.addAll(App.businesses);
+        businesses.add(0, new Business(true));
 
         stateArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, states);
         stateArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -134,35 +147,36 @@ public class FindActivity extends AppCompatActivity implements View.OnClickListe
         searchFilter.market_id = App.appUser.userProfile.market_id;
         searchFilter.market = App.appUser.userProfile.market_name;
         searchFilter.searchFor = "";
-        tv_applied_filter.setText(searchFilter.state+" > "+searchFilter.district);
+        tv_applied_filter.setText(searchFilter.state + " > " + searchFilter.district);
     }
 
-    private void setSearchFilter(){
-        State state = (State)spStates.getSelectedItem();
-        District district  = (District) spDistricts.getSelectedItem();
+    private void setSearchFilter() {
+        State state = (State) spStates.getSelectedItem();
+        District district = (District) spDistricts.getSelectedItem();
         searchFilter.state_id = state.state_id;
         searchFilter.state = state.state_name;
         searchFilter.district_id = district.district_id;
         searchFilter.district = district.district_name;
-        tv_applied_filter.setText(searchFilter.state+" > "+searchFilter.district);
+        tv_applied_filter.setText(searchFilter.state + " > " + searchFilter.district);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         ArrayAdapter arrayAdapter = (ArrayAdapter) adapterView.getAdapter();
-        if(arrayAdapter == stateArrayAdapter){
+        if (arrayAdapter == stateArrayAdapter) {
             System.out.println("State selected...");
             State state = (State) arrayAdapter.getItem(i);
             districtList = districtsMap.get(state.state_id);
-            if(districtList.isEmpty() || districtList.get(0).district_id!=-1) districtList.add(0,new District(true));
+            if (districtList.isEmpty() || districtList.get(0).district_id != -1)
+                districtList.add(0, new District(true));
             districtArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, districtList); //selected item will look like a spinner set from XML
             districtArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spDistricts.setAdapter(districtArrayAdapter);
             spDistricts.setOnItemSelectedListener(this);
             int index = 0;
-            if(App.appUser.userProfile!=null){
-                for(District district : districtList){
-                    if(district.district_id==App.appUser.userProfile.district_id){
+            if (App.appUser.userProfile != null) {
+                for (District district : districtList) {
+                    if (district.district_id == App.appUser.userProfile.district_id) {
                         spDistricts.setSelection(index);
                         break;
                     }
@@ -177,10 +191,10 @@ public class FindActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void toggalSearchForm(){
-        if(ll_search_filter_form.getVisibility()==View.VISIBLE){
+    private void toggalSearchForm() {
+        if (ll_search_filter_form.getVisibility() == View.VISIBLE) {
             ll_search_filter_form.setVisibility(View.GONE);
-        }else{
+        } else {
             ll_search_filter_form.setVisibility(View.VISIBLE);
         }
 
@@ -188,11 +202,11 @@ public class FindActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        if(view == btn_find){
+        if (view == btn_find) {
             // search api call with params
-        }else if(view == tv_applied_filter){
+        } else if (view == tv_applied_filter) {
             toggalSearchForm();
-        }else if(view == btn_search_form_ok){
+        } else if (view == btn_search_form_ok) {
             toggalSearchForm();
             setSearchFilter();
         }
@@ -209,4 +223,43 @@ public class FindActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Find Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://rsoni.Activity/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Find Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://rsoni.Activity/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }
 }
