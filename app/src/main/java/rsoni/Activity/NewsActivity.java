@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rsoni.Adapter.NewsListAdaptor;
@@ -24,12 +25,11 @@ import rsoni.modal.NewsItem;
 
 public class NewsActivity extends AppCompatActivity {
 
-    TextView tv_name_of_company,tv_name_of_proprietor;
-    LinearLayout ll_user_profile;
+
     ListView lv_news;
     NewsListAdaptor listAdaptor;
-    List<NewsItem> newsItems;
-    List<NewsItem> newsItemsTemp;
+    List<NewsItem> newsItems = new ArrayList<>();
+    List<NewsItem> newsItemsTemp = new ArrayList<>();
     BackgroundTask backgroundTask;
     Context context;
     int latest_invoice_no = 0;
@@ -50,28 +50,14 @@ public class NewsActivity extends AppCompatActivity {
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         initView();
-        setProfileData();
+        listAdaptor =  new NewsListAdaptor(context,newsItems);
+        lv_news.setAdapter(listAdaptor);
         backgroundTask = new BackgroundTask(Task.news_list_db);
         backgroundTask.execute((Void) null);
     }
 
     private void initView() {
-        ll_user_profile = (LinearLayout) findViewById(R.id.ll_user_profile);
-        tv_name_of_company = (TextView) findViewById(R.id.tv_name_of_company);
-        tv_name_of_proprietor = (TextView) findViewById(R.id.tv_name_of_proprietor);
-        //tv_address = (TextView) findViewById(R.id.tv_address);
-        //tv_district = (TextView) findViewById(R.id.tv_district);
-        //tv_mobile = (TextView) findViewById(R.id.tv_mobile);
         lv_news = (ListView) findViewById(R.id.lv_news);
-    }
-
-    private void setProfileData(){
-        if(App.appUser.userProfile!=null) {
-            ll_user_profile.setVisibility(View.VISIBLE);
-            tv_name_of_company.setText(App.appUser.userProfile.company_name);
-            tv_name_of_proprietor.setText(App.appUser.userProfile.owner_name);
-        }
-
     }
 
     @Override
@@ -118,8 +104,8 @@ public class NewsActivity extends AppCompatActivity {
                 case news_list_db:
                     if(!newsItemsTemp.isEmpty()){
                         latest_invoice_no = newsItemsTemp.get(0).getId();
-                        listAdaptor =  new NewsListAdaptor(context,newsItems);
-                        lv_news.setAdapter(listAdaptor);
+                        newsItems.addAll(0,newsItemsTemp);
+                        listAdaptor.notifyDataSetChanged();
                     }
                     backgroundTask = new BackgroundTask(Task.news_list_web);
                     backgroundTask.execute((Void) null);

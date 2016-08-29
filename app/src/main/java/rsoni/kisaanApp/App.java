@@ -70,7 +70,7 @@ public class App extends Application{
         super.onTerminate();
     }
 
-    public static String ServiceUrl = "http://rupeshs.in/justagriagro/api/";
+    public static String ServiceUrl = "http://rupeshs.in/JustAgriAgro/api/";
 
     private void setMasterData(){
         if(businessIdMap==null){
@@ -185,10 +185,6 @@ public class App extends Application{
         return false;
     }
 
-
-
-
-
     public static ProgressDialog ShowLoader(Context context){
         ProgressDialog pd = new ProgressDialog(context);
         pd.setTitle("Processing...");
@@ -199,19 +195,12 @@ public class App extends Application{
         return pd;
     }
 
-
-
-
     public static SimpleDateFormat DateOnly = new SimpleDateFormat("yyyy-MM-dd");
-    public static SimpleDateFormat DateOnlyWithMonthName = new SimpleDateFormat(
-            "MMM dd, yyyy");
-    public static SimpleDateFormat DateHourMinut = new SimpleDateFormat(
-            "yyyy-MM-dd hh:mm a");
-    public static SimpleDateFormat DateHourMinutSeconds = new SimpleDateFormat(
-            "yyyy-MM-dd HH:mm:ss");
+    public static SimpleDateFormat DateOnlyWithMonthName = new SimpleDateFormat("MMM dd, yyyy");
+    public static SimpleDateFormat DateHourMinut = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+    public static SimpleDateFormat DateHourMinutSeconds = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static SimpleDateFormat DateMonthHourMinutSeconds = new SimpleDateFormat("dd-MMM hh:mm a");
 
-    public static SimpleDateFormat DateMonthHourMinutSeconds = new SimpleDateFormat(
-            "dd-MMM hh:mm a");
 
     public static SimpleDateFormat HourMinut = new SimpleDateFormat("h:mm a");
 

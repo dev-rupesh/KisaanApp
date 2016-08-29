@@ -27,13 +27,13 @@ public class NetworkService {
 		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
 		System.out.println("22222");
 		if (task == Task.mobile_login){
-			url+="auth.php";
+			url+="auth/sign-in";
 			param.add(new BasicNameValuePair("opt", "sign-in"));
 			param.add(new BasicNameValuePair("mobile", appUser.mobile));
 			param.add(new BasicNameValuePair("pass", appUser.password));
 			return getResponce(url,Task.post,task,param);
 		} else if (task == Task.mobile_register){
-			url+="auth.php";
+			url+="auth/sign-up";
 			param.add(new BasicNameValuePair("opt", "sign-up"));
 			param.add(new BasicNameValuePair("mobile", appUser.mobile));
 			param.add(new BasicNameValuePair("pass", appUser.password));
@@ -42,12 +42,12 @@ public class NetworkService {
 			System.out.println("333333");
 			return getResponce(url,Task.post,task,param);
 		} else if (task == Task.email_login){
-			url+="auth.php";
+			url+="auth";
 			param.add(new BasicNameValuePair("email", appUser.email));
 			param.add(new BasicNameValuePair("password", appUser.password));
 			return getResponce(url,Task.post,task,param);
 		} else if (task == Task.fb_login){
-			url+="accounts/fblogin";
+			url+="accounts";
 			param.add(new BasicNameValuePair("email", appUser.email));
 
 			return getResponce(url,Task.post,task,param);
@@ -118,17 +118,17 @@ public class NetworkService {
 		String url = App.ServiceUrl;
 		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
 		if (task == Task.get_sale_node) { //
-			url+="sale.php";
+			url+="sale/get-sale-node";
 			param.add(new BasicNameValuePair("opt", "get-sale-node"));
 			param.add(new BasicNameValuePair("id", ""+saleNode.id));
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.list_sale_node){
-			url+="sale.php";
+			url+="sale/list-sale-node";
 			param.add(new BasicNameValuePair("opt", "list-sale-node"));
 			param.add(new BasicNameValuePair("user_id", ""+App.appUser.id));
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.add_sale_node){
-			url+="sale.php";
+			url+="sale/add-sale-node";
 			param.add(new BasicNameValuePair("opt", "add-sale-node"));
 			param.add(new BasicNameValuePair("user_id", ""+saleNode.user_id));
 			param.add(new BasicNameValuePair("state_id", ""+saleNode.state_id));
@@ -142,14 +142,14 @@ public class NetworkService {
 
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.update_sale_node){
-			url+="sale.php";
+			url+="sale/update-sale-node";
 			param.add(new BasicNameValuePair("opt", "update-sale-node"));
 			param.add(new BasicNameValuePair("id", ""+saleNode.id));
 			param.add(new BasicNameValuePair("note_date", ""+saleNode.note_date));
 			param.add(new BasicNameValuePair("sale_note", saleNode.sale_note));
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.delete_sale_node){
-			url+="sale.php";
+			url+="sale/delete-sale-node";
 			param.add(new BasicNameValuePair("opt", "delete-sale-node"));
 			param.add(new BasicNameValuePair("id", ""+saleNode.id));
 			return getResponce(url,Task.post,task,param);
@@ -162,17 +162,17 @@ public class NetworkService {
 		String url = App.ServiceUrl;
 		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
 		if (task == Task.get_buy_node) { //
-			url+="buy.php";
+			url+="buy/get-buy-node";
 			param.add(new BasicNameValuePair("opt", "get-buy-node"));
 			param.add(new BasicNameValuePair("id", ""+App.appUser.id));
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.list_buy_node){
-			url+="buy.php";
+			url+="buy/list-buy-node";
 			param.add(new BasicNameValuePair("opt", "list-buy-node"));
 			param.add(new BasicNameValuePair("user_id", ""+App.appUser.id));
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.add_buy_node){
-			url+="buy.php";
+			url+="buy/add-buy-node";
 			param.add(new BasicNameValuePair("opt", "add-buy-node"));
 			param.add(new BasicNameValuePair("user_id", ""+App.appUser.id));
 			param.add(new BasicNameValuePair("state_id", ""+buyNode.state_id));
@@ -186,14 +186,14 @@ public class NetworkService {
 			param.add(new BasicNameValuePair("buy_note", buyNode.buy_note));
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.update_buy_node){
-			url+="buy.php";
+			url+="buy/update-buy-node";
 			param.add(new BasicNameValuePair("opt", "update-buy-node"));
 			param.add(new BasicNameValuePair("id", ""+App.appUser.id));
 			param.add(new BasicNameValuePair("note_date", ""+buyNode.note_date));
 			param.add(new BasicNameValuePair("buy_note", buyNode.buy_note));
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.delete_buy_node){
-			url+="buy.php";
+			url+="buy/delete-buy-node";
 			param.add(new BasicNameValuePair("opt", "delete-buy-node"));
 			param.add(new BasicNameValuePair("id", ""+buyNode.id));
 			return getResponce(url,Task.post,task,param);
@@ -206,13 +206,14 @@ public class NetworkService {
 		String url = App.ServiceUrl;
 		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
 		if (task == Task.get_news_details) { //
-			url+="news.php";
-			param.add(new BasicNameValuePair("opt", "get-news-details"));
+			url+="news/get-news-details";
+			//param.add(new BasicNameValuePair("opt", "get-news-details"));
 			param.add(new BasicNameValuePair("id", ""+newsItem.id));
 			return getResponce(url,Task.get,task,param);
-		}else if (task == Task.news_list_sort){
-			url+="news.php";
-			param.add(new BasicNameValuePair("opt", "news_list_sort"));
+		}else if (task == Task.news_list_web){
+			url+="news/news_list";
+			//param.add(new BasicNameValuePair("opt", "news_list_sort"));
+			param.add(new BasicNameValuePair("latest_id", ""+newsItem.id));
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.add_news){
 			url+="news.php";
@@ -226,7 +227,7 @@ public class NetworkService {
 			//param.add(new BasicNameValuePair("commodity_cat_id", ""+newsItem.title));
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.delete_news){
-			url+="news.php";
+			url+="news/delete-news";
 			param.add(new BasicNameValuePair("opt", "delete-news"));
 			param.add(new BasicNameValuePair("id", ""+newsItem.id));
 			return getResponce(url,Task.post,task,param);
@@ -243,7 +244,7 @@ public class NetworkService {
 			url+="profile";
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.update_profile){
-			url+="auth.php";
+			url+="auth/update-profile";
 			param.add(new BasicNameValuePair("opt", "update-profile"));
 			param.add(new BasicNameValuePair("id", ""+appUser.id));
 			param.add(new BasicNameValuePair("mobile", appUser.mobile));
@@ -319,6 +320,7 @@ public class NetworkService {
 
 			case get_news_details:
 			case news_list_sort:
+			case news_list_web:
 			case add_news:
 			case delete_news:
 				dataResult = dataParser.News(json, mode);

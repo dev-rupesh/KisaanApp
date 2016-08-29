@@ -72,22 +72,20 @@ public class NewsListAdaptor extends BaseAdapter {
 
 	class viewHolder {
 
-		TextView tv_historytitle, tv_historydesc, tv_new_date;
-		ImageView iv_news_thumb;
+		TextView tv_news_title, tv_news_text, tv_news_date;
+		ImageView iv_news_img;
 
 		public viewHolder(View convertView) {
-			tv_historytitle = (TextView) convertView
-					.findViewById(R.id.tv_historytitle);
-			tv_historydesc = (TextView) convertView
-					.findViewById(R.id.tv_historydesc);
-			//tv_new_date = (TextView) convertView.findViewById(R.id.tv_new_date);
+			tv_news_title = (TextView) convertView.findViewById(R.id.tv_news_title);
+			tv_news_text = (TextView) convertView.findViewById(R.id.tv_news_text);
+			iv_news_img = (ImageView) convertView.findViewById(R.id.iv_news_img);
 			// iv_news_thumb = (ImageView)
 			// convertView.findViewById(R.id.iv_news_thumb);
 		}
 
 		void setData(NewsItem newsItem) {
-			tv_historytitle.setText(newsItem.title);
-			tv_historydesc.setText(newsItem.description);
+			tv_news_title.setText(newsItem.news_title);
+			tv_news_text.setText(newsItem.news_text);
 			// tv_new_date.setText(newsItem.pubDate);
 			// try {
 			// tv_new_date.setText(App.MonthDateYearTime.format(formatter.parse(newsItem.pubDate)));

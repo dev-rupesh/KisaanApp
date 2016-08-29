@@ -53,7 +53,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.execSQL("create table salenode "
 				+ "(id integer primary key, user_id integer, sale_note text,state_id integer,district_id integer,market_id integer, commodity_cat_id integer,commodity_id integer,business_id integer,usercat integer,note_date integer)");
 		db.execSQL("create table news "
-				+ "(id integer primary key, author text, link text,news_title text,news_test text,news_ing text, news_date text)");
+				+ "(id integer primary key, news_type text, news_url text,news_title text,news_text text,news_ing text, news_date text)");
 	
 	}
 

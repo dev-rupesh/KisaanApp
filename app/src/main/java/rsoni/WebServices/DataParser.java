@@ -7,6 +7,7 @@ import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
 import rsoni.modal.AppUser;
 import rsoni.modal.BuyNode;
+import rsoni.modal.NewsItem;
 import rsoni.modal.SaleNode;
 import rsoni.modal.SearchResult;
 
@@ -249,8 +250,8 @@ public class DataParser {
 			try {
 				if ( mode == Task.add_news || mode==Task.get_news_details) {
 					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
-				}else if ( mode == Task.news_list_sort) {
-					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
+				}else if ( mode == Task.news_list_web) {
+					result.Data = NewsItem.getNewsItems(response.getJSONArray("data"));
 				}else if ( mode == Task.delete_news) {
 					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
 				}

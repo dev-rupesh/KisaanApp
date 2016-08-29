@@ -16,12 +16,14 @@ public class NewsItem {
 	public String news_text;
 	public String news_img;
 	public String news_date;
+	public String news_type;
 	public String link;
 
 	public NewsItem(){}
-	public NewsItem(int id, String news_title, String news_text, String news_img,
+	public NewsItem(int id,String news_type, String news_title, String news_text, String news_img,
 			String news_date, String link) {
 		this.id = id;
+		this.news_type = news_type;
 		this.news_title = news_title;
 		this.news_text = news_text;
 		this.news_img = news_img;
@@ -32,11 +34,12 @@ public class NewsItem {
 	public static NewsItem getNewsItem(JSONObject data){		
 		
 		NewsItem newsItem = new NewsItem(data.optInt("id"),
+				data.optString("news_type"),
 				data.optString("news_title"),
 				data.optString("news_text"),
 				data.optString("news_img"),
 				data.optString("news_date"),
-				data.optString("link"));
+				data.optString("news_url"));
 		
 		return newsItem;
 		
@@ -45,11 +48,12 @@ public class NewsItem {
 	public static NewsItem getNewsItem(Cursor cursor){
 
 		NewsItem newsItem = new NewsItem(cursor.getInt(cursor.getColumnIndex("id")),
+				cursor.getString(cursor.getColumnIndex("news_type")),
 				cursor.getString(cursor.getColumnIndex("news_title")),
 				cursor.getString(cursor.getColumnIndex("news_text")),
 				cursor.getString(cursor.getColumnIndex("news_img")),
 				cursor.getString(cursor.getColumnIndex("news_date")),
-				cursor.getString(cursor.getColumnIndex("link")));
+				cursor.getString(cursor.getColumnIndex("news_url")));
 
 		return newsItem;
 

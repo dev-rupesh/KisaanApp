@@ -1,39 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="55dip"
+    android:layout_height="wrap_content"
     android:orientation="vertical"     
-    android:padding="20dp"
-    android:background="@android:color/background_light">
+    android:padding="5dp">
 
-    <TextView
-        android:id="@+id/tv_historytitle"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textSize="17dip"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:textStyle="bold"
-        android:textColor="#000000"/>
-    <!-- <TextView
-        android:id="@+id/tv_new_date"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textSize="17dip"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:textStyle="bold"
-        android:textColor="#000000"/> -->
-    <ImageView         
-        android:id="@+id/iv_news_thumb"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:scaleType="fitStart"/>
+        android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/iv_news_img"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/news_placeholder"/>
+
+    <TextView
+        android:id="@+id/tv_news_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="17dip"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:textStyle="bold"
+        android:textColor="#000000"/>
+    </LinearLayout>
     
     <TextView
-        android:id="@+id/tv_historydesc"
-        android:layout_width="fill_parent"
+        android:id="@+id/tv_news_text"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="17dip"
         android:paddingTop="5dp"
