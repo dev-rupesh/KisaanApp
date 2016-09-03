@@ -18,12 +18,26 @@
         android:textColor="#33b5e5"
         android:textSize="50sp"
         android:textStyle="bold" />-->
-    <ImageView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="50dp"
         android:layout_gravity="center"
-        android:src="@mipmap/just_logo_1"/>
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/justagriagrologo_800_2"/>
+        <rsoni.View.FontFitTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textColor="@color/colorGreen"
+            android:text="@string/app_name"/>
+    </LinearLayout>
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
