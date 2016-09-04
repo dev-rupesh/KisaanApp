@@ -72,7 +72,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
         setContentView(R.layout.activity_register);
         context = this;
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+        getSupportActionBar().setLogo(R.mipmap.ic_action_bar_logo);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

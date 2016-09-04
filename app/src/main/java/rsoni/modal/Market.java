@@ -1,6 +1,7 @@
 package rsoni.modal;
 
 import android.content.Context;
+import android.database.Cursor;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -27,7 +28,7 @@ public class Market {
     double longitude = 75.053357;
     String city;
     String address;
-    String district;
+    public String district;
     String contact_no;
     int email_id = 0;
 
@@ -35,6 +36,20 @@ public class Market {
     public Market(boolean root){
         id = -1;
         mandi_name = " -- Select One -- ";
+    }
+
+    public Market(int mandi_id, String mandi_name, String district) {
+        this.mandi_id = mandi_id;
+        this.mandi_name = mandi_name;
+        this.district = district;
+    }
+
+    public static Market getMarket(Cursor cursor){
+        Market market = new Market(
+                cursor.getInt(cursor.getColumnIndex("mandi_id")),
+                cursor.getString(cursor.getColumnIndex("mandi_name")),
+                cursor.getString(cursor.getColumnIndex("district")));
+        return market;
     }
 
     public static Map<String,List<Market>> getMarketMap(Context context) throws IOException {
@@ -56,6 +71,14 @@ public class Market {
         }
 
         return marketMap;
+    }
+
+    public static List<Market> getMarkets(Context context) throws IOException {
+        Type listType = new TypeToken<List<Market>>() {}.getType();
+        InputStream input = context.getAssets().open("market.json");
+        Reader reader = new InputStreamReader(input, "UTF-8");
+        List<Market> markets = new Gson().fromJson(reader,listType);
+        return markets;
     }
 
     @Override

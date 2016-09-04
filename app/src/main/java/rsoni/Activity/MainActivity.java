@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+        getSupportActionBar().setLogo(R.mipmap.ic_action_bar_logo);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
 
@@ -95,8 +95,8 @@ public class MainActivity extends AppCompatActivity
         //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         //MenuItem item = navigationView.getMenu().findItem(R.id.nav_sign_out);
         //item.setVisible(false);
-        return super.onPrepareOptionsMenu(menu);
-
+        //return super.onPrepareOptionsMenu(menu);
+        return false;
     }
 
     @Override

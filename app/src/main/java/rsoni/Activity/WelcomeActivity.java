@@ -3,9 +3,11 @@ package rsoni.Activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.TextView;
 
 import rsoni.kisaanApp.App;
 import rsoni.kisaanApp.R;
@@ -18,6 +20,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private final int SPLASH_DISPLAY_LENGTH = 3000;
     private Activity context;
+    TextView tv_aap_name;
 
 
     @Override
@@ -25,6 +28,10 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         context = this;
+
+        tv_aap_name = (TextView) findViewById(R.id.tv_app_name);
+        Typeface face= Typeface.createFromAsset(getAssets(),"font/georgiaz.ttf");
+        tv_aap_name.setTypeface(face);
 
         //startActivity(new Intent(WelcomeActivity.this, ProfileActivity.class));
         //this.finish();
