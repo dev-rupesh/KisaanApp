@@ -118,7 +118,7 @@
             android:id="@+id/btn_add_price_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Find"/>
+            android:text="Add"/>
     </LinearLayout>
 
 

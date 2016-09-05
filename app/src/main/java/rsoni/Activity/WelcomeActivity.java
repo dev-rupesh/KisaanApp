@@ -43,7 +43,9 @@ public class WelcomeActivity extends AppCompatActivity {
                 Intent nextIntent = null;
                 /* Create an Intent that will start the Menu-Activity. */
 
-
+                if(App.mydb.getStates(false).isEmpty()){
+                    App.mydb.AddMasterDataFromJson(context);
+                }
 
                 if(App.isAppRegistered(getApplicationContext())) {
                     if(App.appUser.userProfile==null){

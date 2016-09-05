@@ -121,14 +121,14 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_commodity_rates) {
-            //startActivity(new Intent(this,CommodityRatesSearchActivity.class));
-            startActivity(new Intent(this,CommodityRatesAddActivity.class));
+            startActivity(new Intent(this,CommodityRatesSearchActivity.class));
+            //startActivity(new Intent(this,CommodityRatesAddActivity.class));
         } /*else if (id == R.id.nav_weather_report) {
             startActivity(new Intent(this,WeatherReportActivity.class));
         } */else if (id == R.id.nav_news) {
             startActivity(new Intent(this,NewsActivity.class));
         } else if (id == R.id.nav_market_map) {
-            //startActivity(new Intent(this,MapsActivity.class));
+            startActivity(new Intent(this,MandiOnMapActivity.class));
         } else if (id == R.id.nav_find) {
             startActivity(new Intent(this,FindActivity.class));
         } else if (id == R.id.nav_buyer) {

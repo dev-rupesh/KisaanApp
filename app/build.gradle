@@ -10,10 +10,12 @@ android {
         targetSdkVersion 17
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -27,14 +29,14 @@ dependencies {
     //    exclude module: 'httpclient'
     //}
     //compile 'org.apache.httpcomponents:httpclient:4.5.1'
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
-    compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.google.code.gson:gson:2.2.+'
-    compile ('com.weiwangcn.betterspinner:library-material:1.1.0') {
+    compile('com.weiwangcn.betterspinner:library-material:1.1.0') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.rengwuxian.materialedittext', module: 'library'
     }
 
-    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:design:23.4.0'
+    compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.google.code.gson:gson:2.2.+'
+    compile 'com.google.android.gms:play-services:9.4.0'
 }
