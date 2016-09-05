@@ -14,11 +14,19 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/justagriagrologo_800_2"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold|italic"
             android:textColor="@color/colorGreen"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:textSize="48sp"
             android:text="JustAgriAgro"/>
@@ -27,7 +35,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:text="Description of JustAgriagro android app. How its work and its functions."/>
+            android:textStyle="bold|italic"
+            android:textScaleX="2"
+            android:gravity="center"
+            android:lineSpacingExtra="4sp"
+            android:text="We are a trading service provider company that provide good trading services to help both parties wants to trade all over in india and engaged in import/export trading."/>
 
     </LinearLayout>
 

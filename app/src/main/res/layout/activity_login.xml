@@ -54,9 +54,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_mobile"
-                    android:inputType="number"
+                    android:inputType="phone"
                     android:maxLength="10"
                     android:maxLines="1"
+                    android:drawableLeft="@drawable/ic_perm_identity_black_24dp"
+                    android:drawablePadding="10dp"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
@@ -72,6 +74,8 @@
                     android:hint="@string/prompt_password"
                     android:inputType="textPassword"
                     android:maxLines="1"
+                    android:drawableLeft="@drawable/ic_lock_outline_black_24dp"
+                    android:drawablePadding="10dp"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
@@ -92,6 +96,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:text="Register Now"
+                    android:textColor="@color/colorGreen"
+                    android:textStyle="italic"
+                    android:textSize="20dp"
                     android:id="@+id/m_register" />
                 <TextView
                     android:layout_width="wrap_content"
@@ -99,6 +106,9 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="20dp"
                     android:text="Forgot Password"
+                    android:textColor="@color/colorGreen"
+                    android:textStyle="italic"
+                    android:textSize="20dp"
                     android:id="@+id/m_forgot_pass" />
             </RelativeLayout>
 

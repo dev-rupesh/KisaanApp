@@ -24,6 +24,10 @@
     <string name="error_invalid_pincode">This Pincode should be 6 digit</string>
     <string name="error_field_required">This field is required</string>
     <string name="title_activity_register">Sign up</string>
+    <string name="owner_contact">09422656442</string>
+    <string name="owner_email">vijaykumartiwari81@gmail.com</string>
+    <string name="company_address">Company Address of JustAgriAgro.</string>
+
 
     <array name="user_category">
         <item>-- Select One --</item>

@@ -3,10 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="5dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
-    android:paddingTop="1dp"
     android:orientation="vertical"
     tools:context="rsoni.Activity.BuyerActivity">
 
@@ -20,8 +16,10 @@
             android:id="@+id/ll_user_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="5dp"
             android:visibility="visible"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/colorGreen">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -30,7 +28,6 @@
                 android:textSize="20sp"
                 android:padding="10dp"
                 android:textColor="#fff"
-                android:background="#9BCD9B"
                 android:textStyle="bold"
                 android:id="@+id/tv_name_of_company" />
             <TextView
@@ -44,7 +41,8 @@
             android:id="@+id/lv_buys"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:padding="5dp"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

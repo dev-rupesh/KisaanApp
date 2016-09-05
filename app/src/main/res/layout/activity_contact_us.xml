@@ -27,19 +27,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:text="Address : Company address of JustAgriAgro."/>
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/ic_domain_black_24dp"
+            android:text="@string/company_address"/>
 
         <TextView
+            android:id="@+id/tv_contact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="Contact : 9422656442"/>
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/ic_call_black_24dp"
+            android:text="@string/owner_contact"/>
 
         <TextView
+            android:id="@+id/tv_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="Email : vijaykumartiwari81@gmail.com"/>
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/ic_mail_outline_black_24dp"
+            android:text="@string/owner_email"/>
 
     </LinearLayout>
 
