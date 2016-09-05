@@ -121,7 +121,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_commodity_rates) {
-            startActivity(new Intent(this,CommodityRatesActivity.class));
+            //startActivity(new Intent(this,CommodityRatesSearchActivity.class));
+            startActivity(new Intent(this,CommodityRatesAddActivity.class));
         } /*else if (id == R.id.nav_weather_report) {
             startActivity(new Intent(this,WeatherReportActivity.class));
         } */else if (id == R.id.nav_news) {

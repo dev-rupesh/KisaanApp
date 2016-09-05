@@ -14,6 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import rsoni.kisaanApp.App;
 import rsoni.modal.BuyNode;
 import rsoni.modal.Commodity;
 import rsoni.modal.CommodityCat;
@@ -32,6 +33,8 @@ public class DBHelper extends SQLiteOpenHelper {
 	public static final String TABLE_SALNODE = "salenode";
 	public static final String TABLE_BUYNODE = "buynode";
 	public static final String TABLE_NEWS = "news";
+	public static final String TABLE_COMMODITYCAT = "commoditycat";
+	public static final String TABLE_COMMODITY = "commodity";
 
 	private HashMap hp;
 	public DBHelper(Context context) {
@@ -46,13 +49,13 @@ public class DBHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
 		db.execSQL("create table state "
-				+ "(id integer primary key, match_id integer, by_name text,comment text,on_date text)");
+				+ "(id integer primary key, state_id integer, state_name text,country_id integer)");
 		db.execSQL("create table district "
-				+ "(id integer primary key, match_id integer, by_name text,comment text,on_date text)");
+				+ "(id integer primary key, district_id integer,state_id integer, district_name text)");
 		db.execSQL("create table market "
-				+ "(id integer primary key, match_id integer, by_name text,comment text,on_date text)");
+				+ "(id integer primary key, mandi_id integer, mandi_name text,district text)");
 		db.execSQL("create table business "
-				+ "(id integer primary key, match_id integer, by_name text,comment text,on_date text)");
+				+ "(id integer primary key, business_id integer, business text)");
 		db.execSQL("create table buynode "
 				+ "(id integer primary key, user_id integer, buy_note text,state_id integer,district_id integer,market_id integer, commodity_cat_id integer,commodity_id integer,business_id integer,usercat integer,note_date integer)");
 		db.execSQL("create table salenode "
@@ -239,67 +242,79 @@ public class DBHelper extends SQLiteOpenHelper {
 		return true;
 	}
 
-	private List<State> getStates(){
+	public List<State> getStates(boolean with_select_option){
 		List<State> states = new ArrayList<>();
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery("select * from state", null);
+		Cursor cursor = db.query(TABLE_STATE, null, null, null, null, null, null);
 		if (cursor .moveToFirst()) {
 			while (cursor.isAfterLast() == false) {
 				states.add(State.getState(cursor));
 				cursor.moveToNext();
 			}
 		}
+		if(with_select_option) states.add(0,new State(with_select_option));
 		return states;
 	}
 
-	public List<District> getDistricts(int state_id){
+	public List<District> getDistricts(boolean with_select_option,int state_id){
 		List<District> districts = new ArrayList<>();
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery("select * from state", null);
+		//Cursor cursor = db.rawQuery("select * from state", null);
+		//Cursor cursor = db.query(TABLE_DISTRICT, null, null, null, null, null, null);
+		Cursor cursor = db.query(TABLE_DISTRICT, null, "state_id=?", new String[] { ""+state_id }, null, null, null);
+
+		//String[] columnNames = cursor.getColumnNames();
+
+		//System.out.println("columns : "+ App.gson.toJson(columnNames));
+
 		if (cursor .moveToFirst()) {
 			while (cursor.isAfterLast() == false) {
 				districts.add(District.getDistrict(cursor));
 				cursor.moveToNext();
 			}
 		}
+		if(with_select_option) districts.add(0,new District(with_select_option));
 		return districts;
 	}
 
-	public List<Market> getMarkets(int district_id){
+	public List<Market> getMarkets(boolean with_select_option,String district){
 		List<Market> markets = new ArrayList<>();
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery("select * from state", null);
+		Cursor cursor = db.query(TABLE_MARKET, null, "district=?", new String[] { district }, null, null, null);
 		if (cursor .moveToFirst()) {
 			while (cursor.isAfterLast() == false) {
 				markets.add(Market.getMarket(cursor));
 				cursor.moveToNext();
 			}
 		}
+		if(with_select_option) markets.add(0,new Market(with_select_option));
 		return markets;
 	}
 
-	public List<CommodityCat> getCommodityCats(){
+	public List<CommodityCat> getCommodityCat(boolean with_select_option){
 		List<CommodityCat> commodityCats = new ArrayList<>();
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery("select * from state", null);
+		Cursor cursor = db.query(TABLE_COMMODITYCAT, null, null, null, null, null, null);
 		if (cursor .moveToFirst()) {
 			while (cursor.isAfterLast() == false) {
 				commodityCats.add(CommodityCat.getCommodityCat(cursor));
 				cursor.moveToNext();
 			}
 		}
+		if(with_select_option) commodityCats.add(0,new CommodityCat(with_select_option));
 		return commodityCats;
 	}
-	public List<Commodity> getCommodityCats(int cat_id){
+	public List<Commodity> getCommodity(boolean with_select_option, int cat_id){
 		List<Commodity> commodities = new ArrayList<>();
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery("select * from state", null);
+		Cursor cursor = db.query(TABLE_COMMODITY, null, "commodity_cat_id=?", new String[] { ""+cat_id }, null, null, null);
 		if (cursor .moveToFirst()) {
 			while (cursor.isAfterLast() == false) {
 				commodities.add(Commodity.getCommodity(cursor));
 				cursor.moveToNext();
 			}
 		}
+		if(with_select_option) commodities.add(0,new Commodity(with_select_option));
 		return commodities;
 	}
 
@@ -316,48 +331,54 @@ public class DBHelper extends SQLiteOpenHelper {
 			for (State state : states) {
 				values.put("state_id", state.state_id);
 				values.put("state_name", state.state_name);
-				db.insert("states", null, values);
+				db.insert(TABLE_STATE, null, values);
 			}
-			db.setTransactionSuccessful();
+			//db.setTransactionSuccessful();
+
 			//add Districts
+			//db.beginTransaction();
 			List<District> districts = District.getDistricts(context);
 			values.clear();
 			for (District district : districts) {
 				values.put("district_id", district.district_id);
-				values.put("district_id", district.district_id);
+				values.put("district_name", district.district_name);
 				values.put("state_id", district.state_id);
-				db.insert("districts", null, values);
+				db.insert(TABLE_DISTRICT, null, values);
 			}
-			db.setTransactionSuccessful();
+			//db.setTransactionSuccessful();
+
 			//add Markets
+			//db.beginTransaction();
 			List<Market> markets = Market.getMarkets(context);
 			values.clear();
 			for (Market  market : markets) {
 				values.put("mandi_id", market.mandi_id);
 				values.put("mandi_name", market.mandi_name);
 				values.put("district", market.district);
-				db.insert("markets", null, values);
+				db.insert(TABLE_MARKET, null, values);
 			}
-			db.setTransactionSuccessful();
+			//db.setTransactionSuccessful();
 
 			//add CommodityCats
+			//db.beginTransaction();
 			List<CommodityCat> commodityCats = CommodityCat.getCommodityCat(context);
 			values.clear();
 			for (CommodityCat commodityCat : commodityCats) {
 				values.put("id", commodityCat.id);
 				values.put("commodity_cat", commodityCat.commodity_cat);
-				db.insert("commoditycat", null, values);
+				db.insert(TABLE_COMMODITYCAT, null, values);
 			}
-			db.setTransactionSuccessful();
+			//db.setTransactionSuccessful();
 
 			//add Commodity
+			//db.beginTransaction();
 			List<Commodity> commodities = Commodity.getCommodities(context);
 			values.clear();
 			for (Commodity  commodity : commodities) {
 				values.put("id", commodity.id);
 				values.put("commodity", commodity.commodity);
 				values.put("commodity_cat_id", commodity.commodity_cat_id);
-				db.insert("commodity", null, values);
+				db.insert(TABLE_COMMODITY, null, values);
 			}
 			db.setTransactionSuccessful();
 

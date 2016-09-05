@@ -37,7 +37,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -64,7 +63,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name="rsoni.Activity.CommodityRatesActivity" />
+        <activity android:name="rsoni.Activity.CommodityRatesSearchActivity" />
+        <activity android:name="rsoni.Activity.CommodityRatesAddActivity" />
         <activity android:name="rsoni.Activity.SalerActivity" />
         <activity android:name="rsoni.Activity.ContactUsActivity" />
         <activity android:name="rsoni.Activity.AboutUsActivity" />

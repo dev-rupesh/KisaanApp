@@ -33,7 +33,7 @@ public class WelcomeActivity extends AppCompatActivity {
         Typeface face= Typeface.createFromAsset(getAssets(),"font/georgiaz.ttf");
         tv_aap_name.setTypeface(face);
 
-        //startActivity(new Intent(WelcomeActivity.this, ProfileActivity.class));
+        //startActivity(new Intent(WelcomeActivity.this, TestActivity.class));
         //this.finish();
         //if(true) return;
 
@@ -42,6 +42,9 @@ public class WelcomeActivity extends AppCompatActivity {
             public void run() {
                 Intent nextIntent = null;
                 /* Create an Intent that will start the Menu-Activity. */
+
+
+
                 if(App.isAppRegistered(getApplicationContext())) {
                     if(App.appUser.userProfile==null){
                         nextIntent = new Intent(WelcomeActivity.this, ProfileActivity.class);
