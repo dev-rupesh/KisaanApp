@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import rsoni.Utils.DataSyncCheck;
+import rsoni.Utils.SettingSyncCheck;
 import rsoni.WebServices.DBHelper;
 import rsoni.WebServices.NetworkService;
 import rsoni.modal.AppUser;
@@ -42,6 +43,7 @@ public class App extends Application{
     public static NetworkService networkService = new NetworkService();
     public static String REG_ID = "";
     public static DataSyncCheck dataSyncCheck = null;
+    public static SettingSyncCheck settingSyncCheck = null;
 
 
     public static SharedPreferences mPrefs;
@@ -51,16 +53,17 @@ public class App extends Application{
 
     public static Map<Integer,Business> businessIdMap = null;
     public static List<Business> businesses = null;
+    public static long last_update_count = 0;
 
     @Override
     public void onCreate() {
-
         context = getApplicationContext();
         mydb = new DBHelper(context);
         mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         getAppUser();
         getUserProfile();
         setMasterData();
+        getSettingSyncCheck();
         getDataSyncCheck();
         super.onCreate();
     }
@@ -115,10 +118,27 @@ public class App extends Application{
             dataSyncCheck = new DataSyncCheck();
         }
     }
+    public static void getSettingSyncCheck() {
+        String json = mPrefs.getString("setting_sync",null);
+        last_update_count = mPrefs.getLong("last_update_count",0);
+        if(json!=null){
+            dataSyncCheck = gson.fromJson(json,DataSyncCheck.class);
+        }else{
+            dataSyncCheck = new DataSyncCheck();
+        }
+    }
     public static void saveDataSyncCheck() {
         SharedPreferences.Editor editor = mPrefs.edit();
         String json = gson.toJson(dataSyncCheck);
         editor.putString("data_sync", json);
+        editor.commit();
+        getDataSyncCheck();
+    }
+    public static void saveSettingSyncCheck() {
+        SharedPreferences.Editor editor = mPrefs.edit();
+        String json = gson.toJson(dataSyncCheck);
+        editor.putString("setting_sync", json);
+        editor.putLong("last_update_count", last_update_count);
         editor.commit();
         getDataSyncCheck();
     }

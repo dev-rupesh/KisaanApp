@@ -18,6 +18,7 @@ import rsoni.kisaanApp.App;
 import rsoni.modal.BuyNode;
 import rsoni.modal.Commodity;
 import rsoni.modal.CommodityCat;
+import rsoni.modal.CommodityPrice;
 import rsoni.modal.District;
 import rsoni.modal.Market;
 import rsoni.modal.NewsItem;
@@ -35,6 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	public static final String TABLE_NEWS = "news";
 	public static final String TABLE_COMMODITYCAT = "commoditycat";
 	public static final String TABLE_COMMODITY = "commodity";
+	public static final String TABLE_COMMODITY_PRICE = "commodityprice";
 
 	private HashMap hp;
 	public DBHelper(Context context) {
@@ -66,7 +68,10 @@ public class DBHelper extends SQLiteOpenHelper {
 				+ "(id integer primary key, commodity_cat text, commodity_desc text)");
 		db.execSQL("create table commodity "
 				+ "(id integer primary key, commodity_cat_id integer, commodity text, commodity_desc text)");
-	
+		db.execSQL("create table commodityprice "
+				+ "(id integer primary key, user_id integer, price_note text,state_id integer,district_id integer,market_id integer, commodity_cat_id integer,commodity_id integer,price_date integer)");
+
+
 	}
 
 	@Override
@@ -190,6 +195,64 @@ public class DBHelper extends SQLiteOpenHelper {
 				insertValues.put("buy_note", buyNode.buy_note);
 				insertValues.put("business_id", buyNode.business_id);
 				insertValues.put("note_date", buyNode.note_date);
+				db.insert(TABLE_BUYNODE,null,insertValues);
+			}
+			// Transaction is successful and all the records have been inserted
+			db.setTransactionSuccessful();
+		}catch(Exception e){
+			e.toString();
+		}finally{
+			//End the transaction
+			db.endTransaction();
+		}
+		return true;
+	}
+
+	public List<CommodityPrice> getCommodityPrice(){
+		List<CommodityPrice> buyNodes = new ArrayList<>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery("select * from buynode", null);
+		if (cursor .moveToFirst()) {
+			while (cursor.isAfterLast() == false) {
+				buyNodes.add(CommodityPrice.getCommodityPrice(cursor));
+				cursor.moveToNext();
+			}
+		}
+		return buyNodes;
+	}
+
+	public CommodityPrice saveCommodityPrice(CommodityPrice commodityPrice){
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues insertValues = new ContentValues();
+		insertValues.put("id", commodityPrice.id);
+		insertValues.put("user_id", commodityPrice.user_id);
+		insertValues.put("commodity_cat_id", commodityPrice.commodity_cat_id);
+		insertValues.put("commodity_id", commodityPrice.commodity_id);
+		insertValues.put("state_id", commodityPrice.state_id);
+		insertValues.put("district_id", commodityPrice.district_id);
+		insertValues.put("market_id", commodityPrice.market_id);
+		insertValues.put("price_note", commodityPrice.price_note);
+		insertValues.put("price_date", commodityPrice.price_date);
+		db.insert(TABLE_COMMODITY_PRICE, null, insertValues);
+		return commodityPrice;
+	}
+	public boolean saveCommodityPrices(List<CommodityPrice> commodityPrices){
+		SQLiteDatabase db = this.getReadableDatabase();
+		// Begin the transaction
+		db.beginTransaction();
+		try{
+			ContentValues insertValues = new ContentValues();
+			for(CommodityPrice commodityPrice : commodityPrices){
+				insertValues.clear();
+				insertValues.put("id", commodityPrice.id);
+				insertValues.put("user_id", commodityPrice.user_id);
+				insertValues.put("commodity_cat_id", commodityPrice.commodity_cat_id);
+				insertValues.put("commodity_id", commodityPrice.commodity_id);
+				insertValues.put("state_id", commodityPrice.state_id);
+				insertValues.put("district_id", commodityPrice.district_id);
+				insertValues.put("market_id", commodityPrice.market_id);
+				insertValues.put("price_note", commodityPrice.price_note);
+				insertValues.put("price_date", commodityPrice.price_date);
 				db.insert(TABLE_BUYNODE,null,insertValues);
 			}
 			// Transaction is successful and all the records have been inserted

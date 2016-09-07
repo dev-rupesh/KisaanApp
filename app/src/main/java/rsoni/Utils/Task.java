@@ -10,4 +10,6 @@ public enum Task {
 	get_buy_node,list_buy_node,add_buy_node,update_buy_node,delete_buy_node,
 	news_list_web,news_list_db,get_news_details,news_list_sort,add_news,delete_news,
 	crop_search,buyer_or_seller_search, buyer_search, seller_search,
+	setting_version,
+	list_commodity_price,add_commodity_price,update_commodity_price
 }

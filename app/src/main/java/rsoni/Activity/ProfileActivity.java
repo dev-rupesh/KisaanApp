@@ -72,15 +72,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private List<Market> markets;
     private List<District> districtList;
 
-    private Map<Integer,List<District>> districtsMap = null;
-    private Map<String,List<Market>> marketMap = null;
-    //private Map<Integer,List<UserSubCategory>> userSubCategoryMap = null;
 
 
     private ArrayAdapter<State> stateArrayAdapter;
     private ArrayAdapter<District> districtArrayAdapter;
     private ArrayAdapter<Market> marketArrayAdapter;
-    //private ArrayAdapter<UserSubCategory> userSubCategoryArrayAdapter;
+
     private View mProgressView;
     private View mProfileFormView;
 
@@ -90,6 +87,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private UserProfile userProfile = new UserProfile();
     private String from;
     private Context context;
+
+    private State selectedState;
+    private District selectedDistrict;
+    private Market selectedMarket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -261,48 +262,47 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         ArrayAdapter arrayAdapter = (ArrayAdapter) adapterView.getAdapter();
-        if(arrayAdapter == stateArrayAdapter){
+        if (arrayAdapter == stateArrayAdapter) {
             System.out.println("State selected...");
-            State state = (State) arrayAdapter.getItem(i);
-            districtList = districtsMap.get(state.state_id);
-            if(districtList.isEmpty() || districtList.get(0).district_id!=-1) districtList.add(0,new District(true));
+            selectedState = (State) arrayAdapter.getItem(i);
+            districtList = App.mydb.getDistricts(true, selectedState.state_id);
             districtArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, districtList); //selected item will look like a spinner set from XML
             districtArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spDistricts.setAdapter(districtArrayAdapter);
             spDistricts.setOnItemSelectedListener(this);
             int index = 0;
-            if(App.appUser.userProfile!=null){
-                for(District district : districtList){
-                    if(district.district_id==App.appUser.userProfile.district_id){
+            if (App.appUser.userProfile != null) {
+                for (District district : districtList) {
+                    if (district.district_id == App.appUser.userProfile.district_id) {
                         spDistricts.setSelection(index);
                         break;
                     }
                     index++;
                 }
             }
-        }else if(arrayAdapter == districtArrayAdapter){
-            System.out.println("State selected...");
-            District district = (District) arrayAdapter.getItem(i);
-            System.out.println("district : "+district.district_name);
-            if(marketMap.get(district.district_name)!=null) {
-                markets =  marketMap.get(district.district_name);
-                if(markets.size()==0 || markets.get(0).id !=-1) markets.add(0,new Market(true));
-                marketArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,markets); //selected item will look like a spinner set from XML
-                marketArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spMarkets.setAdapter(marketArrayAdapter);
-                spMarkets.setOnItemSelectedListener(this);
-                int index = 0;
-                if(App.appUser.userProfile!=null){
-                    for(Market market : markets){
-                        if(market.mandi_name.equalsIgnoreCase(App.appUser.userProfile.market_name)){
-                            spMarkets.setSelection(index);
-                            break;
-                        }
-                        index++;
+        } else if (arrayAdapter == districtArrayAdapter) {
+            System.out.println("District selected...");
+            selectedDistrict = (District) arrayAdapter.getItem(i);
+            markets = App.mydb.getMarkets(true, selectedDistrict.district_name);
+            marketArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, markets); //selected item will look like a spinner set from XML
+            marketArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spMarkets.setAdapter(marketArrayAdapter);
+            spMarkets.setOnItemSelectedListener(this);
+            int index = 0;
+            if (App.appUser.userProfile != null) {
+                for (Market market : markets) {
+                    if (market.mandi_name.equalsIgnoreCase(App.appUser.userProfile.market_name)) {
+                        spMarkets.setSelection(index);
+                        break;
                     }
+                    index++;
                 }
             }
+        }else if(arrayAdapter == marketArrayAdapter){
+            System.out.println("Market selected...");
+            selectedMarket = (Market) arrayAdapter.getItem(i);
         }
+
     }
 
     @Override
@@ -311,49 +311,17 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void setViewMode(){
-
         if(edit_mode){
             ll_user_profile_edit.setVisibility(View.VISIBLE);
             ll_user_profile.setVisibility(View.GONE);
-            try {
-                if(states==null){
-                    states = State.getStateList(this);
-                    states.add(0,new State(true));
-                }
-                if(districtsMap == null){
-                    districtsMap = District.getDistrictMap(this);
-                    districtsMap.put(-1,new ArrayList<District>());
-                }
-                if(marketMap==null){
-                    marketMap = Market.getMarketMap(this);
-                    marketMap.put("-1",new ArrayList<Market>());
-                }
-                /*if(userSubCategories==null){
-                    userSubCategoryMap = UserSubCategory.getUserSubCategoryMap(this);
-                    System.out.println("UserCAtegory : "+ App.appUser.userCategory);
-                    userSubCategories = userSubCategoryMap.get(App.appUser.userCategory);
-                    if(userSubCategories==null){
-                        userSubCategories = new ArrayList<UserSubCategory>();
-                    }
-                    userSubCategories.add(0,new UserSubCategory(true));
-                }*/
-
-
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
+            if(states==null){
+                    states = App.mydb.getStates(true);
             }
-
             stateArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, states); //selected item will look like a spinner set from XML
             stateArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spStates.setAdapter(stateArrayAdapter);
             spStates.setOnItemSelectedListener(this);
 
-            //userSubCategoryArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, userSubCategories); //selected item will look like a spinner set from XML
-            //userSubCategoryArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            //spUserSubCategory.setAdapter(userSubCategoryArrayAdapter);
-            //spUserSubCategory.setOnItemSelectedListener(this);
             String lbl = "";
             if(App.appUser.userCategory==1)lbl="Commission Agent For";
             else if(App.appUser.userCategory==2)lbl="Broker in";
@@ -381,13 +349,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     index++;
                 }
                 index = 0;
-                /*for(UserSubCategory category : userSubCategories){
-                    if(category.usersubcat_id == App.appUser.userProfile.usersubcat_id){
-                        spUserSubCategory.setSelection(index);
-                        break;
-                    }
-                    index++;
-                }*/
 
                 if(App.appUser.userProfile.business_id!=null && !App.appUser.userProfile.business_id.isEmpty()) {
                     int[] business_ids = App.gson.fromJson(App.appUser.userProfile.business_id, int[].class);
@@ -395,7 +356,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 }else{
                     multiSelectionSpinner.setSelection2(new int[]{});
                 }
-
             }
             multiSelectionSpinner.setListener(this);
 
@@ -454,15 +414,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(new Intent(context, MainActivity.class));
                 finish();
             }
-
             edit_mode = false;
             setViewMode();
-
-            /*if(dataResult.Status){
-
-            }else{
-                Toast.makeText(context,"Wrong Password",Toast.LENGTH_LONG).show();
-            }*/
 
             System.out.println("business_id : "+App.appUser.userProfile.business_id);
 
@@ -512,17 +465,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     }
                 }
                 break;
-            /*case "usersubcat":
-                if(App.appUser.userProfile!=null && App.appUser.userProfile.usersubcat_id !=-1){
-                    for(UserSubCategory userSubCategory : userSubCategories){
-                        if(userSubCategory.usersubcat_id == id){
-                            spUserSubCategory.setSelection(position);
-                            break;
-                        }
-                        position++;
-                    }
-                }
-                break;*/
 
         }
     }

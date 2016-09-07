@@ -2,8 +2,10 @@ package rsoni.Activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,12 +16,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import rsoni.Adapter.BuyListAdaptor;
 import rsoni.Adapter.CommodityPriceListAdaptor;
+import rsoni.Utils.DataResult;
+import rsoni.Utils.Task;
 import rsoni.kisaanApp.App;
 import rsoni.kisaanApp.R;
 import rsoni.modal.BuyNode;
@@ -31,6 +36,8 @@ import rsoni.modal.Market;
 import rsoni.modal.State;
 
 public class CommodityRatesAddActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemSelectedListener {
+
+    private BackgroundTask backgroundTask = null;
 
     Button btn_search_price,btn_add_price,btn_add_price_submit;
     ListView lv_search_result;
@@ -44,6 +51,7 @@ public class CommodityRatesAddActivity extends AppCompatActivity implements View
 
     CommodityCat selectedCommodityCat;
     Commodity selectedCommodity;
+    CommodityPrice commodityPrice = new CommodityPrice();
 
     private ArrayAdapter<CommodityCat> commodityCatArrayAdapter;
     private ArrayAdapter<Commodity> commodityArrayAdapter;
@@ -107,7 +115,7 @@ public class CommodityRatesAddActivity extends AppCompatActivity implements View
     public void onClick(View v) {
 
         if(v == btn_add_price){
-            toggleAddCommodityView(true);
+            validateForm();
         }else if(v == btn_add_price_submit){
             toggleAddCommodityView(false);
         }else if(v == btn_search_price){
@@ -118,11 +126,30 @@ public class CommodityRatesAddActivity extends AppCompatActivity implements View
 
     private void validateForm(){
         boolean is_validate = true;
+        View focusView = null;
+
+        commodityPrice.commodity_cat_id = selectedCommodityCat.id;
+        commodityPrice.commodity_id = selectedCommodity.id;
+        commodityPrice.price_note = et_commodity.getText().toString();
+        commodityPrice.price_date = System.currentTimeMillis();
+
+        if(commodityPrice.commodity_id==-1){
+            Toast.makeText(context,"Select Category",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(selectedCommodity.id==-1){
+            Toast.makeText(context,"Select Commodity",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (TextUtils.isEmpty(commodityPrice.price_note)) {
+            et_commodity.setError(getString(R.string.error_field_required));
+            focusView = et_commodity;
+            focusView.requestFocus();
+            return;
+        }
+
         if(is_validate){
-            CommodityPrice commodityPrice = new CommodityPrice();
-            commodityPrice.commodity_cat_id = selectedCommodityCat.id;
-            commodityPrice.price_note = et_commodity.getText().toString();
-            commodityPrice.price_date = System.currentTimeMillis();
+            toggleAddCommodityView(true);
             myCommodityPrices.add(commodityPrice);
             listAdaptor.notifyDataSetChanged();
         }
@@ -131,6 +158,77 @@ public class CommodityRatesAddActivity extends AppCompatActivity implements View
     private void toggleAddCommodityView(boolean show){
         if(show) ll_add_commodity.setVisibility(View.VISIBLE); else ll_add_commodity.setVisibility(View.GONE);
     }
+    public class BackgroundTask extends AsyncTask<Void, Void, Boolean> {
+
+        DataResult dataResult;
+        Task task;
+
+        public  BackgroundTask(Task task){
+            this.task = task;
+            System.out.println(" BackgroundTask initiated ");
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            switch(task){
+                case add_commodity_price:
+                    System.out.println("in add_buy_node...");
+                    dataResult = App.networkService.CommodityPrice(task, commodityPrice);
+                    break;
+                case list_commodity_price:
+                    System.out.println("in list buy node...");
+                    if(App.dataSyncCheck.buynode) {
+                        System.out.println("get list buy node by db");
+                        dataResult = new DataResult(true, "", App.mydb.getBuyNodes());
+                    }else {
+                        System.out.println("get list buy node by server");
+                        dataResult = App.networkService.BuyNode(task, null);
+                    }
+                    break;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            backgroundTask = null;
+            //showProgress(false);
+            switch(task) {
+                case add_commodity_price:
+                    if (dataResult.Status) {
+                        commodityPrice = (CommodityPrice) dataResult.Data;
+                        App.mydb.saveCommodityPrice(commodityPrice);
+                        myCommodityPrices.add(commodityPrice);
+                        listAdaptor =  new CommodityPriceListAdaptor(context,myCommodityPrices);
+                        lv_search_result.setAdapter(listAdaptor);
+                    } else {
+                        Toast.makeText(context, "Price not added, please try again...", Toast.LENGTH_LONG).show();
+                    }
+                    break;
+                case list_commodity_price:
+                    if (dataResult.Status) {
+                        myCommodityPrices = (List<CommodityPrice>) dataResult.Data;
+                        if(!App.dataSyncCheck.buynode) {
+                            App.dataSyncCheck.buynode = true;
+                            App.saveDataSyncCheck();
+                            App.mydb.saveCommodityPrices(myCommodityPrices);
+                        }
+                        listAdaptor =  new CommodityPriceListAdaptor(context,myCommodityPrices);
+                        lv_search_result.setAdapter(listAdaptor);
+                    } else {
+                        Toast.makeText(context, "No price added by you.", Toast.LENGTH_LONG).show();
+                    }
+                    break;
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            backgroundTask = null;
+            //showProgress(false);
+        }
+    }
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -154,4 +252,6 @@ public class CommodityRatesAddActivity extends AppCompatActivity implements View
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+
 }

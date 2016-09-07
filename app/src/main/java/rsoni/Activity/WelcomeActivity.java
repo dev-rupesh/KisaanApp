@@ -45,6 +45,10 @@ public class WelcomeActivity extends AppCompatActivity {
 
                 if(App.mydb.getStates(false).isEmpty()){
                     App.mydb.AddMasterDataFromJson(context);
+                }else{
+                    if(App.last_update_count < System.currentTimeMillis()-86400000){
+                        SyncSettings();
+                    }
                 }
 
                 if(App.isAppRegistered(getApplicationContext())) {
@@ -61,6 +65,10 @@ public class WelcomeActivity extends AppCompatActivity {
                 context.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
+
+    }
+
+    public void SyncSettings(){
 
     }
 

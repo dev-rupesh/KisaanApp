@@ -10,6 +10,7 @@ import rsoni.Utils.Task;
 import rsoni.kisaanApp.App;
 import rsoni.modal.AppUser;
 import rsoni.modal.BuyNode;
+import rsoni.modal.CommodityPrice;
 import rsoni.modal.NewsItem;
 import rsoni.modal.SaleNode;
 import rsoni.modal.SearchFilter;
@@ -152,6 +153,40 @@ public class NetworkService {
 			url+="sale/delete-sale-node";
 			param.add(new BasicNameValuePair("opt", "delete-sale-node"));
 			param.add(new BasicNameValuePair("id", ""+saleNode.id));
+			return getResponce(url,Task.post,task,param);
+		}
+		return null;
+	}
+
+	public DataResult CommodityPrice(Task task,CommodityPrice commodityPrice) {
+		System.out.println("SaleNode()...");
+		String url = App.ServiceUrl;
+		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
+		if (task == Task.list_sale_node){
+			url+="sale/list-sale-node";
+			param.add(new BasicNameValuePair("opt", "list-commodity-price"));
+			param.add(new BasicNameValuePair("user_id", ""+App.appUser.id));
+			return getResponce(url,Task.post,task,param);
+		}else if (task == Task.add_commodity_price){
+			url+="sale/add-sale-node";
+			param.add(new BasicNameValuePair("opt", "add-commodity-price"));
+			param.add(new BasicNameValuePair("user_id", ""+commodityPrice.user_id));
+			param.add(new BasicNameValuePair("state_id", ""+commodityPrice.state_id));
+			param.add(new BasicNameValuePair("district_id", ""+commodityPrice.district_id));
+			param.add(new BasicNameValuePair("market_id", ""+commodityPrice.market_id));
+			param.add(new BasicNameValuePair("commodity_cat_id", ""+commodityPrice.commodity_cat_id));
+			param.add(new BasicNameValuePair("commodity_id", ""+commodityPrice.commodity_id));
+			param.add(new BasicNameValuePair("price_note", ""+commodityPrice.price_note));
+
+			return getResponce(url,Task.post,task,param);
+		}else if (task == Task.update_commodity_price){
+			url+="sale/update-sale-node";
+			param.add(new BasicNameValuePair("opt", "update-commodity-price"));
+			return getResponce(url,Task.post,task,param);
+		}else if (task == Task.delete_sale_node){
+			url+="sale/delete-sale-node";
+			param.add(new BasicNameValuePair("opt", "delete-commodity-price"));
+			param.add(new BasicNameValuePair("id", ""+commodityPrice.commodity_id));
 			return getResponce(url,Task.post,task,param);
 		}
 		return null;
