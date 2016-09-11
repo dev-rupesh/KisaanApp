@@ -79,7 +79,7 @@ public class WebConnection {
 			HttpPost httppost = new HttpPost(url);
 			httppost.setHeader("Content-Type", "application/x-www-form-urlencoded");
 			httppost.setHeader("Content-Type", "application/x-www-form-urlencoded");
-			httppost.setEntity(new UrlEncodedFormEntity(param));
+			httppost.setEntity(new UrlEncodedFormEntity(param,"utf-8"));
 
 
 			// Execute HTTP Post Request

@@ -15,31 +15,25 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import rsoni.Adapter.BuyListAdaptor;
 import rsoni.Adapter.CommodityPriceListAdaptor;
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
 import rsoni.kisaanApp.App;
 import rsoni.kisaanApp.R;
-import rsoni.modal.BuyNode;
 import rsoni.modal.Commodity;
 import rsoni.modal.CommodityCat;
 import rsoni.modal.CommodityPrice;
-import rsoni.modal.District;
-import rsoni.modal.Market;
-import rsoni.modal.State;
 
-public class CommodityRatesAddActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemSelectedListener {
+public class CommodityPriceAddActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemSelectedListener {
 
     private BackgroundTask backgroundTask = null;
 
-    Button btn_search_price,btn_add_price,btn_add_price_submit;
+    Button btn_search_price,btn_add_price,btn_add_price_submit,btn_add_price_cancel;
     ListView lv_search_result;
     LinearLayout ll_add_commodity;
     EditText et_commodity;
@@ -79,9 +73,15 @@ public class CommodityRatesAddActivity extends AppCompatActivity implements View
         btn_add_price_submit = (Button) findViewById(R.id.btn_add_price_submit);
         btn_add_price_submit.setOnClickListener(this);
 
+        btn_add_price_cancel = (Button) findViewById(R.id.btn_add_price_cancel);
+        btn_add_price_cancel.setOnClickListener(this);
+
+
+
         sp_commoditycat = (Spinner) findViewById(R.id.sp_commoditycat);
         sp_commoditycat.setOnItemSelectedListener(this);
         sp_commodity = (Spinner) findViewById(R.id.sp_commodity);
+        sp_commodity.setOnItemSelectedListener(this);
 
         et_commodity = (EditText) findViewById(R.id.et_commodity);
 
@@ -95,9 +95,10 @@ public class CommodityRatesAddActivity extends AppCompatActivity implements View
         commodityCatArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, App.mydb.getCommodityCat(true)); //selected item will look like a spinner set from XML
         commodityCatArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_commoditycat.setAdapter(commodityCatArrayAdapter);
-
         listAdaptor = new CommodityPriceListAdaptor(context,myCommodityPrices);
         lv_search_result.setAdapter(listAdaptor);
+        backgroundTask = new BackgroundTask(Task.list_commodity_price);
+        backgroundTask.execute();
     }
 
     @Override
@@ -115,13 +116,14 @@ public class CommodityRatesAddActivity extends AppCompatActivity implements View
     public void onClick(View v) {
 
         if(v == btn_add_price){
-            validateForm();
+            toggleAddCommodityView(true);
         }else if(v == btn_add_price_submit){
-            toggleAddCommodityView(false);
+            validateForm();
         }else if(v == btn_search_price){
             startActivity(new Intent(context,CommodityRatesSearchActivity.class));
+        }else if(v == btn_add_price_cancel){
+            toggleAddCommodityView(false);
         }
-
     }
 
     private void validateForm(){
@@ -130,6 +132,7 @@ public class CommodityRatesAddActivity extends AppCompatActivity implements View
 
         commodityPrice.commodity_cat_id = selectedCommodityCat.id;
         commodityPrice.commodity_id = selectedCommodity.id;
+        commodityPrice.commodity_name = selectedCommodity.commodity_name;
         commodityPrice.price_note = et_commodity.getText().toString();
         commodityPrice.price_date = System.currentTimeMillis();
 
@@ -149,9 +152,15 @@ public class CommodityRatesAddActivity extends AppCompatActivity implements View
         }
 
         if(is_validate){
-            toggleAddCommodityView(true);
-            myCommodityPrices.add(commodityPrice);
-            listAdaptor.notifyDataSetChanged();
+            toggleAddCommodityView(false);
+            //myCommodityPrices.add(commodityPrice);
+            //listAdaptor.notifyDataSetChanged();
+            commodityPrice.user_id = App.appUser.id;
+            commodityPrice.state_id = App.appUser.userProfile.state_id;
+            commodityPrice.district_id = App.appUser.userProfile.district_id;
+            commodityPrice.market_id = App.appUser.userProfile.market_id;
+            backgroundTask = new BackgroundTask(Task.add_commodity_price);
+            backgroundTask.execute((Void) null);
         }
     }
 
@@ -172,17 +181,17 @@ public class CommodityRatesAddActivity extends AppCompatActivity implements View
         protected Boolean doInBackground(Void... params) {
             switch(task){
                 case add_commodity_price:
-                    System.out.println("in add_buy_node...");
+                    System.out.println("in add_commodity price...");
                     dataResult = App.networkService.CommodityPrice(task, commodityPrice);
                     break;
                 case list_commodity_price:
-                    System.out.println("in list buy node...");
-                    if(App.dataSyncCheck.buynode) {
-                        System.out.println("get list buy node by db");
-                        dataResult = new DataResult(true, "", App.mydb.getBuyNodes());
+                    System.out.println("in list commodity price...");
+                    if(App.dataSyncCheck.commodity_price) {
+                        System.out.println("get list commodity price by db");
+                        dataResult = new DataResult(true, "", App.mydb.getCommodityPrice());
                     }else {
-                        System.out.println("get list buy node by server");
-                        dataResult = App.networkService.BuyNode(task, null);
+                        System.out.println("get list commodity price by server");
+                        dataResult = App.networkService.CommodityPrice(task, null);
                     }
                     break;
             }
@@ -208,8 +217,8 @@ public class CommodityRatesAddActivity extends AppCompatActivity implements View
                 case list_commodity_price:
                     if (dataResult.Status) {
                         myCommodityPrices = (List<CommodityPrice>) dataResult.Data;
-                        if(!App.dataSyncCheck.buynode) {
-                            App.dataSyncCheck.buynode = true;
+                        if(!App.dataSyncCheck.commodity_price) {
+                            App.dataSyncCheck.commodity_price = true;
                             App.saveDataSyncCheck();
                             App.mydb.saveCommodityPrices(myCommodityPrices);
                         }
@@ -243,7 +252,7 @@ public class CommodityRatesAddActivity extends AppCompatActivity implements View
         }else if(arrayAdapter == commodityArrayAdapter){
             System.out.println("Commodity selected...");
             selectedCommodity = (Commodity) arrayAdapter.getItem(position);
-            System.out.println("commodity : "+selectedCommodity.commodity);
+            System.out.println("commodity_name : "+selectedCommodity.commodity_name);
         }
 
     }

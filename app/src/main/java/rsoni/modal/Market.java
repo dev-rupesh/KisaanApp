@@ -34,6 +34,7 @@ public class Market {
 
     public Market (){}
     public Market(boolean root){
+        mandi_id = -1;
         id = -1;
         mandi_name = " -- Select One -- ";
     }
@@ -69,7 +70,6 @@ public class Market {
         for (String name : marketMap.keySet()){
             System.out.println("name : "+name);
         }
-
         return marketMap;
     }
 
@@ -78,6 +78,7 @@ public class Market {
         InputStream input = context.getAssets().open("market.json");
         Reader reader = new InputStreamReader(input, "UTF-8");
         List<Market> markets = new Gson().fromJson(reader,listType);
+        System.out.println("markets : "+new Gson().toJson(markets));
         return markets;
     }
 

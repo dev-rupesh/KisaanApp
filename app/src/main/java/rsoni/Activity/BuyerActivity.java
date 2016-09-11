@@ -204,8 +204,9 @@ public class BuyerActivity extends AppCompatActivity implements View.OnClickList
                 case add_buy_node:
                     if (dataResult.Status) {
                         buyNode = (BuyNode) dataResult.Data;
-                        App.mydb.saveBuyNodes(buyNode);
-                        buyNodes.add(buyNode);
+                        App.mydb.updateBuyNode(buyNode);
+                        buyNodes = App.mydb.getBuyNodes();
+                        //buyNodes.add(buyNode);
                         listAdaptor =  new BuyListAdaptor(context,buyNodes);
                         lv_buys.setAdapter(listAdaptor);
                     } else {

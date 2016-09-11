@@ -13,7 +13,6 @@ import java.util.TimeZone;
 
 import rsoni.kisaanApp.App;
 import rsoni.kisaanApp.R;
-import rsoni.modal.BuyNode;
 import rsoni.modal.CommodityPrice;
 
 
@@ -90,7 +89,7 @@ public class CommodityPriceListAdaptor extends BaseAdapter {
 		}
 
 		void setData(CommodityPrice commodityPrice) {
-			tv_business_type.setText("Item related to "+ App.businessIdMap.get(commodityPrice.commodity_cat_id).business);
+			tv_business_type.setText("Price For "+ commodityPrice.commodity_name);
 			tv_note_date.setText("Last update on "+App.dateFormate_DDMMYYY_Time.format(new Date(commodityPrice.price_date+mGMTOffset)));
 			tv_note.setText(commodityPrice.price_note);
 			// tv_new_date.setText(newsItem.pubDate);

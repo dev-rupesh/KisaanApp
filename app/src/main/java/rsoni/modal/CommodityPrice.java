@@ -20,11 +20,12 @@ public class CommodityPrice {
     public int district_id = 0;
     public int market_id;
     public int commodity_id = 0;
+    public String commodity_name ="";
     public int commodity_cat_id = 0;
     public long price_date;
 
     public CommodityPrice(int id, String price_note,
-                   int user_id, int state_id,int district_id,int market_id,int commodity_id,int commodity_cat_id,
+                   int user_id, int state_id,int district_id,int market_id,int commodity_id,String commodity_name,int commodity_cat_id,
                    long price_date) {
         this.id = id;
         this.price_note = price_note;
@@ -33,6 +34,7 @@ public class CommodityPrice {
         this.district_id = district_id;
         this.market_id = market_id;
         this.commodity_id = commodity_id;
+        this.commodity_name = commodity_name;
         this.commodity_cat_id = commodity_cat_id;
         this.price_date = price_date;
     }
@@ -51,6 +53,7 @@ public class CommodityPrice {
                 data.optInt("district_id"),
                 data.optInt("market_id"),
                 data.optInt("commodity_id"),
+                data.optString("commodity_name"),
                 data.optInt("commodity_cat_id"),
                 data.optLong("price_date"));
         return commodityPrice;
@@ -83,6 +86,7 @@ public class CommodityPrice {
                 cursor.getInt(cursor.getColumnIndex("district_id")),
                 cursor.getInt(cursor.getColumnIndex("market_id")),
                 cursor.getInt(cursor.getColumnIndex("commodity_id")),
+                cursor.getString(cursor.getColumnIndex("commodity_name")),
                 cursor.getInt(cursor.getColumnIndex("commodity_cat_id")),
                 cursor.getLong(cursor.getColumnIndex("price_date")));
         return commodityPrice;

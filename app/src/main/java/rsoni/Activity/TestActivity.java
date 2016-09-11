@@ -114,7 +114,7 @@ public class TestActivity extends AppCompatActivity implements MultiSelectionSpi
         }else  if(v==btn_get_commodety){
             List<Commodity> commodities = App.mydb.getCommodity(true,2);
             for(Commodity commodity : commodities){
-                System.out.println("commodity : "+commodity.commodity);
+                System.out.println("commodity_name : "+commodity.commodity_name);
             }
         }
     }

@@ -14,7 +14,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import rsoni.kisaanApp.App;
 import rsoni.modal.BuyNode;
 import rsoni.modal.Commodity;
 import rsoni.modal.CommodityCat;
@@ -66,10 +65,10 @@ public class DBHelper extends SQLiteOpenHelper {
 				+ "(id integer primary key, news_type text, news_url text,news_title text,news_text text,news_ing text, news_date text)");
 		db.execSQL("create table commoditycat "
 				+ "(id integer primary key, commodity_cat text, commodity_desc text)");
-		db.execSQL("create table commodity "
-				+ "(id integer primary key, commodity_cat_id integer, commodity text, commodity_desc text)");
+		db.execSQL("create table commodity"
+				+ "(id integer primary key, commodity_cat_id integer, commodity_name text, commodity_desc text)");
 		db.execSQL("create table commodityprice "
-				+ "(id integer primary key, user_id integer, price_note text,state_id integer,district_id integer,market_id integer, commodity_cat_id integer,commodity_id integer,price_date integer)");
+				+ "(id integer primary key, user_id integer, price_note text,state_id integer,district_id integer,market_id integer, commodity_cat_id integer,commodity_id integer,commodity_name text,price_date integer)");
 
 
 	}
@@ -123,6 +122,17 @@ public class DBHelper extends SQLiteOpenHelper {
 		return saleNodes;
 	}
 
+	public SaleNode updateSaleNodes(SaleNode saleNode){
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues updateValues = new ContentValues();
+		updateValues.put("sale_note", saleNode.sale_note);
+		updateValues.put("business_id", saleNode.business_id);
+		updateValues.put("note_date", saleNode.note_date);
+		int count = db.update(TABLE_SALNODE, updateValues, "business_id = ?", new String[]{""+saleNode.business_id});
+		if(count==0)
+			saleNode = saveSaleNodes(saleNode);
+		return saleNode;
+	}
 	public SaleNode saveSaleNodes(SaleNode saleNode){
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues insertValues = new ContentValues();
@@ -172,6 +182,18 @@ public class DBHelper extends SQLiteOpenHelper {
 		return buyNodes;
 	}
 
+	public BuyNode updateBuyNode(BuyNode buyNode){
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues updateValues = new ContentValues();
+		updateValues.put("buy_note", buyNode.buy_note);
+		updateValues.put("business_id", buyNode.business_id);
+		updateValues.put("note_date", buyNode.note_date);
+		int count = db.update(TABLE_BUYNODE, updateValues, "business_id = ?", new String[]{""+buyNode.business_id});
+		if(count==0)
+			buyNode = saveBuyNodes(buyNode);
+		return buyNode;
+	}
+
 	public BuyNode saveBuyNodes(BuyNode buyNode){
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues insertValues = new ContentValues();
@@ -209,16 +231,16 @@ public class DBHelper extends SQLiteOpenHelper {
 	}
 
 	public List<CommodityPrice> getCommodityPrice(){
-		List<CommodityPrice> buyNodes = new ArrayList<>();
+		List<CommodityPrice> commodityPrices = new ArrayList<>();
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery("select * from buynode", null);
+		Cursor cursor = db.rawQuery("select * from commodityprice", null);
 		if (cursor .moveToFirst()) {
 			while (cursor.isAfterLast() == false) {
-				buyNodes.add(CommodityPrice.getCommodityPrice(cursor));
+				commodityPrices.add(CommodityPrice.getCommodityPrice(cursor));
 				cursor.moveToNext();
 			}
 		}
-		return buyNodes;
+		return commodityPrices;
 	}
 
 	public CommodityPrice saveCommodityPrice(CommodityPrice commodityPrice){
@@ -228,6 +250,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		insertValues.put("user_id", commodityPrice.user_id);
 		insertValues.put("commodity_cat_id", commodityPrice.commodity_cat_id);
 		insertValues.put("commodity_id", commodityPrice.commodity_id);
+		insertValues.put("commodity_name", commodityPrice.commodity_name);
 		insertValues.put("state_id", commodityPrice.state_id);
 		insertValues.put("district_id", commodityPrice.district_id);
 		insertValues.put("market_id", commodityPrice.market_id);
@@ -248,12 +271,13 @@ public class DBHelper extends SQLiteOpenHelper {
 				insertValues.put("user_id", commodityPrice.user_id);
 				insertValues.put("commodity_cat_id", commodityPrice.commodity_cat_id);
 				insertValues.put("commodity_id", commodityPrice.commodity_id);
+				insertValues.put("commodity_name", commodityPrice.commodity_name);
 				insertValues.put("state_id", commodityPrice.state_id);
 				insertValues.put("district_id", commodityPrice.district_id);
 				insertValues.put("market_id", commodityPrice.market_id);
 				insertValues.put("price_note", commodityPrice.price_note);
 				insertValues.put("price_date", commodityPrice.price_date);
-				db.insert(TABLE_BUYNODE,null,insertValues);
+				db.insert(TABLE_COMMODITY_PRICE,null,insertValues);
 			}
 			// Transaction is successful and all the records have been inserted
 			db.setTransactionSuccessful();
@@ -415,6 +439,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			List<Market> markets = Market.getMarkets(context);
 			values.clear();
 			for (Market  market : markets) {
+				System.out.println("Market : "+market.mandi_name+" >> "+market.mandi_id);
 				values.put("mandi_id", market.mandi_id);
 				values.put("mandi_name", market.mandi_name);
 				values.put("district", market.district);
@@ -439,7 +464,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			values.clear();
 			for (Commodity  commodity : commodities) {
 				values.put("id", commodity.id);
-				values.put("commodity", commodity.commodity);
+				values.put("commodity_name", commodity.commodity_name);
 				values.put("commodity_cat_id", commodity.commodity_cat_id);
 				db.insert(TABLE_COMMODITY, null, values);
 			}

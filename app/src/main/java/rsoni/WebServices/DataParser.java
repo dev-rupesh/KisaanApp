@@ -7,6 +7,7 @@ import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
 import rsoni.modal.AppUser;
 import rsoni.modal.BuyNode;
+import rsoni.modal.CommodityPrice;
 import rsoni.modal.NewsItem;
 import rsoni.modal.SaleNode;
 import rsoni.modal.SearchResult;
@@ -207,7 +208,7 @@ public class DataParser {
 			try {
 				if ( mode == Task.add_sale_node || mode == Task.add_sale_node ) {
 					result.Data = SaleNode.getSaleNode(response.getJSONObject("data"));
-				}else if ( mode == Task.list_sale_node) {
+				}else if ( mode == Task.list_sale_node || mode == Task.seller_search) {
 					result.Data = SaleNode.getSaleNodeItems(response.getJSONArray("data"));
 				}else if ( mode == Task.delete_sale_node || mode == Task.add_sale_node ) {
 					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
@@ -228,10 +229,30 @@ public class DataParser {
 			try {
 				if ( mode == Task.add_buy_node || mode == Task.add_buy_node ) {
 					result.Data = BuyNode.getBuyNode(response.getJSONObject("data"));
-				}else if ( mode == Task.list_buy_node) {
+				}else if ( mode == Task.list_buy_node || mode == Task.buyer_search) {
 					result.Data = BuyNode.getBuyNodeItems(response.getJSONArray("data"));
 				}else if ( mode == Task.delete_buy_node || mode == Task.add_buy_node ) {
 					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
+				}
+			} catch (JSONException e) {
+				result.Status = false;
+				result.msg = "" + e;
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+
+	public DataResult CommodityPrice(String json, Task mode) {
+		JSONObject response = null;
+		DataResult result = new DataResult();
+		response = Start(json, result);
+		if (result.Status ) {
+			try {
+				if ( mode == Task.add_commodity_price || mode == Task.update_commodity_price ) {
+					result.Data = CommodityPrice.getBuyNode(response.getJSONObject("data"));
+				}else if ( mode == Task.list_commodity_price || mode == Task.search_commodity_price) {
+					result.Data = CommodityPrice.getCommodityPrice(response.getJSONArray("data"));
 				}
 			} catch (JSONException e) {
 				result.Status = false;

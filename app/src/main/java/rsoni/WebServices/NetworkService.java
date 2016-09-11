@@ -79,33 +79,21 @@ public class NetworkService {
 		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
 		switch (task) {
 		case buyer_search:
-			url += "api/search";
+			url+="buy/search-buy-node";
 			param.add(new BasicNameValuePair("user_id", ""+App.appUser.id));
-			param.add(new BasicNameValuePair("for", search.searchFor));
-			param.add(new BasicNameValuePair("business_id", ""+search.business_id));
 			param.add(new BasicNameValuePair("state_id", ""+search.state_id));
 			param.add(new BasicNameValuePair("district_id", ""+search.district_id));
+			param.add(new BasicNameValuePair("business_id", ""+search.business_id));
 			return getResponce(url, Task.post, task, param);
 			//break;
 		case seller_search:
-			url += "api/search";
+			url+="sale/search-sale-node";
 			param.add(new BasicNameValuePair("user_id", ""+App.appUser.id));
-			param.add(new BasicNameValuePair("for", search.searchFor));
-			param.add(new BasicNameValuePair("business_id", ""+search.business_id));
 			param.add(new BasicNameValuePair("state_id", ""+search.state_id));
 			param.add(new BasicNameValuePair("district_id", ""+search.district_id));
-			return getResponce(url, Task.post, task, param);
-			//break;
-		case crop_search:
-			url += "api/search";
-			param.add(new BasicNameValuePair("user_id", ""+App.appUser.id));
-			param.add(new BasicNameValuePair("for", search.searchFor));
 			param.add(new BasicNameValuePair("business_id", ""+search.business_id));
-			param.add(new BasicNameValuePair("state_id", ""+search.state_id));
-			param.add(new BasicNameValuePair("district_id", ""+search.district_id));
 			return getResponce(url, Task.post, task, param);
 			//break;
-
 		default:
 			break;
 		}
@@ -162,13 +150,19 @@ public class NetworkService {
 		System.out.println("SaleNode()...");
 		String url = App.ServiceUrl;
 		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
-		if (task == Task.list_sale_node){
-			url+="sale/list-sale-node";
+		if (task == Task.list_commodity_price){
+			url+="commodity/list-commodity-price";
 			param.add(new BasicNameValuePair("opt", "list-commodity-price"));
 			param.add(new BasicNameValuePair("user_id", ""+App.appUser.id));
 			return getResponce(url,Task.post,task,param);
+		}else if (task == Task.search_commodity_price){
+			url+="commodity/search-commodity-price";
+			param.add(new BasicNameValuePair("opt", "search-commodity-price"));
+			param.add(new BasicNameValuePair("market_id", ""+commodityPrice.market_id));
+			param.add(new BasicNameValuePair("commodity_id", ""+commodityPrice.commodity_id));
+			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.add_commodity_price){
-			url+="sale/add-sale-node";
+			url+="commodity/add-commodity-price";
 			param.add(new BasicNameValuePair("opt", "add-commodity-price"));
 			param.add(new BasicNameValuePair("user_id", ""+commodityPrice.user_id));
 			param.add(new BasicNameValuePair("state_id", ""+commodityPrice.state_id));
@@ -176,15 +170,15 @@ public class NetworkService {
 			param.add(new BasicNameValuePair("market_id", ""+commodityPrice.market_id));
 			param.add(new BasicNameValuePair("commodity_cat_id", ""+commodityPrice.commodity_cat_id));
 			param.add(new BasicNameValuePair("commodity_id", ""+commodityPrice.commodity_id));
+			param.add(new BasicNameValuePair("commodity_name", ""+commodityPrice.commodity_name));
 			param.add(new BasicNameValuePair("price_note", ""+commodityPrice.price_note));
-
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.update_commodity_price){
-			url+="sale/update-sale-node";
+			url+="commodity/update-sale-node";
 			param.add(new BasicNameValuePair("opt", "update-commodity-price"));
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.delete_sale_node){
-			url+="sale/delete-sale-node";
+			url+="commodity/delete-sale-node";
 			param.add(new BasicNameValuePair("opt", "delete-commodity-price"));
 			param.add(new BasicNameValuePair("id", ""+commodityPrice.commodity_id));
 			return getResponce(url,Task.post,task,param);
@@ -342,7 +336,16 @@ public class NetworkService {
 			case add_sale_node:
 			case update_sale_node:
 			case delete_sale_node:
+			case seller_search:
 				dataResult = dataParser.SaleNode(json, mode);
+				break;
+
+			case list_commodity_price:
+			case add_commodity_price:
+			case update_commodity_price:
+			case search_commodity_price:
+			case delete_commodity_price:
+				dataResult = dataParser.CommodityPrice(json, mode);
 				break;
 
 			case get_buy_node:
@@ -350,8 +353,10 @@ public class NetworkService {
 			case add_buy_node:
 			case update_buy_node:
 			case delete_buy_node:
+			case buyer_search:
 				dataResult = dataParser.BuyNode(json, mode);
 				break;
+
 
 			case get_news_details:
 			case news_list_sort:
@@ -361,12 +366,6 @@ public class NetworkService {
 				dataResult = dataParser.News(json, mode);
 				break;
 
-			case buyer_or_seller_search:
-			case buyer_search:
-			case seller_search:
-			case  crop_search:
-				dataResult = dataParser.Search(json, mode);
-				break;
 
 		default:
 			break;

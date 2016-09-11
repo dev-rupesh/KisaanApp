@@ -1,5 +1,7 @@
 package rsoni.Activity;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -11,13 +13,22 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.List;
+
+import rsoni.Adapter.CommodityPriceListAdaptor;
+import rsoni.Adapter.SaleListAdaptor;
+import rsoni.Utils.DataResult;
+import rsoni.Utils.Task;
 import rsoni.kisaanApp.App;
 import rsoni.kisaanApp.R;
 import rsoni.modal.Commodity;
 import rsoni.modal.CommodityCat;
+import rsoni.modal.CommodityPrice;
 import rsoni.modal.District;
 import rsoni.modal.Market;
+import rsoni.modal.SaleNode;
 import rsoni.modal.State;
 
 public class CommodityRatesSearchActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemSelectedListener {
@@ -26,6 +37,8 @@ public class CommodityRatesSearchActivity extends AppCompatActivity implements V
     TextView tv_selected_mandi,tv_selected_commodity,tv_error_msg;
     ListView lv_search_result;
     LinearLayout ll_search_filter;
+    BackgroundTask backgroundTask;
+    Context context;
 
     Spinner sp_states_search,sp_districts_search,sp_markets_search,sp_commoditycat,sp_commodity;
 
@@ -39,9 +52,13 @@ public class CommodityRatesSearchActivity extends AppCompatActivity implements V
 
     CommodityCat selectedCommodityCat;
     Commodity selectedCommodity;
+    CommodityPrice commodityPrice = new CommodityPrice();
 
     private ArrayAdapter<CommodityCat> commodityCatArrayAdapter;
     private ArrayAdapter<Commodity> commodityArrayAdapter;
+
+    CommodityPriceListAdaptor listAdaptor;
+    private List<CommodityPrice> searchCommodityPrices;
 
 
     @Override
@@ -52,6 +69,7 @@ public class CommodityRatesSearchActivity extends AppCompatActivity implements V
         getSupportActionBar().setLogo(R.mipmap.ic_action_bar_logo);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        this.context = this;
         initView();
     }
 
@@ -121,20 +139,93 @@ public class CommodityRatesSearchActivity extends AppCompatActivity implements V
     private void validateSearchForm(){
         boolean is_valid = true;
 
-        if(is_valid){
 
+        if(selectedState.state_id == -1){
+            Toast.makeText(context,"Select State",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(selectedDistrict.district_id == -1){
+            Toast.makeText(context,"Select District",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(selectedMarket.mandi_id == -1){
+            Toast.makeText(context,"Select Mandi",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(selectedCommodityCat.id == -1){
+            Toast.makeText(context,"Select Category",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(selectedCommodity.id == -1){
+            Toast.makeText(context,"Select Commodity",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(is_valid){
             tv_selected_mandi.setText(selectedState.state_name+">>"+selectedDistrict.district_name+">>"+selectedMarket.mandi_name);
-            tv_selected_commodity.setText(selectedCommodityCat.commodity_cat+">>"+selectedCommodity.commodity);
+            tv_selected_commodity.setText(selectedCommodityCat.commodity_cat+">>"+selectedCommodity.commodity_name);
             toggleSearchView(false);
 
-            tv_error_msg.setVisibility(View.VISIBLE);
-            tv_error_msg.setText("No data found for your search selection.");
+            commodityPrice.market_id = selectedMarket.mandi_id;
+            commodityPrice.commodity_id = selectedCommodity.id;
+
+            backgroundTask = new BackgroundTask(Task.search_commodity_price);
+            backgroundTask.execute();
+
         }
 
     }
 
     private void toggleSearchView(boolean show){
         if(show) ll_search_filter.setVisibility(View.VISIBLE); else ll_search_filter.setVisibility(View.GONE);
+    }
+
+    public class BackgroundTask extends AsyncTask<Void, Void, Boolean> {
+
+        DataResult dataResult;
+        Task task;
+
+        public  BackgroundTask(Task task){
+            this.task = task;
+            System.out.println(" BackgroundTask initiated ");
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            switch(task){
+                case search_commodity_price:
+                    System.out.println("in search commodity price...");
+                    dataResult = App.networkService.CommodityPrice(task, commodityPrice);
+                    break;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            backgroundTask = null;
+            //showProgress(false);
+            switch(task) {
+                case search_commodity_price:
+                    if (dataResult.Status) {
+                        tv_error_msg.setVisibility(View.GONE);
+                        searchCommodityPrices = (List<CommodityPrice>) dataResult.Data;
+                        listAdaptor =  new CommodityPriceListAdaptor(context,searchCommodityPrices);
+                        lv_search_result.setAdapter(listAdaptor);
+                    } else {
+                        tv_error_msg.setVisibility(View.VISIBLE);
+                        tv_error_msg.setText("No data found for your search selection.");
+                        Toast.makeText(context, "No result found .", Toast.LENGTH_LONG).show();
+                    }
+                    break;
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            backgroundTask = null;
+            //showProgress(false);
+        }
     }
 
     @Override
@@ -156,7 +247,7 @@ public class CommodityRatesSearchActivity extends AppCompatActivity implements V
         }else if(arrayAdapter == marketArrayAdapter){
             System.out.println("Market selected...");
             selectedMarket = (Market) arrayAdapter.getItem(position);
-            System.out.println("mandi_name : "+selectedMarket.mandi_name);
+            System.out.println("mandi_name : "+selectedMarket.mandi_name+" >> "+selectedMarket.mandi_id);
         }else if(arrayAdapter == commodityCatArrayAdapter){
             System.out.println("CommodityCat selected...");
             selectedCommodityCat = (CommodityCat) arrayAdapter.getItem(position);
@@ -167,7 +258,7 @@ public class CommodityRatesSearchActivity extends AppCompatActivity implements V
         }else if(arrayAdapter == commodityArrayAdapter){
             System.out.println("Commodity selected...");
             selectedCommodity = (Commodity) arrayAdapter.getItem(position);
-            System.out.println("commodity : "+selectedCommodity.commodity);
+            System.out.println("commodity_name : "+selectedCommodity.commodity_name+">>"+selectedCommodity.id);
         }
 
     }

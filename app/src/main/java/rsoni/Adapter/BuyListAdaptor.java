@@ -92,7 +92,7 @@ public class BuyListAdaptor extends BaseAdapter {
 
 		void setData(BuyNode buyNode) {
 			tv_business_type.setText("Item related to "+ App.businessIdMap.get(buyNode.business_id).business);
-			tv_note_date.setText("Last update on "+App.dateFormate_DDMMYYY_Time.format(new Date(buyNode.note_date+mGMTOffset)));
+			tv_note_date.setText("Last update on "+App.dateFormate_DDMMYYY_Time.format(new Date(buyNode.note_date)));
 			tv_note.setText(buyNode.buy_note);
 			// tv_new_date.setText(newsItem.pubDate);
 			// try {

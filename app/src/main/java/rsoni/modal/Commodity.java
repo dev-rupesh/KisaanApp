@@ -11,10 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by soni on 8/13/2016.
@@ -22,27 +19,30 @@ import java.util.Map;
 public class Commodity {
 
     public int id;
-    public String commodity;
+    public String commodity_name;
     public int commodity_cat_id;
 
     public Commodity(){}
 
     public Commodity(boolean root){
         this.id = -1;
-        this.commodity = " -- Select One -- ";
+        this.commodity_name = " -- Select One -- ";
     }
 
-    public Commodity(int id, String commodity, int commodity_cat_id) {
+    public Commodity(int id,String commodity_name, int commodity_cat_id) {
         this.id = id;
-        this.commodity = commodity;
+        this.commodity_name = commodity_name;
         this.commodity_cat_id = commodity_cat_id;
     }
 
     public static Commodity getCommodity(Cursor cursor){
         Commodity commodity = new Commodity(
                 cursor.getInt(cursor.getColumnIndex("id")),
-                cursor.getString(cursor.getColumnIndex("commodity")),
+                cursor.getString(cursor.getColumnIndex("commodity_name")),
                 cursor.getInt(cursor.getColumnIndex("commodity_cat_id")));
+
+        System.out.println("commodity : "+commodity.id+">>"+commodity.commodity_name);
+
         return commodity;
     }
 
@@ -56,7 +56,7 @@ public class Commodity {
 
     @Override
     public String toString() {
-        return commodity.trim();
+        return commodity_name.trim();
     }
 
 

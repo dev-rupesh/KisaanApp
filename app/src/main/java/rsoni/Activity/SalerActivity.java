@@ -204,8 +204,9 @@ public class SalerActivity extends AppCompatActivity implements View.OnClickList
                 case add_sale_node:
                     if (dataResult.Status) {
                         saleNode = (SaleNode) dataResult.Data;
-                        App.mydb.saveSaleNodes(saleNode);
-                        saleNodes.add(saleNode);
+                        App.mydb.updateSaleNodes(saleNode);
+                        saleNodes = App.mydb.getSaleNodes();
+                        //saleNodes.add(saleNode);
                         listAdaptor =  new SaleListAdaptor(context,saleNodes);
                         lv_sales.setAdapter(listAdaptor);
                     } else {
