@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_color_gray"
     tools:context="rsoni.Activity.CommodityRatesSearchActivity">
 
     <LinearLayout
@@ -36,6 +37,9 @@
                 android:id="@+id/lv_search_result"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:padding="5dp"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="5dp"
                 android:layout_weight="1"/>
 
         </LinearLayout>
@@ -47,7 +51,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:layout_marginBottom="10dp"
-        android:background="#9BCD9B"
+        android:background="@color/colorGreen"
         android:visibility="visible"
         android:orientation="vertical">
 

@@ -34,7 +34,6 @@ public class CommodityPriceListAdaptor extends BaseAdapter {
 		layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		TimeZone mTimeZone = TimeZone.getDefault();
 		mGMTOffset = mTimeZone.getRawOffset();
-		System.out.println("mGMTOffset : "+mGMTOffset);
 	}
 
 	@Override
@@ -63,7 +62,7 @@ public class CommodityPriceListAdaptor extends BaseAdapter {
 		viewHolder holder;
 
 		if (convertView == null) {
-			convertView = layoutInflater.inflate(R.layout.list_item_sale, null);
+			convertView = layoutInflater.inflate(R.layout.list_item_commodity_price, null);
 			holder = new viewHolder(convertView);
 			convertView.setTag(holder);
 		} else {
