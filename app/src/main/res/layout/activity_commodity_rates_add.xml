@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_color_gray"
     tools:context="rsoni.Activity.CommodityRatesSearchActivity">
 
     <LinearLayout
@@ -42,8 +43,7 @@
                 android:layout_weight="1"
                 android:padding="5dp"
                 android:divider="@android:color/transparent"
-                android:background="@color/bg_color_gray"
-                android:dividerHeight="5dp"/>
+                android:dividerHeight="10dp"/>
 
         </LinearLayout>
 

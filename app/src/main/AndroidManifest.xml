@@ -88,7 +88,10 @@
         <service
             android:name="rsoni.Activity.SettingsSyncService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <activity android:name="rsoni.Activity.NewsDetailsActivity" />
+        <activity android:name="rsoni.Activity.BuyerSalerDetailsActivity"></activity>
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package rsoni.Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ProviderInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -77,6 +78,26 @@ public class FindActivity extends AppCompatActivity implements View.OnClickListe
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     //private GoogleApiClient client;
+
+    AdapterView.OnItemClickListener buysearchOnItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            BuyNode buyNode = (BuyNode) parent.getAdapter().getItem(position);
+            Intent i = new Intent(context,BuyerSalerDetailsActivity.class);
+            i.putExtra("user_id",buyNode.user_id);
+            startActivity(i);
+        }
+    };
+
+    AdapterView.OnItemClickListener salesearchOnItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            SaleNode saleNode = (SaleNode) parent.getAdapter().getItem(position);
+            Intent i = new Intent(context,BuyerSalerDetailsActivity.class);
+            i.putExtra("user_id",saleNode.user_id);
+            startActivity(i);
+        }
+    };
 
 
     @Override
@@ -215,14 +236,6 @@ public class FindActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void getwwSearchFilter() {
-
-
-
-
-
-
-    }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -328,6 +341,7 @@ public class FindActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     buyListAdaptor =  new BuyListAdaptor(context,buyNodes);
                     lv_search_result.setAdapter(buyListAdaptor);
+                    lv_search_result.setOnItemClickListener(buysearchOnItemClickListener);
                     break;
                 case seller_search:
                     if (dataResult.Status) {
@@ -341,6 +355,7 @@ public class FindActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     saleListAdaptor =  new SaleListAdaptor(context,saleNodes);
                     lv_search_result.setAdapter(saleListAdaptor);
+                    lv_search_result.setOnItemClickListener(salesearchOnItemClickListener);
                     break;
             }
         }

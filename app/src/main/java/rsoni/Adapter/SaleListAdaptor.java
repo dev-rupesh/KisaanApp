@@ -85,8 +85,8 @@ public class SaleListAdaptor extends BaseAdapter {
 		}
 
 		void setData(SaleNode saleNode) {
-			tv_business_type.setText("Item related to "+App.businessIdMap.get(saleNode.business_id).business);
-			tv_note_date.setText("Last update on "+App.dateFormate_DDMMYYY_Time.format(new Date(saleNode.note_date)));
+			tv_business_type.setText(App.businessIdMap.get(saleNode.business_id).business);
+			tv_note_date.setText(App.dateFormate_DDMMYYY_Time.format(new Date(saleNode.note_date)));
 			tv_note.setText(saleNode.sale_note);
 			// tv_new_date.setText(newsItem.pubDate);
 			// try {

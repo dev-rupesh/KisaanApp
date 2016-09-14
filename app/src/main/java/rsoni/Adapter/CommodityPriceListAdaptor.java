@@ -88,8 +88,8 @@ public class CommodityPriceListAdaptor extends BaseAdapter {
 		}
 
 		void setData(CommodityPrice commodityPrice) {
-			tv_business_type.setText("Price For "+ commodityPrice.commodity_name);
-			tv_note_date.setText("Last update on "+App.dateFormate_DDMMYYY_Time.format(new Date(commodityPrice.price_date+mGMTOffset)));
+			tv_business_type.setText(commodityPrice.commodity_name);
+			tv_note_date.setText(App.dateFormate_DDMMYYY_Time.format(new Date(commodityPrice.price_date+mGMTOffset)));
 			tv_note.setText(commodityPrice.price_note);
 			// tv_new_date.setText(newsItem.pubDate);
 			// try {

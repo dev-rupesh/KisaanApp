@@ -270,7 +270,9 @@ public class NetworkService {
 		String url = App.ServiceUrl;
 		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
 		if (task == Task.get_profile) { //
-			url+="profile";
+			url+="auth/profile";
+			param.add(new BasicNameValuePair("opt", "get-profile"));
+			param.add(new BasicNameValuePair("id", ""+appUser.id));
 			return getResponce(url,Task.post,task,param);
 		}else if (task == Task.update_profile){
 			url+="auth/update-profile";
