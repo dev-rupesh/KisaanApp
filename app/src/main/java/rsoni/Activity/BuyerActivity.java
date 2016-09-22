@@ -126,6 +126,8 @@ public class BuyerActivity extends AppCompatActivity implements View.OnClickList
         buyNode.business_id = ((Business)sp_business.getSelectedItem()).business_id;
         buyNode.buy_note = et_buy_note.getText().toString();
 
+        sdfsdfasd
+
 
         toggelAddNodeForm();
         new BackgroundTask(Task.add_buy_node).execute((Void) null);
