@@ -140,7 +140,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
             cancel = true;
         }
 
-        if(appUser.userCategory == 0){
+        if(appUser.userCategory <= 0){
             Toast.makeText(context,"Select User Category",Toast.LENGTH_SHORT).show();
             focusView = spCategoryView;
             cancel = true;

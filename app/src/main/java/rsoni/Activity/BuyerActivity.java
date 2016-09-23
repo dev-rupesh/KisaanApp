@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -123,15 +124,28 @@ public class BuyerActivity extends AppCompatActivity implements View.OnClickList
         buyNode.state_id = App.appUser.userProfile.state_id;
         buyNode.district_id = App.appUser.userProfile.district_id;
         buyNode.market_id = App.appUser.userProfile.market_id;
+
         buyNode.business_id = ((Business)sp_business.getSelectedItem()).business_id;
         buyNode.buy_note = et_buy_note.getText().toString();
 
-        sdfsdfasd
+        if(validatePostBuyNote()){
+            toggelAddNodeForm();
+            new BackgroundTask(Task.add_buy_node).execute((Void) null);
+        }
+}
 
-
-        toggelAddNodeForm();
-        new BackgroundTask(Task.add_buy_node).execute((Void) null);
-
+    private boolean validatePostBuyNote(){
+        if(buyNode.business_id<=0){
+            Toast.makeText(context,"Select Entry For",Toast.LENGTH_SHORT).show();
+            sp_business.requestFocus();
+            return false;
+        }
+        if (TextUtils.isEmpty(buyNode.buy_note)) {
+            et_buy_note.setError(getString(R.string.error_field_required));
+            et_buy_note.requestFocus();
+            return false;
+        }
+        return true;
     }
 
     @Override

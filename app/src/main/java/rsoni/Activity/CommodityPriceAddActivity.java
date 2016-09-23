@@ -136,11 +136,11 @@ public class CommodityPriceAddActivity extends AppCompatActivity implements View
         commodityPrice.price_note = et_commodity.getText().toString();
         commodityPrice.price_date = System.currentTimeMillis();
 
-        if(commodityPrice.commodity_id==-1){
+        if(commodityPrice.commodity_cat_id<=0){
             Toast.makeText(context,"Select Category",Toast.LENGTH_SHORT).show();
             return;
         }
-        if(selectedCommodity.id==-1){
+        if(commodityPrice.id<=0){
             Toast.makeText(context,"Select Commodity",Toast.LENGTH_SHORT).show();
             return;
         }
