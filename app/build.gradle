@@ -5,9 +5,9 @@ android {
     buildToolsVersion "24.0.1"
 
     defaultConfig {
-        applicationId "rsoni.kisaanApp"
+        applicationId "rsoni.JustAgriAgro"
         minSdkVersion 17
-        targetSdkVersion 17
+        //targetSdkVersion 17
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -15,7 +15,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

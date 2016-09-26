@@ -76,8 +76,6 @@ public class CommodityPriceAddActivity extends AppCompatActivity implements View
         btn_add_price_cancel = (Button) findViewById(R.id.btn_add_price_cancel);
         btn_add_price_cancel.setOnClickListener(this);
 
-
-
         sp_commoditycat = (Spinner) findViewById(R.id.sp_commoditycat);
         sp_commoditycat.setOnItemSelectedListener(this);
         sp_commodity = (Spinner) findViewById(R.id.sp_commodity);
@@ -87,7 +85,6 @@ public class CommodityPriceAddActivity extends AppCompatActivity implements View
 
         lv_search_result = (ListView) findViewById(R.id.lv_search_result);
         ll_add_commodity = (LinearLayout) findViewById(R.id.ll_add_commodity);
-
     }
 
     @Override

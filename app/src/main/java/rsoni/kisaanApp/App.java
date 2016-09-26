@@ -89,7 +89,7 @@ public class App extends Application{
         System.out.println("get json : "+json);
         if(json!=null){
             appUser = gson.fromJson(json,AppUser.class);
-            System.out.println(""+appUser.userProfile.business_id);
+            //System.out.println(""+appUser.userProfile.business_id);
         }else{
             appUser = null;
         }
