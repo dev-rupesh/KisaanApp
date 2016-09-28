@@ -73,6 +73,28 @@ public class NetworkService {
 
 	}
 
+	public DataResult Master(Task task,Object data) {
+		String url = App.ServiceUrl;
+		String json = "";
+		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
+		switch (task) {
+			case get_master:
+				url+="master/get-master";
+				return getResponce(url, Task.post, task, param);
+			//break;
+			case update_master:
+				url+="master/update_master";
+				param.add(new BasicNameValuePair("version", ""+0));
+				return getResponce(url, Task.post, task, param);
+			//break;
+			default:
+				break;
+		}
+
+		return null;
+
+	}
+
 	public DataResult Search(Task task, SearchFilter search) {
 		String url = App.ServiceUrl;
 		String json = "";

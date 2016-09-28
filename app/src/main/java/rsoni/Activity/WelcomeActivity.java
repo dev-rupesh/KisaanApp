@@ -4,13 +4,20 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.List;
+
+import rsoni.Utils.DataResult;
+import rsoni.Utils.Task;
 import rsoni.kisaanApp.App;
 import rsoni.kisaanApp.R;
+import rsoni.modal.NewsItem;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -21,6 +28,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private final int SPLASH_DISPLAY_LENGTH = 3000;
     private Activity context;
     TextView tv_aap_name;
+    BackgroundTask backgroundTask;
 
 
     @Override
@@ -40,36 +48,103 @@ public class WelcomeActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
-                Intent nextIntent = null;
+
                 /* Create an Intent that will start the Menu-Activity. */
 
                 if(App.mydb.getStates(false).isEmpty()){
-                    App.mydb.AddMasterDataFromJson(context);
+                    getMasterData();
                 }else{
                     if(App.last_update_count < System.currentTimeMillis()-86400000){
                         SyncSettings();
                     }
                 }
 
-                if(App.isAppRegistered(getApplicationContext())) {
-                    if(App.appUser.userProfile==null){
-                        nextIntent = new Intent(WelcomeActivity.this, ProfileActivity.class);
-                        nextIntent.putExtra("from","start");
-                    }else{
-                        nextIntent = new Intent(WelcomeActivity.this, MainActivity.class);
-                    }
-                }else{
-                    nextIntent = new Intent(WelcomeActivity.this, LoginActivity.class);
-                }
-                context.startActivity(nextIntent);
-                context.finish();
+                openApp();
+
             }
         }, SPLASH_DISPLAY_LENGTH);
 
     }
 
-    public void SyncSettings(){
+    public void openApp(){
+        Intent nextIntent = null;
+        if(App.isAppRegistered(getApplicationContext())) {
+            if(App.appUser.userProfile==null){
+                nextIntent = new Intent(WelcomeActivity.this, ProfileActivity.class);
+                nextIntent.putExtra("from","start");
+            }else{
+                nextIntent = new Intent(WelcomeActivity.this, MainActivity.class);
+            }
+        }else{
+            nextIntent = new Intent(WelcomeActivity.this, LoginActivity.class);
+        }
+        context.startActivity(nextIntent);
+        context.finish();
+    }
 
+    public void SyncSettings(){
+        //backgroundTask = new BackgroundTask(Task.update_master);
+        //backgroundTask.execute((Void) null);
+    }
+
+    public void getMasterData(){
+
+        //App.mydb.AddMasterDataFromJson(context);
+
+        backgroundTask = new BackgroundTask(Task.get_master);
+        backgroundTask.execute((Void) null);
+    }
+
+    public class BackgroundTask extends AsyncTask<Void, Void, Boolean> {
+
+        DataResult dataResult;
+        Task task;
+
+        public  BackgroundTask(Task task){
+            this.task = task;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            switch(task){
+                case get_master:
+                    dataResult = App.networkService.Master(Task.get_master,null);
+                    break;
+                case update_master:
+                    dataResult = App.networkService.Master(Task.update_master,null);
+                    break;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            backgroundTask = null;
+            //showProgress(false);
+            switch(task) {
+                case get_master:
+                    if (dataResult.Status) {
+                        openApp();
+                    } else {
+                        //Toast.makeText(context, "Wrong Password", Toast.LENGTH_LONG).show();
+                    }
+                    break;
+                case update_master:
+                    if (dataResult.Status) {
+                        openApp();
+                    } else {
+                        //Toast.makeText(context, "Wrong Password", Toast.LENGTH_LONG).show();
+                    }
+                    break;
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            backgroundTask = null;
+            //showProgress(false);
+        }
     }
 
 }
