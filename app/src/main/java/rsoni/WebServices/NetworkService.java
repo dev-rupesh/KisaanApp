@@ -79,8 +79,8 @@ public class NetworkService {
 		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
 		switch (task) {
 			case get_master:
-				url+="master/get-master";
-				return getResponce(url, Task.post, task, param);
+				url+="master.json";
+				return getResponce(url, Task.get, task, param);
 			//break;
 			case update_master:
 				url+="master/update_master";
@@ -389,6 +389,9 @@ public class NetworkService {
 			case delete_news:
 				dataResult = dataParser.News(json, mode);
 				break;
+
+			case get_master:
+				dataResult = dataParser.
 
 
 		default:

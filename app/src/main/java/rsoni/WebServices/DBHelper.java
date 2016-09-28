@@ -54,7 +54,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.execSQL("create table district "
 				+ "(id integer primary key, district_id integer,state_id integer, district_name text)");
 		db.execSQL("create table market "
-				+ "(id integer primary key, mandi_id integer, mandi_name text,district text)");
+				+ "(id integer primary key, mandi_id integer, mandi_name text,district text,latitude real,longitude real)");
 		db.execSQL("create table business "
 				+ "(id integer primary key, business_id integer, business text)");
 		db.execSQL("create table buynode "
@@ -375,6 +375,19 @@ public class DBHelper extends SQLiteOpenHelper {
 			}
 		}
 		if(with_select_option) markets.add(0,new Market(with_select_option));
+		return markets;
+	}
+
+	public List<Market> getAllMarkets(){
+		List<Market> markets = new ArrayList<>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.query(TABLE_MARKET, null, null, null, null, null, null);
+		if (cursor .moveToFirst()) {
+			while (cursor.isAfterLast() == false) {
+				markets.add(Market.getMarket(cursor));
+				cursor.moveToNext();
+			}
+		}
 		return markets;
 	}
 

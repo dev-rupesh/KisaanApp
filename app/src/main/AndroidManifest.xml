@@ -12,6 +12,7 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -87,10 +88,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity
-            android:name="rsoni.Activity.MandiOnMapActivity"
-            android:label="@string/title_activity_mandi_on_map" />
-
         <service
             android:name="rsoni.Activity.SettingsSyncService"
             android:enabled="true"
@@ -98,6 +95,9 @@
 
         <activity android:name="rsoni.Activity.NewsDetailsActivity" />
         <activity android:name="rsoni.Activity.BuyerSalerDetailsActivity" />
+        <activity
+            android:name="rsoni.JustAgriAgro.MandiOnMapActivity"
+            android:label="@string/title_activity_mandi_on_map"></activity>
     </application>
 
 </manifest>

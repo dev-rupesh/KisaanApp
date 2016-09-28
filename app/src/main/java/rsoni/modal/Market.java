@@ -24,8 +24,8 @@ public class Market {
     public int id;
     public String mandi_name;
     public int mandi_id = -1;
-    double latitude = 24.097381;
-    double longitude = 75.053357;
+    public double latitude = 24.097381;
+    public double longitude = 75.053357;
     String city;
     String address;
     public String district;
@@ -55,7 +55,8 @@ public class Market {
 
     public static Map<String,List<Market>> getMarketMap(Context context) throws IOException {
         Type listType = new TypeToken<List<Market>>() {}.getType();
-        InputStream input = context.getAssets().open("market.json");
+        //InputStream input = context.getAssets().open("market.json");
+        InputStream input = context.getAssets().open("agrimarket.json");
         Reader reader = new InputStreamReader(input, "UTF-8");
         Map<String,List<Market>> marketMap = new HashMap<String, List<Market>>();
 

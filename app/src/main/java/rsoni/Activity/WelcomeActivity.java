@@ -47,10 +47,10 @@ public class WelcomeActivity extends AppCompatActivity {
                 /* Create an Intent that will start the Menu-Activity. */
 
                 if(App.mydb.getStates(false).isEmpty()){
-                    getMasterData();
+                    //getMasterData();
                 }else{
                     if(App.last_update_count < System.currentTimeMillis()-86400000){
-                        SyncSettings();
+                        //SyncSettings();
                     }
                 }
 

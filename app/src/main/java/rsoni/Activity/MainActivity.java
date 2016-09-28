@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import rsoni.JustAgriAgro.App;
+import rsoni.JustAgriAgro.MandiOnMapActivity;
 import rsoni.kisaanApp.R;
 
 public class MainActivity extends AppCompatActivity
@@ -128,7 +129,7 @@ public class MainActivity extends AppCompatActivity
         } */else if (id == R.id.nav_news) {
             startActivity(new Intent(this,NewsActivity.class));
         } else if (id == R.id.nav_market_map) {
-            //startActivity(new Intent(this,MandiOnMapActivity.class));
+            startActivity(new Intent(this,MandiOnMapActivity.class));
         } else if (id == R.id.nav_find) {
             startActivity(new Intent(this,FindActivity.class));
         } else if (id == R.id.nav_buyer) {

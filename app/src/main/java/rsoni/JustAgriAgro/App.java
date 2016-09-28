@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.multidex.MultiDex;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -66,6 +67,12 @@ public class App extends Application{
         getSettingSyncCheck();
         getDataSyncCheck();
         super.onCreate();
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     @Override

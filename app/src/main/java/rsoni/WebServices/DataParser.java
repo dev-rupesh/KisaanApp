@@ -1,8 +1,10 @@
 package rsoni.WebServices;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import rsoni.JustAgriAgro.App;
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
 import rsoni.modal.AppUser;
@@ -178,7 +180,24 @@ public class DataParser {
 		return result;
 	}*/
 
+	public DataResult Master(String json, Task mode) {
+		JSONObject response = null;
+		DataResult result = new DataResult();
+			try {
+				response = new JSONObject(json);
+				JSONArray temp;
+				if(mode == Task.get_master) {
+					temp = response.optJSONArray("markets");
+					App.mydb.
+				}
 
+			} catch (JSONException e) {
+				result.Status = false;
+				result.msg = "" + e;
+				e.printStackTrace();
+			}
+		return result;
+	}
 	
 	
 	public DataResult UserAuth(String json, Task mode) {
