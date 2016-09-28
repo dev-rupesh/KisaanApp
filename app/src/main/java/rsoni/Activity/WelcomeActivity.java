@@ -1,7 +1,6 @@
 package rsoni.Activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -9,15 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.List;
 
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
-import rsoni.kisaanApp.App;
+import rsoni.JustAgriAgro.App;
 import rsoni.kisaanApp.R;
-import rsoni.modal.NewsItem;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.

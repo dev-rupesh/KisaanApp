@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -24,17 +23,13 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
-import rsoni.kisaanApp.App;
+import rsoni.JustAgriAgro.App;
 import rsoni.kisaanApp.R;
 import rsoni.modal.AppUser;
-import rsoni.modal.Business;
 import rsoni.modal.District;
 import rsoni.modal.Market;
 import rsoni.modal.State;

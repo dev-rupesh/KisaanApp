@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import rsoni.kisaanApp.App;
+import rsoni.JustAgriAgro.App;
 import rsoni.kisaanApp.R;
 import rsoni.modal.CommodityPrice;
 

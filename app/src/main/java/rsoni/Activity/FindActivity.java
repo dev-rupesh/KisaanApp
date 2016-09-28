@@ -2,8 +2,6 @@ package rsoni.Activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ProviderInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioGroup;
@@ -23,26 +20,21 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import rsoni.Adapter.BuyListAdaptor;
-import rsoni.Adapter.CommodityPriceListAdaptor;
 import rsoni.Adapter.SaleListAdaptor;
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
-import rsoni.kisaanApp.App;
+import rsoni.JustAgriAgro.App;
 import rsoni.kisaanApp.R;
 import rsoni.modal.Business;
 import rsoni.modal.BuyNode;
-import rsoni.modal.CommodityPrice;
 import rsoni.modal.District;
-import rsoni.modal.Market;
 import rsoni.modal.SaleNode;
 import rsoni.modal.SearchFilter;
 import rsoni.modal.State;
-import rsoni.modal.UserSubCategory;
 
 public class FindActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 

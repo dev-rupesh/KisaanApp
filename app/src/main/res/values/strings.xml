@@ -129,5 +129,6 @@
     </string>
     <string name="title_activity_mandi_on_map">Mandi Map</string>
     <string name="title_activity_new_details">NewDetailsActivity</string>
+    <string name="title_activity_mandi_on_map2">Map</string>
 
 </resources>

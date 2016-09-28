@@ -1,15 +1,11 @@
 package rsoni.Activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -18,9 +14,8 @@ import java.util.List;
 import rsoni.Adapter.NewsListAdaptor;
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
-import rsoni.kisaanApp.App;
+import rsoni.JustAgriAgro.App;
 import rsoni.kisaanApp.R;
-import rsoni.modal.AppUser;
 import rsoni.modal.NewsItem;
 
 public class NewsActivity extends AppCompatActivity {

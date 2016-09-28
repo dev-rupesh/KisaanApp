@@ -1,4 +1,4 @@
-package rsoni.kisaanApp;
+package rsoni.JustAgriAgro;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

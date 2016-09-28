@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import rsoni.kisaanApp.App;
+import rsoni.JustAgriAgro.App;
 import rsoni.kisaanApp.R;
 import rsoni.modal.Commodity;
 import rsoni.modal.CommodityCat;

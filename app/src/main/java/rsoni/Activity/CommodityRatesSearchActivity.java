@@ -18,17 +18,15 @@ import android.widget.Toast;
 import java.util.List;
 
 import rsoni.Adapter.CommodityPriceListAdaptor;
-import rsoni.Adapter.SaleListAdaptor;
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
-import rsoni.kisaanApp.App;
+import rsoni.JustAgriAgro.App;
 import rsoni.kisaanApp.R;
 import rsoni.modal.Commodity;
 import rsoni.modal.CommodityCat;
 import rsoni.modal.CommodityPrice;
 import rsoni.modal.District;
 import rsoni.modal.Market;
-import rsoni.modal.SaleNode;
 import rsoni.modal.State;
 
 public class CommodityRatesSearchActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemSelectedListener {

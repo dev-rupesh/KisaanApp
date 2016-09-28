@@ -34,9 +34,10 @@ dependencies {
         exclude group: 'com.rengwuxian.materialedittext', module: 'library'
     }
 
+    //compile 'com.google.android.gms:play-services:9.4.0'
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.google.code.gson:gson:2.2.+'
-    //compile 'com.google.android.gms:play-services:9.4.0'
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.google.android.gms:play-services:9.6.1'
 }

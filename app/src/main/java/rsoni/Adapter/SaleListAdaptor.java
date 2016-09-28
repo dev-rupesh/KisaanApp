@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.Date;
 import java.util.List;
 
-import rsoni.kisaanApp.App;
+import rsoni.JustAgriAgro.App;
 import rsoni.kisaanApp.R;
 import rsoni.modal.SaleNode;
 

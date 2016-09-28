@@ -22,7 +22,7 @@ import java.util.List;
 import rsoni.Adapter.BuyListAdaptor;
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
-import rsoni.kisaanApp.App;
+import rsoni.JustAgriAgro.App;
 import rsoni.kisaanApp.R;
 import rsoni.modal.Business;
 import rsoni.modal.BuyNode;

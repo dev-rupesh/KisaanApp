@@ -10,24 +10,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.List;
-
-import rsoni.Adapter.BuyListAdaptor;
-import rsoni.Adapter.SaleListAdaptor;
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
-import rsoni.kisaanApp.App;
+import rsoni.JustAgriAgro.App;
 import rsoni.kisaanApp.R;
 import rsoni.modal.AppUser;
-import rsoni.modal.BuyNode;
-import rsoni.modal.SaleNode;
 import rsoni.modal.UserProfile;
 
 public class BuyerSalerDetailsActivity extends AppCompatActivity implements View.OnClickListener {
