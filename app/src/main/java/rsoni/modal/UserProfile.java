@@ -1,5 +1,7 @@
 package rsoni.modal;
 
+import android.database.Cursor;
+
 import org.json.JSONObject;
 
 /**
@@ -22,11 +24,13 @@ public class UserProfile {
     public String address = "";
     public int pincode = 0;
     public String business_id = "";
+    public String email = "";
+
 
     public static UserProfile getUserProfileByJsonObject(JSONObject json_userProfile){
         UserProfile userProfile = new UserProfile();
         userProfile.id = json_userProfile.optInt("id");
-        userProfile.mobile = json_userProfile.optString("user_name");
+        userProfile.mobile = json_userProfile.optString("mobile");
         userProfile.company_name = json_userProfile.optString("company_name");
         userProfile.owner_name = json_userProfile.optString("owner_name");
         userProfile.state_id = json_userProfile.optInt("state_id");
@@ -39,6 +43,27 @@ public class UserProfile {
         userProfile.address = json_userProfile.optString("address");
         userProfile.pincode =  json_userProfile.optInt("pincode");
         userProfile.business_id =  json_userProfile.optString("business_id");
+        userProfile.email =  json_userProfile.optString("email");
+        return userProfile;
+    }
+
+    public static UserProfile getUserProfile(Cursor cursor){
+        UserProfile userProfile = new UserProfile();
+        userProfile.id = cursor.getInt(cursor.getColumnIndex("id"));
+        userProfile.mobile = cursor.getString(cursor.getColumnIndex("mobile"));
+        userProfile.company_name = cursor.getString(cursor.getColumnIndex("company_name"));
+        userProfile.owner_name = cursor.getString(cursor.getColumnIndex("owner_name"));
+        userProfile.state_id = cursor.getInt(cursor.getColumnIndex("state_id"));
+        userProfile.state_name = cursor.getString(cursor.getColumnIndex("state_name"));
+        userProfile.district_id = cursor.getInt(cursor.getColumnIndex("district_id"));
+        userProfile.district_name = cursor.getString(cursor.getColumnIndex("district_name"));
+        userProfile.market_id =  cursor.getInt(cursor.getColumnIndex("market_id"));
+        userProfile.market_name = cursor.getString(cursor.getColumnIndex("market_name"));
+        userProfile.usersubcat_id =  cursor.getInt(cursor.getColumnIndex("usersubcat_id"));
+        userProfile.address = cursor.getString(cursor.getColumnIndex("address"));
+        userProfile.pincode =  cursor.getInt(cursor.getColumnIndex("pincode"));
+        userProfile.business_id =  cursor.getString(cursor.getColumnIndex("business_id"));
+        userProfile.email =  cursor.getString(cursor.getColumnIndex("email"));
         return userProfile;
     }
 
@@ -67,5 +92,6 @@ public class UserProfile {
         this.pincode = userProfile.pincode;
         this.usersubcat_id = userProfile.usersubcat_id;
         this.business_id = userProfile.business_id;
+        this.email = userProfile.email;
     }
 }

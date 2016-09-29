@@ -18,13 +18,11 @@ import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
 import rsoni.JustAgriAgro.App;
 import rsoni.kisaanApp.R;
-import rsoni.modal.AppUser;
 import rsoni.modal.UserProfile;
 
 public class BuyerSalerDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
     // Activity reference
-    private AppUser appUser;
     private UserProfile userProfile = new UserProfile();
     private String from;
     private Context context;
@@ -45,8 +43,8 @@ public class BuyerSalerDetailsActivity extends AppCompatActivity implements View
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         context = this;
-        appUser = new AppUser();
-        appUser.id = 1;
+        userProfile.id = getIntent().getIntExtra("user_id",-1);
+
         initView();
     }
 
@@ -72,22 +70,25 @@ public class BuyerSalerDetailsActivity extends AppCompatActivity implements View
     }
 
     private void getProfile(){
-
+        backgroundTask = new BackgroundTask(Task.get_user_profile);
+        backgroundTask.execute((Void) null);
     }
-    private void showProfile(){
-        if(appUser.userProfile!=null) {
-            ll_user_profile.setVisibility(View.VISIBLE);
-            tv_name_of_company.setText(App.appUser.userProfile.company_name);
-            tv_name_of_proprietor.setText(App.appUser.userProfile.owner_name);
-            tv_address.setText(App.appUser.userProfile.address);
-            tv_district.setText(""+App.appUser.userProfile.state_name+" - "+App.appUser.userProfile.district_name);
-            tv_pincode.setText("Pin Code - "+App.appUser.userProfile.pincode);
-            tv_mobile.setText(App.appUser.mobile);
-            tv_email.setText(App.appUser.email);
-            tv_market.setText(App.appUser.userProfile.market_name);
 
-            if(appUser.userProfile.business_id!=null && !App.appUser.userProfile.business_id.isEmpty()) {
-                int[] business_ids = App.gson.fromJson(App.appUser.userProfile.business_id, int[].class);
+
+    private void showProfile(){
+        if(userProfile!=null) {
+            ll_user_profile.setVisibility(View.VISIBLE);
+            tv_name_of_company.setText(userProfile.company_name);
+            tv_name_of_proprietor.setText(userProfile.owner_name);
+            tv_address.setText(userProfile.address);
+            tv_district.setText(""+userProfile.state_name+" - "+userProfile.district_name);
+            tv_pincode.setText("Pin Code - "+userProfile.pincode);
+            tv_mobile.setText(userProfile.mobile);
+            tv_email.setText(userProfile.email);
+            tv_market.setText(userProfile.market_name);
+
+            if(userProfile.business_id != null && !userProfile.business_id.isEmpty()) {
+                int[] business_ids = App.gson.fromJson(userProfile.business_id, int[].class);
 
                 String businesses = "";
                 for (Integer integer : business_ids) {
@@ -155,6 +156,7 @@ public class BuyerSalerDetailsActivity extends AppCompatActivity implements View
 
         DataResult dataResult;
         Task task;
+        boolean from_db = false;
 
         public  BackgroundTask(Task task){
             this.task = task;
@@ -169,9 +171,16 @@ public class BuyerSalerDetailsActivity extends AppCompatActivity implements View
         @Override
         protected Boolean doInBackground(Void... params) {
             switch(task){
-                case get_profile:
+                case get_user_profile:
                     System.out.println("in get profile and data ...");
-                    dataResult = App.networkService.Profile(task, appUser);
+                    UserProfile temp = App.mydb.getUserProfile(userProfile.id);
+                    if(temp==null){
+                        dataResult = App.networkService.UserProfile(task,userProfile);
+                    }else{
+                        from_db = true;
+                        dataResult = new DataResult(true,"",temp);
+                    }
+
                     break;
             }
             return true;
@@ -182,10 +191,13 @@ public class BuyerSalerDetailsActivity extends AppCompatActivity implements View
             backgroundTask = null;
 
             switch(task) {
-                case get_profile:
+                case get_user_profile:
                     if (dataResult.Status) {
                         //tv_error_msg.setVisibility(View.GONE);
-                        appUser.userProfile = (UserProfile) dataResult.Data;
+                        userProfile = (UserProfile) dataResult.Data;
+                        if(!from_db){
+                            App.mydb.saveUserProfile(userProfile);
+                        }
                         showProfile();
                     } else {
 

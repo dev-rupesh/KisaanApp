@@ -14,6 +14,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import org.json.JSONObject;
+
+import rsoni.modal.Business;
 import rsoni.modal.BuyNode;
 import rsoni.modal.Commodity;
 import rsoni.modal.CommodityCat;
@@ -23,6 +26,7 @@ import rsoni.modal.Market;
 import rsoni.modal.NewsItem;
 import rsoni.modal.SaleNode;
 import rsoni.modal.State;
+import rsoni.modal.UserProfile;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -36,6 +40,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	public static final String TABLE_COMMODITYCAT = "commoditycat";
 	public static final String TABLE_COMMODITY = "commodity";
 	public static final String TABLE_COMMODITY_PRICE = "commodityprice";
+	public static final String TABLE_USER_PROFILE = "userprofile";
 
 	private HashMap hp;
 	public DBHelper(Context context) {
@@ -54,7 +59,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.execSQL("create table district "
 				+ "(id integer primary key, district_id integer,state_id integer, district_name text)");
 		db.execSQL("create table market "
-				+ "(id integer primary key, mandi_id integer, mandi_name text,district text,latitude real,longitude real)");
+				+ "(id integer primary key, mandi_id integer, mandi_name text,district text,latitude real,longitude real,address text,city text,contact_no text,email_id text)");
 		db.execSQL("create table business "
 				+ "(id integer primary key, business_id integer, business text)");
 		db.execSQL("create table buynode "
@@ -69,7 +74,8 @@ public class DBHelper extends SQLiteOpenHelper {
 				+ "(id integer primary key, commodity_cat_id integer, commodity_name text, commodity_desc text)");
 		db.execSQL("create table commodityprice "
 				+ "(id integer primary key, user_id integer, price_note text,state_id integer,district_id integer,market_id integer, commodity_cat_id integer,commodity_id integer,commodity_name text,price_date integer)");
-
+		db.execSQL("create table userprofile "
+				+ "(id integer primary key, mobile text, company_name text,owner_name text,state_id integer,state_name text,district_id integer,district_name text,market_id integer,market_name text,usersubcat_id integer,address text,pincode integer,business_id integer,business text,email text)");
 
 	}
 
@@ -329,6 +335,37 @@ public class DBHelper extends SQLiteOpenHelper {
 		return true;
 	}
 
+	public UserProfile getUserProfile(int user_id){
+		UserProfile userProfile = null;
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.query(TABLE_USER_PROFILE, null, "id=?", new String[] { ""+user_id }, null, null, null);
+		if (cursor.moveToFirst()) {
+			userProfile = UserProfile.getUserProfile(cursor);
+		}
+		return userProfile;
+	}
+
+	public UserProfile saveUserProfile(UserProfile userProfile){
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues insertValues = new ContentValues();
+		 insertValues.put("id",userProfile.id);
+		 insertValues.put("mobile",userProfile.mobile);
+		 insertValues.put("company_name",userProfile.company_name);
+		 insertValues.put("owner_name",userProfile.owner_name);
+		 insertValues.put("state_id",userProfile.state_id);
+		 insertValues.put("state_name",userProfile.state_name);
+		 insertValues.put("district_id",userProfile.district_id);
+		 insertValues.put("district_name",userProfile.district_name);
+		 insertValues.put("market_id",userProfile.market_id);
+		 insertValues.put("market_name",userProfile.market_name);
+		 insertValues.put("usersubcat_id",userProfile.usersubcat_id);
+		 insertValues.put("address",userProfile.address);
+		 insertValues.put("pincode",userProfile.pincode);
+		 insertValues.put("business_id",userProfile.business_id);
+		 db.insert(TABLE_USER_PROFILE, null, insertValues);
+		 return userProfile;
+	}
+
 	public List<State> getStates(boolean with_select_option){
 		List<State> states = new ArrayList<>();
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -343,17 +380,39 @@ public class DBHelper extends SQLiteOpenHelper {
 		return states;
 	}
 
+
+	public List<Business> getAllBusiness(boolean with_select_option) {
+		List<Business> states = new ArrayList<>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.query(TABLE_STATE, null, null, null, null, null, null);
+		if (cursor .moveToFirst()) {
+			while (cursor.isAfterLast() == false) {
+				states.add(Business.getBusiness(cursor));
+				cursor.moveToNext();
+			}
+		}
+		if(with_select_option) states.add(0,new Business(with_select_option));
+		return states;
+	}
+
 	public List<District> getDistricts(boolean with_select_option,int state_id){
 		List<District> districts = new ArrayList<>();
 		SQLiteDatabase db = this.getReadableDatabase();
-		//Cursor cursor = db.rawQuery("select * from state", null);
-		//Cursor cursor = db.query(TABLE_DISTRICT, null, null, null, null, null, null);
 		Cursor cursor = db.query(TABLE_DISTRICT, null, "state_id=?", new String[] { ""+state_id }, null, null, null);
+		if (cursor .moveToFirst()) {
+			while (cursor.isAfterLast() == false) {
+				districts.add(District.getDistrict(cursor));
+				cursor.moveToNext();
+			}
+		}
+		if(with_select_option) districts.add(0,new District(with_select_option));
+		return districts;
+	}
 
-		//String[] columnNames = cursor.getColumnNames();
-
-		//System.out.println("columns : "+ App.gson.toJson(columnNames));
-
+	public List<District> getAllDistricts(boolean with_select_option){
+		List<District> districts = new ArrayList<>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.query(TABLE_DISTRICT, null, null, null, null, null, null);
 		if (cursor .moveToFirst()) {
 			while (cursor.isAfterLast() == false) {
 				districts.add(District.getDistrict(cursor));
@@ -370,7 +429,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		Cursor cursor = db.query(TABLE_MARKET, null, "district=?", new String[] { district }, null, null, null);
 		if (cursor .moveToFirst()) {
 			while (cursor.isAfterLast() == false) {
-				markets.add(Market.getMarket(cursor));
+				markets.add(Market.getMarket(cursor,false));
 				cursor.moveToNext();
 			}
 		}
@@ -382,9 +441,9 @@ public class DBHelper extends SQLiteOpenHelper {
 		List<Market> markets = new ArrayList<>();
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.query(TABLE_MARKET, null, null, null, null, null, null);
-		if (cursor .moveToFirst()) {
+		if (cursor.moveToFirst()) {
 			while (cursor.isAfterLast() == false) {
-				markets.add(Market.getMarket(cursor));
+				markets.add(Market.getMarket(cursor,true));
 				cursor.moveToNext();
 			}
 		}
@@ -408,6 +467,19 @@ public class DBHelper extends SQLiteOpenHelper {
 		List<Commodity> commodities = new ArrayList<>();
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.query(TABLE_COMMODITY, null, "commodity_cat_id=?", new String[] { ""+cat_id }, null, null, null);
+		if (cursor .moveToFirst()) {
+			while (cursor.isAfterLast() == false) {
+				commodities.add(Commodity.getCommodity(cursor));
+				cursor.moveToNext();
+			}
+		}
+		if(with_select_option) commodities.add(0,new Commodity(with_select_option));
+		return commodities;
+	}
+	public List<Commodity> getAllCommodity(boolean with_select_option){
+		List<Commodity> commodities = new ArrayList<>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.query(TABLE_COMMODITY, null, null, null, null, null, null);
 		if (cursor .moveToFirst()) {
 			while (cursor.isAfterLast() == false) {
 				commodities.add(Commodity.getCommodity(cursor));
@@ -452,10 +524,17 @@ public class DBHelper extends SQLiteOpenHelper {
 			List<Market> markets = Market.getMarkets(context);
 			values.clear();
 			for (Market  market : markets) {
-				System.out.println("Market : "+market.mandi_name+" >> "+market.mandi_id);
-				values.put("mandi_id", market.mandi_id);
+				System.out.println("Market : "+market.mandi_name+" >> "+market.id);
+				values.put("mandi_id", market.id);
 				values.put("mandi_name", market.mandi_name);
 				values.put("district", market.district);
+				values.put("latitude", market.latitude);
+				values.put("longitude", market.longitude);
+				values.put("address", market.address);
+				values.put("city", market.city);
+				values.put("contact_no", market.contact_no);
+				values.put("email_id", market.email_id);
+
 				db.insert(TABLE_MARKET, null, values);
 			}
 			//db.setTransactionSuccessful();
@@ -492,29 +571,74 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	}
 
+	public void AddMasterDataFromJson(Context context, JSONObject data){
 
-	public boolean insertContact(String name, String phone, String email,
-			String street, String place) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		ContentValues contentValues = new ContentValues();
+		try {
 
-		contentValues.put("name", name);
-		contentValues.put("phone", phone);
-		contentValues.put("email", email);
-		contentValues.put("street", street);
-		contentValues.put("place", place);
+			db.beginTransaction();
+			ContentValues values = new ContentValues();
+			//add states
+			List<State> states = State.getStateList(data.optString("states"));
+			values.clear();
+			for (State state : states) {
+				values.put("state_id", state.state_id);
+				values.put("state_name", state.state_name);
+				db.insert(TABLE_STATE, null, values);
+			}
+			//add Districts
+			List<District> districts = District.getDistricts(data.optString("districts"));
+			values.clear();
+			for (District district : districts) {
+				values.put("district_id", district.district_id);
+				values.put("district_name", district.district_name);
+				values.put("state_id", district.state_id);
+				db.insert(TABLE_DISTRICT, null, values);
+			}
+			//add Markets
+			List<Market> markets = Market.getMarkets(data.optString("markets"));
+			values.clear();
+			for (Market  market : markets) {
+				System.out.println("Market : "+market.mandi_name+" >> "+market.id);
+				values.put("mandi_id", market.id);
+				values.put("mandi_name", market.mandi_name);
+				values.put("district", market.district);
+				values.put("latitude", market.latitude);
+				values.put("longitude", market.longitude);
+				values.put("address", market.address);
+				values.put("city", market.city);
+				values.put("contact_no", market.contact_no);
+				values.put("email_id", market.email_id);
+				db.insert(TABLE_MARKET, null, values);
+			}
+			//add CommodityCats
+			List<CommodityCat> commodityCats = CommodityCat.getCommodityCat(data.optString("commoditycats"));
+			values.clear();
+			for (CommodityCat commodityCat : commodityCats) {
+				values.put("id", commodityCat.id);
+				values.put("commodity_cat", commodityCat.commodity_cat);
+				db.insert(TABLE_COMMODITYCAT, null, values);
+			}
+			//add Commodity
+			List<Commodity> commodities = Commodity.getCommodities(data.optString("commodities"));
+			values.clear();
+			for (Commodity  commodity : commodities) {
+				values.put("id", commodity.id);
+				values.put("commodity_name", commodity.commodity_name);
+				values.put("commodity_cat_id", commodity.commodity_cat_id);
+				db.insert(TABLE_COMMODITY, null, values);
+			}
+			db.setTransactionSuccessful();
 
-		db.insert("contacts", null, contentValues);
-		db.close();
-		return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			db.endTransaction();
+		}
+
 	}
 
-	public Cursor getData(int id) {
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor res = db.rawQuery("select * from contacts where id=" + id + "",
-				null);
-		return res;
-	}
+
 
 	public int numberOfRows() {
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -523,38 +647,6 @@ public class DBHelper extends SQLiteOpenHelper {
 		return numRows;
 	}
 
-	public boolean updateContact(Integer id, String name, String phone,
-			String email, String street, String place) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		ContentValues contentValues = new ContentValues();
-		contentValues.put("name", name);
-		contentValues.put("phone", phone);
-		contentValues.put("email", email);
-		contentValues.put("street", street);
-		contentValues.put("place", place);
-		db.update("contacts", contentValues, "id = ? ",
-				new String[] { Integer.toString(id) });
-		return true;
-	}
 
-	public Integer deleteContact(Integer id) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		return db.delete("contacts", "id = ? ",
-				new String[] { Integer.toString(id) });
-	}
-
-	public ArrayList getAllCotacts() {
-		ArrayList array_list = new ArrayList();
-		// hp = new HashMap();
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor res = db.rawQuery("select * from contacts", null);
-		res.moveToFirst();
-		while (res.isAfterLast() == false) {
-			array_list.add(res.getString(res
-					.getColumnIndex(TABLE_NEWS)));
-			res.moveToNext();
-		}
-		return array_list;
-	}
 
 }

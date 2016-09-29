@@ -14,6 +14,7 @@ import rsoni.modal.CommodityPrice;
 import rsoni.modal.NewsItem;
 import rsoni.modal.SaleNode;
 import rsoni.modal.SearchFilter;
+import rsoni.modal.UserProfile;
 
 
 public class NetworkService {
@@ -317,6 +318,21 @@ public class NetworkService {
 		}
 		return null;
 	}
+	public DataResult UserProfile(Task task,UserProfile userProfile) {
+		System.out.println("Profile()...");
+		String url = App.ServiceUrl;
+		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
+		if (task == Task.get_user_profile) { //
+			url+="auth/get-user-profile";
+			param.add(new BasicNameValuePair("opt", "get-user-profile"));
+			param.add(new BasicNameValuePair("user_id", ""+userProfile.id));
+			return getResponce(url,Task.post,task,param);
+		}else if (task == Task.update_profile){
+			url+="auth/update-profile";
+			return getResponce(url,Task.post,task,param);
+		}
+		return null;
+	}
 
 	private DataResult getResponce(String url,Task url_type ,Task mode, ArrayList<NameValuePair> param) {
 		System.out.println("getResponce()...");
@@ -391,7 +407,11 @@ public class NetworkService {
 				break;
 
 			case get_master:
-				dataResult = dataParser.
+				dataResult = dataParser.Master(json,mode);
+				break;
+
+			case get_user_profile:
+				dataResult = dataParser.UserProfile(json,mode);
 
 
 		default:

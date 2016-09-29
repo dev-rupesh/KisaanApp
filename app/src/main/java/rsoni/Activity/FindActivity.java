@@ -145,7 +145,7 @@ public class FindActivity extends AppCompatActivity implements View.OnClickListe
 
     private void resetSearchFilter() {
 
-        businesses.addAll(App.businesses);
+        businesses.addAll(App.mydb.getAllBusiness(false));
         businesses.add(0, new Business(true));
 
         stateArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, states);

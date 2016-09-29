@@ -13,6 +13,8 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import rsoni.JustAgriAgro.App;
+
 /**
  * Created by soni on 8/13/2016.
  */
@@ -47,10 +49,7 @@ public class Commodity {
     }
 
     public static List<Commodity> getCommodities(Context context) throws IOException {
-        Type listType = new TypeToken<List<Commodity>>() {}.getType();
-        InputStream input = context.getAssets().open("commodity.json");
-        Reader reader = new InputStreamReader(input, "UTF-8");
-        List<Commodity> commodities = new Gson().fromJson(reader,listType);
+        List<Commodity> commodities = App.mydb.getAllCommodity(false);
         return commodities;
     }
 
@@ -60,4 +59,8 @@ public class Commodity {
     }
 
 
+    public static List<Commodity> getCommodities(String data) {
+        Type listType = new TypeToken<List<Commodity>>() {}.getType();
+        return new Gson().fromJson(data,listType);
+    }
 }

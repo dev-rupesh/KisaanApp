@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import rsoni.JustAgriAgro.App;
+
 /**
  * Created by DS1 on 09/08/16.
  */
@@ -26,11 +28,11 @@ public class Market {
     public int mandi_id = -1;
     public double latitude = 24.097381;
     public double longitude = 75.053357;
-    String city;
-    String address;
+    public String city;
+    public String address;
     public String district;
-    String contact_no;
-    int email_id = 0;
+    public String contact_no;
+    public String email_id = "";
 
     public Market (){}
     public Market(boolean root){
@@ -45,22 +47,35 @@ public class Market {
         this.district = district;
     }
 
-    public static Market getMarket(Cursor cursor){
-        Market market = new Market(
-                cursor.getInt(cursor.getColumnIndex("mandi_id")),
-                cursor.getString(cursor.getColumnIndex("mandi_name")),
-                cursor.getString(cursor.getColumnIndex("district")));
+    public static Market getMarket(Cursor cursor,boolean all_cols){
+        Market market;
+
+        if(all_cols){
+            market = new Market();
+            market.id = cursor.getInt(cursor.getColumnIndex("id"));
+            market.mandi_name = cursor.getString(cursor.getColumnIndex("mandi_name"));
+            market.latitude = cursor.getDouble(cursor.getColumnIndex("latitude"));
+            market.longitude = cursor.getDouble(cursor.getColumnIndex("longitude"));
+            market.city = cursor.getString(cursor.getColumnIndex("city"));
+            market.address = cursor.getString(cursor.getColumnIndex("address"));
+            market.district = cursor.getString(cursor.getColumnIndex("district"));
+            market.contact_no = cursor.getString(cursor.getColumnIndex("contact_no"));
+            market.email_id = cursor.getString(cursor.getColumnIndex("email_id"));
+        }else {
+            market = new Market(
+                    cursor.getInt(cursor.getColumnIndex("mandi_id")),
+                    cursor.getString(cursor.getColumnIndex("mandi_name")),
+                    cursor.getString(cursor.getColumnIndex("district")));
+        }
         return market;
     }
 
+
+
     public static Map<String,List<Market>> getMarketMap(Context context) throws IOException {
-        Type listType = new TypeToken<List<Market>>() {}.getType();
-        //InputStream input = context.getAssets().open("market.json");
-        InputStream input = context.getAssets().open("agrimarket.json");
-        Reader reader = new InputStreamReader(input, "UTF-8");
         Map<String,List<Market>> marketMap = new HashMap<String, List<Market>>();
 
-        List<Market> markets = new Gson().fromJson(reader,listType);
+        List<Market> markets = App.mydb.getAllMarkets();
         for (Market market : markets){
             if(!marketMap.containsKey(market.district)){
                 marketMap.put(market.district,new ArrayList<Market>());
@@ -75,10 +90,7 @@ public class Market {
     }
 
     public static List<Market> getMarkets(Context context) throws IOException {
-        Type listType = new TypeToken<List<Market>>() {}.getType();
-        InputStream input = context.getAssets().open("market.json");
-        Reader reader = new InputStreamReader(input, "UTF-8");
-        List<Market> markets = new Gson().fromJson(reader,listType);
+        List<Market> markets = App.mydb.getAllMarkets();
         System.out.println("markets : "+new Gson().toJson(markets));
         return markets;
     }
@@ -86,5 +98,12 @@ public class Market {
     @Override
     public String toString() {
         return mandi_name;
+    }
+
+    public static List<Market> getMarkets(String data) {
+        Type listType = new TypeToken<List<Market>>() {}.getType();
+        List<Market> markets = new Gson().fromJson(data,listType);
+        System.out.println("markets : "+new Gson().toJson(markets));
+        return markets;
     }
 }

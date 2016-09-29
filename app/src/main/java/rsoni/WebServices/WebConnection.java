@@ -101,7 +101,7 @@ public class WebConnection {
 
 		if (json != null) {
 
-			// json = json.substring(json.indexOf("{"));
+			json = json.substring(json.indexOf("{"));
 
 			System.out.println("Json :  " + json);
 
@@ -147,7 +147,7 @@ public class WebConnection {
 
 		if (json != null) {
 
-			// json = json.substring(json.indexOf("{"));
+			json = json.substring(json.indexOf("{"));
 
 			System.out.println("Json :  " + json);
 

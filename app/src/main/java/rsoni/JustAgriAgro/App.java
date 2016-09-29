@@ -53,7 +53,7 @@ public class App extends Application{
     public static AppUser appUser = new AppUser();
 
     public static Map<Integer,Business> businessIdMap = null;
-    public static List<Business> businesses = null;
+    //public static List<Business> businesses = null;
     public static long last_update_count = 0;
 
     @Override
@@ -86,9 +86,9 @@ public class App extends Application{
         if(businessIdMap==null){
             businessIdMap = Business.getBusinessMap(context);
         }
-        if(businesses==null){
-            businesses = Business.getBusinessList(context);
-        }
+        //if(businesses==null){
+        //    businesses = Business.getBusinessList(context);
+        //}
     }
 
     public static void getAppUser() {

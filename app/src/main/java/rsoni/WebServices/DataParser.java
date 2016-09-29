@@ -1,8 +1,16 @@
 package rsoni.WebServices;
 
+import android.content.Context;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 import rsoni.JustAgriAgro.App;
 import rsoni.Utils.DataResult;
@@ -10,9 +18,11 @@ import rsoni.Utils.Task;
 import rsoni.modal.AppUser;
 import rsoni.modal.BuyNode;
 import rsoni.modal.CommodityPrice;
+import rsoni.modal.Market;
 import rsoni.modal.NewsItem;
 import rsoni.modal.SaleNode;
 import rsoni.modal.SearchResult;
+import rsoni.modal.UserProfile;
 
 
 public class DataParser {
@@ -187,8 +197,7 @@ public class DataParser {
 				response = new JSONObject(json);
 				JSONArray temp;
 				if(mode == Task.get_master) {
-					temp = response.optJSONArray("markets");
-					App.mydb.
+					App.mydb.AddMasterDataFromJson(App.context,response);
 				}
 
 			} catch (JSONException e) {
@@ -322,6 +331,23 @@ public class DataParser {
 		}
 		return result;
 	}
-	
 
+
+	public DataResult UserProfile(String json, Task mode) {
+		JSONObject response = null;
+		DataResult result = new DataResult();
+		response = Start(json, result);
+		if (result.Status ) {
+			try {
+				if (mode == Task.get_user_profile ) {
+					result.Data = UserProfile.getUserProfileByJsonObject(response.getJSONObject("data"));
+				}
+			} catch (JSONException e) {
+				result.Status = false;
+				result.msg = "" + e;
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
 }

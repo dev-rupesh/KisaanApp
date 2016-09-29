@@ -13,6 +13,8 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import rsoni.JustAgriAgro.App;
+
 /**
  * Created by DS1 on 09/08/16.
  */
@@ -37,10 +39,12 @@ public class State {
     }
 
     public static List<State> getStateList(Context context) throws IOException {
+        List<State> states = App.mydb.getStates(false);
+        return states;
+    }
+    public static List<State> getStateList(String data) throws IOException {
         Type listType = new TypeToken<List<State>>() {}.getType();
-        InputStream input = context.getAssets().open("state.json");
-        Reader reader = new InputStreamReader(input, "UTF-8");
-        List<State> states = new Gson().fromJson(reader,listType);
+        List<State> states = new Gson().fromJson(data,listType);
         return states;
     }
 

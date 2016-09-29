@@ -1,6 +1,7 @@
 package rsoni.modal;
 
 import android.content.Context;
+import android.database.Cursor;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -18,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import rsoni.JustAgriAgro.App;
+
 /**
  * Created by DS1 on 21/08/16.
  */
@@ -32,20 +35,7 @@ public class Business {
         this.business = " -- Select One -- ";
     }
 
-    public static List<Business> getBusinessList(Context context){
-        Type listType = new TypeToken<List<Business>>() {}.getType();
-        InputStream input = null;
-        List<Business> states = null;
-        try {
-            input = context.getAssets().open("business.json");
-            Reader reader = new InputStreamReader(input, "UTF-8");
-            states = new Gson().fromJson(reader,listType);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("states.size() : "+states.size());
-        return states;
-    }
+
 
 
     public static List<Business> getBusinessFromJsonAray(JSONArray json_categories){
@@ -54,6 +44,14 @@ public class Business {
             categories.add(Business.getBusinessFromJson(json_categories.optJSONObject(i)));
         }
         return categories;
+    }
+
+    public static Business getBusiness(Cursor cursor){
+        Business business = new Business();
+        business.id = cursor.getInt(cursor.getColumnIndex("id"));
+        business.business = cursor.getString(cursor.getColumnIndex("business"));
+        business.business_id = cursor.getInt(cursor.getColumnIndex("business_id"));
+        return business;
     }
 
     public static Business getBusinessFromJson(JSONObject json_deal){
@@ -68,16 +66,11 @@ public class Business {
         Type listType = new TypeToken<List<District>>() {}.getType();
         InputStream input = null;
         Map<Integer,Business> businessMap = new HashMap<Integer, Business>();
-        try {
-            input = context.getAssets().open("district.json");
-            Reader reader = new InputStreamReader(input, "UTF-8");
-            List<Business> businesses = getBusinessList(context);
-            for (Business business : businesses){
-                businessMap.put(business.business_id,business);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        List<Business> businesses = App.mydb.getAllBusiness(false);
+        for (Business business : businesses){
+            businessMap.put(business.business_id,business);
         }
+
         return businessMap;
     }
 

@@ -34,7 +34,6 @@ import rsoni.modal.District;
 import rsoni.modal.Market;
 import rsoni.modal.State;
 import rsoni.modal.UserProfile;
-import rsoni.modal.UserSubCategory;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemSelectedListener,MultiSelectionSpinner.OnMultipleItemsSelectedListener{
 
@@ -63,7 +62,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     // UI references.
     private boolean edit_mode = false;
     private List<State> states = null;
-    private List<UserSubCategory> userSubCategories;
     private List<Market> markets;
     private List<District> districtList;
 
@@ -327,7 +325,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             tv_user_sub_cat_label.setText(lbl);
             int index = 0;
 
-            multiSelectionSpinner.setItems2(App.businesses);
+            multiSelectionSpinner.setItems2(App.mydb.getAllBusiness(false));
 
             if(App.appUser.userProfile!=null){
 

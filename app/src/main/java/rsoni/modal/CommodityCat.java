@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import rsoni.JustAgriAgro.App;
+
 /**
  * Created by soni on 8/13/2016.
  */
@@ -44,10 +46,7 @@ public class CommodityCat {
     }
 
     public static List<CommodityCat> getCommodityCat(Context context) throws IOException {
-        Type listType = new TypeToken<List<CommodityCat>>() {}.getType();
-        InputStream input = context.getAssets().open("commoditycat.json");
-        Reader reader = new InputStreamReader(input, "UTF-8");
-        List<CommodityCat> commodityCats = new Gson().fromJson(reader,listType);
+        List<CommodityCat> commodityCats = App.mydb.getCommodityCat(false);
         return commodityCats;
     }
 
@@ -56,5 +55,10 @@ public class CommodityCat {
         return commodity_cat.trim();
     }
 
+
+    public static List<CommodityCat> getCommodityCat(String data) {
+        Type listType = new TypeToken<List<CommodityCat>>() {}.getType();
+        return new Gson().fromJson(data,listType);
+    }
 
 }

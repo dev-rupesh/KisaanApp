@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import rsoni.JustAgriAgro.App;
+
 /**
  * Created by DS1 on 09/08/16.
  */
@@ -39,12 +41,8 @@ public class District {
     }
 
     public static Map<Integer,List<District>> getDistrictMap(Context context) throws IOException {
-        Type listType = new TypeToken<List<District>>() {}.getType();
-        InputStream input = context.getAssets().open("district.json");
-        Reader reader = new InputStreamReader(input, "UTF-8");
         Map<Integer,List<District>> districtMap = new HashMap<Integer, List<District>>();
-
-        List<District> districts = new Gson().fromJson(reader,listType);
+        List<District> districts = App.mydb.getAllDistricts(false);
         for (District district : districts){
             if(!districtMap.containsKey(district.state_id)){
                 districtMap.put(district.state_id,new ArrayList<District>());
@@ -55,10 +53,7 @@ public class District {
     }
 
     public static List<District> getDistricts(Context context) throws IOException {
-        Type listType = new TypeToken<List<District>>() {}.getType();
-        InputStream input = context.getAssets().open("district.json");
-        Reader reader = new InputStreamReader(input, "UTF-8");
-        List<District> districts = new Gson().fromJson(reader,listType);
+        List<District> districts = App.mydb.getAllDistricts(false);
         return districts;
     }
 
@@ -75,4 +70,9 @@ public class District {
         return district_name.trim();
     }
 
+    public static List<District> getDistricts(String data) {
+        Type listType = new TypeToken<List<District>>() {}.getType();
+        List<District> districts = new Gson().fromJson(data,listType);
+        return districts;
+    }
 }
