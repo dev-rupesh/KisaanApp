@@ -74,6 +74,13 @@ public class Business {
         return businessMap;
     }
 
+    public static List<Business> getBusiness(String data) {
+        Type listType = new TypeToken<List<Business>>() {}.getType();
+        List<Business> businesses = new Gson().fromJson(data,listType);
+        System.out.println("businesses : "+new Gson().toJson(businesses));
+        return businesses;
+    }
+
     @Override
     public String toString() {
         return business;

@@ -41,6 +41,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	public static final String TABLE_COMMODITY = "commodity";
 	public static final String TABLE_COMMODITY_PRICE = "commodityprice";
 	public static final String TABLE_USER_PROFILE = "userprofile";
+	public static final String TABLE_BUSINESS = "business";
 
 	private HashMap hp;
 	public DBHelper(Context context) {
@@ -384,7 +385,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	public List<Business> getAllBusiness(boolean with_select_option) {
 		List<Business> states = new ArrayList<>();
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.query(TABLE_STATE, null, null, null, null, null, null);
+		Cursor cursor = db.query(TABLE_BUSINESS, null, null, null, null, null, null);
 		if (cursor .moveToFirst()) {
 			while (cursor.isAfterLast() == false) {
 				states.add(Business.getBusiness(cursor));
@@ -611,6 +612,17 @@ public class DBHelper extends SQLiteOpenHelper {
 				values.put("email_id", market.email_id);
 				db.insert(TABLE_MARKET, null, values);
 			}
+
+			//add Business
+			List<Business> businesses = Business.getBusiness(data.optString("business"));
+			values.clear();
+			for (Business business : businesses) {
+				values.put("id", business.id);
+				values.put("business_id", business.business_id);
+				values.put("business", business.business);
+				db.insert(TABLE_BUSINESS, null, values);
+			}
+
 			//add CommodityCats
 			List<CommodityCat> commodityCats = CommodityCat.getCommodityCat(data.optString("commoditycats"));
 			values.clear();
@@ -645,6 +657,10 @@ public class DBHelper extends SQLiteOpenHelper {
 		int numRows = (int) DatabaseUtils.queryNumEntries(db,
 				TABLE_NEWS);
 		return numRows;
+	}
+
+	public void updateMarkets(){
+
 	}
 
 

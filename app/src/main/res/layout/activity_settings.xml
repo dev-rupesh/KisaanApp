@@ -107,4 +107,14 @@
 
     </LinearLayout>
 
+    <!-- Login progress -->
+    <ProgressBar
+        android:id="@+id/setting_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:foregroundGravity="center"
+        android:visibility="gone" />
+
 </RelativeLayout>

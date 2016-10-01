@@ -24,7 +24,8 @@
     <string name="change_pass">Change Password</string>
     <string name="error_invalid_mobile">This Mobile no. is invalid</string>
     <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_confirm_password">Confirm password not matched</string>
+    <string name="error_invalid_password">This password is too short, It should be min 5 characters.</string>
     <string name="error_invalid_pincode">This Pincode should be 6 digit</string>
     <string name="error_field_required">This field is required</string>
     <string name="title_activity_register">Sign up</string>

@@ -217,7 +217,9 @@ public class DataParser {
 			try {
 				if ( mode == Task.mobile_login || mode == Task.mobile_register || mode == Task.fb_login || mode == Task.g_login  ) {
 					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
-				} 
+				}else if(mode == Task.change_password){
+
+				}
 
 			} catch (JSONException e) {
 				result.Status = false;

@@ -23,11 +23,10 @@ public class NetworkService {
 	DataParser dataParser = new DataParser();
 
 
-	public DataResult UserAuth(Task task,AppUser appUser){
+	public DataResult UserAuth(Task task,AppUser appUser,Object... data){
 		String url = App.ServiceUrl ;
 		String json = "";
 		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
-		System.out.println("22222");
 		if (task == Task.mobile_login){
 			url+="auth/sign-in";
 			param.add(new BasicNameValuePair("opt", "sign-in"));
@@ -41,7 +40,6 @@ public class NetworkService {
 			param.add(new BasicNameValuePair("pass", appUser.password));
 			param.add(new BasicNameValuePair("email", appUser.email));
 			param.add(new BasicNameValuePair("usercat", ""+appUser.userCategory));
-			System.out.println("333333");
 			return getResponce(url,Task.post,task,param);
 		} else if (task == Task.email_login){
 			url+="auth";
@@ -68,8 +66,13 @@ public class NetworkService {
 			url+="accounts/forgot-password";
 			param.add(new BasicNameValuePair("email", appUser.email));
 			return getResponce(url,Task.post,task,param);
+		}else if (task == Task.change_password){
+			url+="auth/change-password";
+			param.add(new BasicNameValuePair("user_id", ""+appUser.id));
+			param.add(new BasicNameValuePair("old_password", (String) data[0]));
+			param.add(new BasicNameValuePair("new_password", (String) data[1]));
+			return getResponce(url,Task.post,task,param);
 		}
-
 		return null;
 
 	}
@@ -91,9 +94,7 @@ public class NetworkService {
 			default:
 				break;
 		}
-
 		return null;
-
 	}
 
 	public DataResult Search(Task task, SearchFilter search) {
@@ -352,6 +353,7 @@ public class NetworkService {
 			case email_login:
 			case fb_login:
 			case g_login:
+			case change_password:
 				dataResult = dataParser.UserAuth(json, mode);
 				break;
 
@@ -407,6 +409,7 @@ public class NetworkService {
 				break;
 
 			case get_master:
+				System.out.println("get_master_json : "+json);
 				dataResult = dataParser.Master(json,mode);
 				break;
 

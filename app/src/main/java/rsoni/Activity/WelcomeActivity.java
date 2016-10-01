@@ -48,13 +48,14 @@ public class WelcomeActivity extends AppCompatActivity {
 
                 if(App.mydb.getStates(false).isEmpty()){
                     getMasterData();
-                }else{
-                    if(App.last_update_count < System.currentTimeMillis()-86400000){
+                }else if(App.last_update_count < System.currentTimeMillis()-86400000){
                         //SyncSettings();
-                    }
+                    openApp();
+                }else{
+                    openApp();
                 }
 
-                openApp();
+                //openApp();
 
             }
         }, SPLASH_DISPLAY_LENGTH);
@@ -119,19 +120,10 @@ public class WelcomeActivity extends AppCompatActivity {
             //showProgress(false);
             switch(task) {
                 case get_master:
-                    if (dataResult.Status) {
-
-                        openApp();
-                    } else {
-                        //Toast.makeText(context, "Wrong Password", Toast.LENGTH_LONG).show();
-                    }
+                    openApp();
                     break;
                 case update_master:
-                    if (dataResult.Status) {
-                        openApp();
-                    } else {
-                        //Toast.makeText(context, "Wrong Password", Toast.LENGTH_LONG).show();
-                    }
+                    openApp();
                     break;
             }
         }
