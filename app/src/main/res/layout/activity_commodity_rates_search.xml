@@ -73,7 +73,7 @@
                     android:text="State : "/>
                 <Spinner
                     android:id="@+id/sp_states_search"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="2dp"/>
@@ -101,7 +101,7 @@
                     android:text="District : "/>
                 <Spinner
                     android:id="@+id/sp_districts_search"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="2dp"/>
@@ -129,7 +129,7 @@
                     android:text="Mandi : "/>
                 <Spinner
                     android:id="@+id/sp_markets_search"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="2dp"/>
@@ -158,7 +158,7 @@
                     android:text="Category : "/>
                 <Spinner
                     android:id="@+id/sp_commoditycat"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="2dp"/>
@@ -186,7 +186,7 @@
                     android:text="Commodity : "/>
                 <Spinner
                     android:id="@+id/sp_commodity"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="2dp"/>

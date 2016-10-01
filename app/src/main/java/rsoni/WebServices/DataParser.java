@@ -198,6 +198,8 @@ public class DataParser {
 				JSONArray temp;
 				if(mode == Task.get_master) {
 					App.mydb.AddMasterDataFromJson(App.context,response);
+				}else if(mode == Task.update_master){
+					App.mydb.UpdateMasterDataFromJson(App.context,response);
 				}
 
 			} catch (JSONException e) {

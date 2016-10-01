@@ -14,10 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Map;
+
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
 import rsoni.JustAgriAgro.App;
 import rsoni.kisaanApp.R;
+import rsoni.modal.Business;
 import rsoni.modal.UserProfile;
 
 public class BuyerSalerDetailsActivity extends AppCompatActivity implements View.OnClickListener {
@@ -27,6 +30,7 @@ public class BuyerSalerDetailsActivity extends AppCompatActivity implements View
     private String from;
     private Context context;
     BackgroundTask backgroundTask;
+    private Map<Integer, Business> businessMap;
 
     // View only Mode
     private View mProgressView;
@@ -88,11 +92,18 @@ public class BuyerSalerDetailsActivity extends AppCompatActivity implements View
             tv_market.setText(userProfile.market_name);
 
             if(userProfile.business_id != null && !userProfile.business_id.isEmpty()) {
+                businessMap = Business.getBusinessMap(context);
+                System.out.println("business_ids : "+userProfile.business_id);
+
                 int[] business_ids = App.gson.fromJson(userProfile.business_id, int[].class);
 
+
+                System.out.println("size of business : "+businessMap.size());
                 String businesses = "";
                 for (Integer integer : business_ids) {
-                    businesses += "\n" + App.businessIdMap.get(integer).business;
+                    System.out.println("business_id : "+integer);
+                    if(businessMap.containsKey(integer))
+                        businesses += "\n" + businessMap.get(integer).business;
                 }
                 tv_business.setText(businesses.replaceFirst("\n",""));
             }

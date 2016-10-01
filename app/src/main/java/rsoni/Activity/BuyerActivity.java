@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import rsoni.Adapter.BuyListAdaptor;
 import rsoni.Utils.DataResult;
@@ -36,6 +37,7 @@ public class BuyerActivity extends AppCompatActivity implements View.OnClickList
     List<BuyNode> buyNodes = new ArrayList<>();
     BackgroundTask backgroundTask;
     Context context;
+    Map<Integer,Business> businessMap = null;
 
     Spinner sp_business;
     EditText et_buy_note;
@@ -88,7 +90,7 @@ public class BuyerActivity extends AppCompatActivity implements View.OnClickList
 
     private void setProfileData(){
         if(App.appUser.userProfile!=null) {
-
+            businessMap = Business.getBusinessMap(context);
             System.out.println("business_id : "+App.appUser.userProfile.business_id);
 
             if(my_businesses==null){
@@ -96,7 +98,7 @@ public class BuyerActivity extends AppCompatActivity implements View.OnClickList
                 if(App.appUser.userProfile.business_id!=null && !App.appUser.userProfile.business_id.isEmpty()) {
                     int[] ids = App.gson.fromJson(App.appUser.userProfile.business_id, int[].class);
                     for (Integer i : ids) {
-                        my_businesses.add(App.businessIdMap.get(i));
+                        my_businesses.add(businessMap.get(i));
                     }
                 }
                 my_businesses.add(0,new Business(true));

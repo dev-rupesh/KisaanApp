@@ -45,12 +45,12 @@ public class WelcomeActivity extends AppCompatActivity {
             public void run() {
 
                 /* Create an Intent that will start the Menu-Activity. */
+                App.getLastSync();
 
-                if(App.mydb.getStates(false).isEmpty()){
+                if(App.mydb.getStates(false).isEmpty() || App.last_update_count==0){
                     getMasterData();
-                }else if(App.last_update_count < System.currentTimeMillis()-86400000){
-                        //SyncSettings();
-                    openApp();
+                }else if(App.last_update_count - System.currentTimeMillis()>691200000){
+                    SyncSettings();
                 }else{
                     openApp();
                 }
@@ -79,8 +79,8 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     public void SyncSettings(){
-        //backgroundTask = new BackgroundTask(Task.update_master);
-        //backgroundTask.execute((Void) null);
+        backgroundTask = new BackgroundTask(Task.update_master);
+        backgroundTask.execute((Void) null);
     }
 
     public void getMasterData(){
@@ -120,9 +120,13 @@ public class WelcomeActivity extends AppCompatActivity {
             //showProgress(false);
             switch(task) {
                 case get_master:
+                    App.last_update_count = System.currentTimeMillis();
+                    App.setLastSync();
                     openApp();
                     break;
                 case update_master:
+                    App.last_update_count = System.currentTimeMillis();
+                    App.setLastSync();
                     openApp();
                     break;
             }

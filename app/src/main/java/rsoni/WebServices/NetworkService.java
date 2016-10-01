@@ -87,9 +87,9 @@ public class NetworkService {
 				return getResponce(url, Task.get, task, param);
 			//break;
 			case update_master:
-				url+="master/update_master";
+				url+="master.json";
 				param.add(new BasicNameValuePair("version", ""+0));
-				return getResponce(url, Task.post, task, param);
+				return getResponce(url, Task.get, task, param);
 			//break;
 			default:
 				break;
@@ -408,6 +408,7 @@ public class NetworkService {
 				dataResult = dataParser.News(json, mode);
 				break;
 
+			case update_master:
 			case get_master:
 				System.out.println("get_master_json : "+json);
 				dataResult = dataParser.Master(json,mode);

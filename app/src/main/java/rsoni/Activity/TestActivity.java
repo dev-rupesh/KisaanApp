@@ -101,11 +101,6 @@ public class TestActivity extends AppCompatActivity implements MultiSelectionSpi
             for(District district : districts){
                 System.out.println("district_name : "+district.district_name);
             }
-        }else  if(v==btn_get_market){
-            List<Market> markets = App.mydb.getMarkets(true,"Indore");
-            for(Market market : markets){
-                System.out.println("mandi_name : "+market.mandi_name);
-            }
         }else  if(v==btn_get_commodityca){
             List<CommodityCat> commodityCats = App.mydb.getCommodityCat(true);
             for(CommodityCat commodityCat : commodityCats){

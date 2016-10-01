@@ -22,6 +22,7 @@
     <string name="action_sign_up">Register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="change_pass">Change Password</string>
+    <string name="update_app_data">Update App Data</string>
     <string name="error_invalid_mobile">This Mobile no. is invalid</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_confirm_password">Confirm password not matched</string>

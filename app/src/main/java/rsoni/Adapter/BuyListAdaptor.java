@@ -9,10 +9,12 @@ import android.widget.TextView;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import rsoni.JustAgriAgro.App;
 import rsoni.kisaanApp.R;
+import rsoni.modal.Business;
 import rsoni.modal.BuyNode;
 
 
@@ -24,6 +26,7 @@ public class BuyListAdaptor extends BaseAdapter {
 	Context context;
 	LayoutInflater layoutInflater;
 	int mGMTOffset ;
+	private Map<Integer, Business> businessMap;
 
 	// SimpleDateFormat formatter = new SimpleDateFormat("yyyy-dd-mm");
 
@@ -35,6 +38,7 @@ public class BuyListAdaptor extends BaseAdapter {
 		TimeZone mTimeZone = TimeZone.getDefault();
 		mGMTOffset = mTimeZone.getRawOffset();
 		System.out.println("mGMTOffset : "+mGMTOffset);
+		businessMap = Business.getBusinessMap(context);
 	}
 
 	@Override
@@ -89,8 +93,12 @@ public class BuyListAdaptor extends BaseAdapter {
 		}
 
 		void setData(BuyNode buyNode) {
-			if(App.businessIdMap.get(buyNode.business_id) !=null)
-				tv_business_type.setText(App.businessIdMap.get(buyNode.business_id).business);
+
+			System.out.println("businessMap : "+App.gson.toJson(businessMap));
+			System.out.println("business_id : "+buyNode.business_id);
+
+			if(businessMap.get(buyNode.business_id) !=null)
+				tv_business_type.setText(businessMap.get(buyNode.business_id).business);
 			else
 				tv_business_type.setText("NA");
 

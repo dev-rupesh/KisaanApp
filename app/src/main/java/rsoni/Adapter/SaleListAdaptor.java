@@ -9,14 +9,17 @@ import android.widget.TextView;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import rsoni.JustAgriAgro.App;
 import rsoni.kisaanApp.R;
+import rsoni.modal.Business;
 import rsoni.modal.SaleNode;
 
 
 public class SaleListAdaptor extends BaseAdapter {
 
+	private final Map<Integer, Business> businessMap;
 	//ImageLoader imageLoader;
 	List<SaleNode> saleNodes;
 	SaleNode saleNode;
@@ -30,7 +33,7 @@ public class SaleListAdaptor extends BaseAdapter {
 		this.saleNodes = saleNodes;
 		//imageLoader = new ImageLoader(activity);
 		layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		
+		businessMap = Business.getBusinessMap(context);
 	}
 
 	@Override
@@ -85,8 +88,8 @@ public class SaleListAdaptor extends BaseAdapter {
 		}
 
 		void setData(SaleNode saleNode) {
-			if(App.businessIdMap.get(saleNode.business_id) !=null)
-				tv_business_type.setText(App.businessIdMap.get(saleNode.business_id).business);
+			if(businessMap.get(saleNode.business_id) !=null)
+				tv_business_type.setText(businessMap.get(saleNode.business_id).business);
 			else
 				tv_business_type.setText("NA");
 			//tv_business_type.setText(App.businessIdMap.get(saleNode.business_id).business);

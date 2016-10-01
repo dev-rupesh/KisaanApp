@@ -52,7 +52,6 @@ public class App extends Application{
 
     public static AppUser appUser = new AppUser();
 
-    public static Map<Integer,Business> businessIdMap = null;
     //public static List<Business> businesses = null;
     public static long last_update_count = 0;
 
@@ -63,7 +62,6 @@ public class App extends Application{
         mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         getAppUser();
         getUserProfile();
-        setMasterData();
         getSettingSyncCheck();
         getDataSyncCheck();
         super.onCreate();
@@ -82,14 +80,7 @@ public class App extends Application{
 
     public static String ServiceUrl = "http://rupeshs.in/JustAgriAgro/api/";
 
-    private void setMasterData(){
-        if(businessIdMap==null){
-            businessIdMap = Business.getBusinessMap(context);
-        }
-        //if(businesses==null){
-        //    businesses = Business.getBusinessList(context);
-        //}
-    }
+
 
     public static void getAppUser() {
         String json = mPrefs.getString("app_user",null);
@@ -125,9 +116,21 @@ public class App extends Application{
             dataSyncCheck = new DataSyncCheck();
         }
     }
+
+    public static long getLastSync(){
+        return mPrefs.getLong("last_update_count",0);
+    }
+
+    public static void setLastSync(){
+        SharedPreferences.Editor editor = mPrefs.edit();
+        editor.putLong("last_update_count", last_update_count);
+        editor.commit();
+    }
+
+
     public static void getSettingSyncCheck() {
         String json = mPrefs.getString("setting_sync",null);
-        last_update_count = mPrefs.getLong("last_update_count",0);
+
         if(json!=null){
             dataSyncCheck = gson.fromJson(json,DataSyncCheck.class);
         }else{

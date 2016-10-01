@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import rsoni.Adapter.SaleListAdaptor;
 import rsoni.Utils.DataResult;
@@ -36,6 +37,7 @@ public class SalerActivity extends AppCompatActivity implements View.OnClickList
     List<SaleNode> saleNodes = new ArrayList<>();
     BackgroundTask backgroundTask;
     Context context;
+    private Map<Integer, Business> businessMap = null;
 
     Spinner sp_business;
     EditText et_sale_note;
@@ -95,8 +97,9 @@ public class SalerActivity extends AppCompatActivity implements View.OnClickList
                 my_businesses = new ArrayList<>();
                 if(App.appUser.userProfile.business_id!=null && !App.appUser.userProfile.business_id.isEmpty()) {
                     int[] ids = App.gson.fromJson(App.appUser.userProfile.business_id, int[].class);
+                    businessMap = Business.getBusinessMap(context);
                     for (Integer i : ids) {
-                        my_businesses.add(App.businessIdMap.get(i));
+                        my_businesses.add(businessMap.get(i));
                     }
                 }
                 my_businesses.add(0,new Business(true));

@@ -30,7 +30,7 @@ public class Market {
     public double longitude = 75.053357;
     public String city;
     public String address;
-    public String district;
+    public int district_id;
     public String contact_no;
     public String email_id = "";
 
@@ -41,10 +41,10 @@ public class Market {
         mandi_name = " -- Select One -- ";
     }
 
-    public Market(int mandi_id, String mandi_name, String district) {
+    public Market(int mandi_id, String mandi_name, int district_id) {
         this.mandi_id = mandi_id;
         this.mandi_name = mandi_name;
-        this.district = district;
+        this.district_id = district_id;
     }
 
     public static Market getMarket(Cursor cursor,boolean all_cols){
@@ -58,34 +58,31 @@ public class Market {
             market.longitude = cursor.getDouble(cursor.getColumnIndex("longitude"));
             market.city = cursor.getString(cursor.getColumnIndex("city"));
             market.address = cursor.getString(cursor.getColumnIndex("address"));
-            market.district = cursor.getString(cursor.getColumnIndex("district"));
+            market.district_id = cursor.getInt(cursor.getColumnIndex("district_id"));
             market.contact_no = cursor.getString(cursor.getColumnIndex("contact_no"));
             market.email_id = cursor.getString(cursor.getColumnIndex("email_id"));
         }else {
             market = new Market(
                     cursor.getInt(cursor.getColumnIndex("mandi_id")),
                     cursor.getString(cursor.getColumnIndex("mandi_name")),
-                    cursor.getString(cursor.getColumnIndex("district")));
+                    cursor.getInt(cursor.getColumnIndex("district_id")));
         }
         return market;
     }
 
 
 
-    public static Map<String,List<Market>> getMarketMap(Context context) throws IOException {
-        Map<String,List<Market>> marketMap = new HashMap<String, List<Market>>();
+    public static Map<Integer,List<Market>> getMarketMap(Context context) throws IOException {
+        Map<Integer,List<Market>> marketMap = new HashMap<Integer, List<Market>>();
 
         List<Market> markets = App.mydb.getAllMarkets();
         for (Market market : markets){
-            if(!marketMap.containsKey(market.district)){
-                marketMap.put(market.district,new ArrayList<Market>());
+            if(!marketMap.containsKey(market.district_id)){
+                marketMap.put(market.district_id,new ArrayList<Market>());
             }
-            marketMap.get(market.district).add(market);
+            marketMap.get(market.district_id).add(market);
         }
 
-        for (String name : marketMap.keySet()){
-            System.out.println("name : "+name);
-        }
         return marketMap;
     }
 

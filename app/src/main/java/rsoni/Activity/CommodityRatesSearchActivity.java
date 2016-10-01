@@ -239,7 +239,7 @@ public class CommodityRatesSearchActivity extends AppCompatActivity implements V
             System.out.println("District selected...");
             selectedDistrict = (District) arrayAdapter.getItem(position);
             System.out.println("district : "+selectedDistrict.district_name);
-            marketArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,App.mydb.getMarkets(true,selectedDistrict.district_name)); //selected item will look like a spinner set from XML
+            marketArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,App.mydb.getMarkets(true,selectedDistrict.district_id)); //selected item will look like a spinner set from XML
             marketArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             sp_markets_search.setAdapter(marketArrayAdapter);
         }else if(arrayAdapter == marketArrayAdapter){

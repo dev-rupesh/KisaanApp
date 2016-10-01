@@ -18,6 +18,7 @@ import rsoni.JustAgriAgro.App;
 /**
  * Created by soni on 8/13/2016.
  */
+
 public class Commodity {
 
     public int id;

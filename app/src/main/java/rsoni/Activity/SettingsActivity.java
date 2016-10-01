@@ -24,7 +24,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     private Activity context;
 
-    Button btn_change_pass,btn_update_mandi,btn_update_commodity;
+    Button btn_change_pass,btn_update_app_data;
     TextView et_old_password,et_new_password,et_new_password_r;
 
     String old_pass,new_pass,new_pass_r;
@@ -50,10 +50,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         mProgressView = findViewById(R.id.setting_progress);
         btn_change_pass = (Button) findViewById(R.id.btn_change_pass);
         btn_change_pass.setOnClickListener(this);
-        btn_update_mandi = (Button) findViewById(R.id.btn_update_mandi);
-        btn_update_mandi.setOnClickListener(this);
-        btn_update_commodity = (Button) findViewById(R.id.btn_update_commodity);
-        btn_update_commodity.setOnClickListener(this);
+        btn_update_app_data = (Button) findViewById(R.id.btn_update_app_data);
+        btn_update_app_data.setOnClickListener(this);
 
         et_old_password = (TextView) findViewById(R.id.et_old_password);
         et_new_password = (TextView) findViewById(R.id.et_new_password);
@@ -114,23 +112,27 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         return password.length() > 4;
     }
 
-    private void validateUpdateMandiData(){
+    private void validateUpdateAppData(){
+
+        App.getLastSync();
+        if(System.currentTimeMillis()-App.last_update_count>0){
+            backgroundTask = new BackgroundTask(Task.update_master);
+            backgroundTask.execute((Void) null);
+        }else{
+            Toast.makeText(context, "Your data has been updated recently.", Toast.LENGTH_LONG).show();
+        }
 
     }
 
-    private void validateUpdateCommodityData(){
 
-    }
 
     @Override
     public void onClick(View v) {
         if(v == btn_change_pass){
             validateChangePass();
             App.hideSoftKeyBoard(v);
-        }else if(v == btn_update_mandi){
-            validateUpdateMandiData();
-        }else if(v == btn_update_commodity){
-            validateUpdateCommodityData();
+        }else if(v == btn_update_app_data){
+            validateUpdateAppData();
         }
 
     }
@@ -144,16 +146,18 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             this.task = task;
         }
 
-
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgress(true);
+            System.out.println("onPreExecute called...");
+        }
 
         @Override
         protected Boolean doInBackground(Void... params) {
 
             switch(task){
-                case update_mandi_master:
-                    dataResult = App.networkService.Master(Task.get_master,null);
-                    break;
-                case update_commodity_master:
+                case update_master:
                     dataResult = App.networkService.Master(Task.update_master,null);
                     break;
                 case change_password:
@@ -166,19 +170,12 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         @Override
         protected void onPostExecute(final Boolean success) {
             backgroundTask = null;
-            //showProgress(false);
+
             switch(task) {
-                case update_mandi_master:
-                    if (dataResult.Status) {
-                    } else {
-                        //Toast.makeText(context, "Wrong Password", Toast.LENGTH_LONG).show();
-                    }
-                    break;
-                case update_commodity_master:
-                    if (dataResult.Status) {
-                    } else {
-                        //Toast.makeText(context, "Wrong Password", Toast.LENGTH_LONG).show();
-                    }
+                case update_master:
+                    App.last_update_count = System.currentTimeMillis();
+                    App.setLastSync();
+                    Toast.makeText(context, "App data has been updated.", Toast.LENGTH_LONG).show();
                     break;
                 case change_password:
                     if (dataResult.Status) {
@@ -189,6 +186,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                     }
                     break;
             }
+
+            showProgress(false);
         }
 
         @Override

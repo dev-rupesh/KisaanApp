@@ -74,7 +74,7 @@
                     android:text="Category : "/>
                 <Spinner
                     android:id="@+id/sp_commoditycat"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="2dp"/>
@@ -101,7 +101,7 @@
                     android:text="Commodity : "/>
                 <Spinner
                     android:id="@+id/sp_commodity"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="2dp"/>

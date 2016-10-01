@@ -24,12 +24,14 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import java.util.List;
+import java.util.Map;
 
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
 import rsoni.JustAgriAgro.App;
 import rsoni.kisaanApp.R;
 import rsoni.modal.AppUser;
+import rsoni.modal.Business;
 import rsoni.modal.District;
 import rsoni.modal.Market;
 import rsoni.modal.State;
@@ -38,6 +40,7 @@ import rsoni.modal.UserProfile;
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemSelectedListener,MultiSelectionSpinner.OnMultipleItemsSelectedListener{
 
     private UserProfileTask mUserProfileTask = null;
+    private Map<Integer, Business> businessMap = null;
 
     // UI references.
     // Edit Mode
@@ -276,7 +279,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         } else if (arrayAdapter == districtArrayAdapter) {
             System.out.println("District selected...");
             selectedDistrict = (District) arrayAdapter.getItem(i);
-            markets = App.mydb.getMarkets(true, selectedDistrict.district_name);
+            markets = App.mydb.getMarkets(true, selectedDistrict.district_id);
             marketArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, markets); //selected item will look like a spinner set from XML
             marketArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spMarkets.setAdapter(marketArrayAdapter);
@@ -369,10 +372,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
                 if(App.appUser.userProfile.business_id!=null && !App.appUser.userProfile.business_id.isEmpty()) {
                     int[] business_ids = App.gson.fromJson(App.appUser.userProfile.business_id, int[].class);
-
+                    businessMap = Business.getBusinessMap(context);
                     String businesses = "";
                     for (Integer integer : business_ids) {
-                        businesses += "\n" + App.businessIdMap.get(integer).business;
+                        if(businessMap.containsKey(integer))
+                            businesses += "\n" + businessMap.get(integer).business;
                     }
                     tv_business.setText(businesses.replaceFirst("\n",""));
                 }
@@ -513,11 +517,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void selectedStrings(List<String> strings) {
-        Toast.makeText(this, strings.toString(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, strings.toString(), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void selectedIds(List<Integer> ids) {
-        Toast.makeText(this, new Gson().toJson(ids), Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, new Gson().toJson(ids), Toast.LENGTH_LONG).show();
     }
 }
