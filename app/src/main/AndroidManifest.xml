@@ -97,7 +97,8 @@
         <activity android:name="rsoni.Activity.BuyerSalerDetailsActivity" />
         <activity
             android:name="rsoni.JustAgriAgro.MandiOnMapActivity"
-            android:label="@string/title_activity_mandi_on_map"></activity>
+            android:label="@string/title_activity_mandi_on_map" />
+        <activity android:name="rsoni.Activity.SettingsActivity"></activity>
     </application>
 
 </manifest>

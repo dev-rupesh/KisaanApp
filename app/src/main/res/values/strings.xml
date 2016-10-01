@@ -14,10 +14,14 @@
     <string name="prompt_email_optional">Email (Optional)</string>
     <string name="prompt_mobile">Mobile No.</string>
     <string name="prompt_password">Password</string>
+    <string name="prompt_old_password">Old Password</string>
+    <string name="prompt_new_password">New Password</string>
+    <string name="prompt_confirm_password">Confirm New Password</string>
     <string name="prompt_address">Address</string>
     <string name="prompt_pincode">Pincode</string>
     <string name="action_sign_up">Register</string>
     <string name="action_sign_in_short">Sign in</string>
+    <string name="change_pass">Change Password</string>
     <string name="error_invalid_mobile">This Mobile no. is invalid</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>

@@ -138,6 +138,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(this,SalerActivity.class));
         } else if (id == R.id.nav_profile) {
             startActivity(new Intent(this,ProfileActivity.class));
+        } else if (id == R.id.nav_settings) {
+            startActivity(new Intent(this,SettingsActivity.class));
         } else if (id == R.id.nav_sign_out) {
             App.Logout(context);
             startActivity(new Intent(this,LoginActivity.class));
