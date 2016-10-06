@@ -274,4 +274,5 @@ public class App extends Application{
             mFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
+
 }

@@ -147,6 +147,10 @@ public class SalerActivity extends AppCompatActivity implements View.OnClickList
             et_sale_note.requestFocus();
             return false;
         }
+        if(saleNode.user_id<1 || saleNode.usercat<1 || saleNode.state_id<1 || saleNode.district_id<1 || saleNode.market_id<1 ){
+            Toast.makeText(context,"Your profile is not completed, please updated before save.",Toast.LENGTH_SHORT).show();
+            return false;
+        }
         return true;
     }
 

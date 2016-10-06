@@ -227,7 +227,7 @@ public class NetworkService {
 		}else if (task == Task.add_buy_node){
 			url+="buy/add-buy-node";
 			param.add(new BasicNameValuePair("opt", "add-buy-node"));
-			param.add(new BasicNameValuePair("user_id", ""+App.appUser.id));
+			param.add(new BasicNameValuePair("user_id", ""+buyNode.user_id));
 			param.add(new BasicNameValuePair("state_id", ""+buyNode.state_id));
 			param.add(new BasicNameValuePair("district_id", ""+buyNode.district_id));
 			param.add(new BasicNameValuePair("market_id", ""+buyNode.market_id));

@@ -147,6 +147,11 @@ public class BuyerActivity extends AppCompatActivity implements View.OnClickList
             et_buy_note.requestFocus();
             return false;
         }
+
+        if(buyNode.user_id<1 || buyNode.usercat<1 || buyNode.state_id<1 || buyNode.district_id<1 || buyNode.market_id<1 ){
+            Toast.makeText(context,"Your profile is not completed, please updated before save.",Toast.LENGTH_SHORT).show();
+            return false;
+        }
         return true;
     }
 

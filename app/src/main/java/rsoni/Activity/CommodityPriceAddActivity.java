@@ -127,6 +127,7 @@ public class CommodityPriceAddActivity extends AppCompatActivity implements View
         boolean is_validate = true;
         View focusView = null;
 
+
         commodityPrice.commodity_cat_id = selectedCommodityCat.id;
         commodityPrice.commodity_id = selectedCommodity.id;
         commodityPrice.commodity_name = selectedCommodity.commodity_name;
@@ -137,7 +138,7 @@ public class CommodityPriceAddActivity extends AppCompatActivity implements View
             Toast.makeText(context,"Select Category",Toast.LENGTH_SHORT).show();
             return;
         }
-        if(commodityPrice.id<=0){
+        if(commodityPrice.commodity_id<=0){
             Toast.makeText(context,"Select Commodity",Toast.LENGTH_SHORT).show();
             return;
         }
@@ -148,14 +149,20 @@ public class CommodityPriceAddActivity extends AppCompatActivity implements View
             return;
         }
 
+        commodityPrice.user_id = App.appUser.id;
+        commodityPrice.state_id = App.appUser.userProfile.state_id;
+        commodityPrice.district_id = App.appUser.userProfile.district_id;
+        commodityPrice.market_id = App.appUser.userProfile.market_id;
+
+        if(commodityPrice.user_id<1 || commodityPrice.state_id<1 || commodityPrice.district_id<1 || commodityPrice.market_id<1 ){
+            Toast.makeText(context,"Your profile is not completed, please updated before save.",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if(is_validate){
             toggleAddCommodityView(false);
             //myCommodityPrices.add(commodityPrice);
             //listAdaptor.notifyDataSetChanged();
-            commodityPrice.user_id = App.appUser.id;
-            commodityPrice.state_id = App.appUser.userProfile.state_id;
-            commodityPrice.district_id = App.appUser.userProfile.district_id;
-            commodityPrice.market_id = App.appUser.userProfile.market_id;
             backgroundTask = new BackgroundTask(Task.add_commodity_price);
             backgroundTask.execute((Void) null);
         }
