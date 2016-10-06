@@ -70,7 +70,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
         mProgressView = findViewById(R.id.register_progress);
     }
 
-    private void attemptRegister() {
+    private void validateRegister() {
         if (mAuthTask != null) {
             return;
         }
@@ -194,7 +194,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
     @Override
     public void onClick(View view) {
         if (view == mEmailSignInButton){
-            attemptRegister();
+            validateRegister();
         }else if (view == mEmailSignInButton){
 
         }

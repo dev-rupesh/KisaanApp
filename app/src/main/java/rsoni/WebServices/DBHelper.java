@@ -64,14 +64,14 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.execSQL("create table business "
 				+ "(id integer primary key, business_id integer, business text)");
 		db.execSQL("create table buynode "
-				+ "(id integer primary key, user_id integer, buy_note text,state_id integer,district_id integer,market_id integer, commodity_cat_id integer,commodity_id integer,business_id integer,usercat integer,note_date integer)");
+				+ "(id integer primary key AUTOINCREMENT, user_id integer, buy_note text,state_id integer,district_id integer,market_id integer, commodity_cat_id integer,commodity_id integer,business_id integer,usercat integer,note_date integer)");
 		db.execSQL("create table salenode "
-				+ "(id integer primary key, user_id integer, sale_note text,state_id integer,district_id integer,market_id integer, commodity_cat_id integer,commodity_id integer,business_id integer,usercat integer,note_date integer)");
+				+ "(id integer primary key AUTOINCREMENT, user_id integer, sale_note text,state_id integer,district_id integer,market_id integer, commodity_cat_id integer,commodity_id integer,business_id integer,usercat integer,note_date integer)");
 		db.execSQL("create table news "
 				+ "(id integer primary key, news_type text, news_url text,news_title text,news_text text,news_ing text, news_date text)");
 		db.execSQL("create table commoditycat "
 				+ "(id integer primary key, commodity_cat text, commodity_desc text)");
-		db.execSQL("create table commodity"
+		db.execSQL("create table commodity "
 				+ "(id integer primary key, commodity_cat_id integer, commodity_name text, commodity_desc text)");
 		db.execSQL("create table commodityprice "
 				+ "(id integer primary key, user_id integer, price_note text,state_id integer,district_id integer,market_id integer, commodity_cat_id integer,commodity_id integer,commodity_name text,price_date integer)");
@@ -143,7 +143,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	public SaleNode saveSaleNodes(SaleNode saleNode){
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues insertValues = new ContentValues();
-		insertValues.put("id", saleNode.id);
+		//insertValues.put("id", saleNode.id);
 		insertValues.put("sale_note", saleNode.sale_note);
 		insertValues.put("business_id", saleNode.business_id);
 		insertValues.put("note_date", saleNode.note_date);
@@ -159,7 +159,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			ContentValues insertValues = new ContentValues();
 			for(SaleNode saleNode : saleNodes){
 				insertValues.clear();
-				insertValues.put("id", saleNode.id);
+				//insertValues.put("id", saleNode.id);
 				insertValues.put("sale_note", saleNode.sale_note);
 				insertValues.put("business_id", saleNode.business_id);
 				insertValues.put("note_date", saleNode.note_date);
@@ -204,7 +204,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	public BuyNode saveBuyNodes(BuyNode buyNode){
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues insertValues = new ContentValues();
-		insertValues.put("id", buyNode.id);
+		//insertValues.put("id", buyNode.id);
 		insertValues.put("buy_note", buyNode.buy_note);
 		insertValues.put("business_id", buyNode.business_id);
 		insertValues.put("note_date", buyNode.note_date);
@@ -220,7 +220,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			ContentValues insertValues = new ContentValues();
 			for(BuyNode buyNode : buyNodes){
 				insertValues.clear();
-				insertValues.put("id", buyNode.id);
+				//insertValues.put("id", buyNode.id);
 				insertValues.put("buy_note", buyNode.buy_note);
 				insertValues.put("business_id", buyNode.business_id);
 				insertValues.put("note_date", buyNode.note_date);
