@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Map;
+
 import rsoni.JustAgriAgro.App;
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
@@ -31,6 +33,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     BackgroundTask backgroundTask;
     private View mProgressView;
+    Map<String, Object> settings,current_settings = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,9 +117,10 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     private void validateUpdateAppData(){
 
-        App.getLastSync();
-        if(System.currentTimeMillis()-App.last_update_count>0){
-            backgroundTask = new BackgroundTask(Task.update_master);
+        App.last_update_count = App.getLastUpdate();
+
+        if(System.currentTimeMillis() - App.last_update_count > 20000){
+            backgroundTask = new BackgroundTask(Task.get_settings);
             backgroundTask.execute((Void) null);
         }else{
             Toast.makeText(context, "Your data has been updated recently.", Toast.LENGTH_LONG).show();
@@ -157,6 +161,9 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         protected Boolean doInBackground(Void... params) {
 
             switch(task){
+                case get_settings:
+                    dataResult = App.networkService.Master(Task.get_settings,null);
+                    break;
                 case update_master:
                     dataResult = App.networkService.Master(Task.update_master,null);
                     break;
@@ -172,10 +179,32 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             backgroundTask = null;
 
             switch(task) {
+
+                case get_settings:
+                    if(dataResult.Status){
+                        settings = (Map<String, Object>) dataResult.Data;
+                        for(String key : settings.keySet()){
+                            System.out.println("settings("+key+") = "+settings.get(key));
+                        }
+
+                        current_settings = App.getSettings();
+                        int current_master_date = ((Double)current_settings.get("master_data")).intValue();
+                        int master_data = ((Double)settings.get("master_data")).intValue();
+                        if(current_master_date < master_data){
+                            backgroundTask = new BackgroundTask(Task.get_settings);
+                            backgroundTask.execute((Void) null);
+                        }else{
+                            Toast.makeText(context, "Your App data is updated.", Toast.LENGTH_LONG).show();
+                            App.last_update_count = System.currentTimeMillis();
+                            App.updateLastUpdate(App.last_update_count);
+                        }
+                    }
+                    break;
                 case update_master:
                     App.last_update_count = System.currentTimeMillis();
-                    App.setLastSync();
-                    Toast.makeText(context, "App data has been updated.", Toast.LENGTH_LONG).show();
+                    App.updateSettings(App.gson.toJson(settings));
+                    App.updateLastUpdate(App.last_update_count);
+                    Toast.makeText(context, "Setting has been updated after update master", Toast.LENGTH_LONG).show();
                     break;
                 case change_password:
                     if (dataResult.Status) {

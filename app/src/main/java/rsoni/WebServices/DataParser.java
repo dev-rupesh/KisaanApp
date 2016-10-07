@@ -10,12 +10,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rsoni.JustAgriAgro.App;
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
 import rsoni.modal.AppUser;
+import rsoni.modal.Business;
 import rsoni.modal.BuyNode;
 import rsoni.modal.CommodityPrice;
 import rsoni.modal.Market;
@@ -200,6 +203,10 @@ public class DataParser {
 					App.mydb.AddMasterDataFromJson(App.context,response);
 				}else if(mode == Task.update_master){
 					App.mydb.UpdateMasterDataFromJson(App.context,response);
+				}else if(mode == Task.get_settings){
+					Map<String, Object> retMap = new Gson().fromJson(json, new TypeToken<HashMap<String, Object>>() {}.getType());
+					result.Data = retMap;
+					result.Status = true;
 				}
 
 			} catch (JSONException e) {
@@ -209,7 +216,6 @@ public class DataParser {
 			}
 		return result;
 	}
-	
 	
 	public DataResult UserAuth(String json, Task mode) {
 		JSONObject response = null;

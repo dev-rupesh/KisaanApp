@@ -3,11 +3,15 @@ package rsoni.Activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.TextView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
@@ -24,6 +28,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private Activity context;
     TextView tv_aap_name;
     BackgroundTask backgroundTask;
+    Map<String, Object> settings,current_settings = null;
 
 
     @Override
@@ -45,11 +50,12 @@ public class WelcomeActivity extends AppCompatActivity {
             public void run() {
 
                 /* Create an Intent that will start the Menu-Activity. */
-                App.getLastSync();
+                App.last_update_count = App.getLastUpdate();
+                current_settings = App.getSettings();
 
-                if(App.mydb.getStates(false).isEmpty() || App.last_update_count==0){
+                if(App.mydb.getStates(false).isEmpty()|| current_settings == null){
                     getMasterData();
-                }else if(App.last_update_count - System.currentTimeMillis()>691200000){
+                }else if(System.currentTimeMillis() - App.last_update_count > 10000){
                     SyncSettings();
                 }else{
                     openApp();
@@ -79,7 +85,7 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     public void SyncSettings(){
-        backgroundTask = new BackgroundTask(Task.update_master);
+        backgroundTask = new BackgroundTask(Task.get_settings);
         backgroundTask.execute((Void) null);
     }
 
@@ -104,6 +110,9 @@ public class WelcomeActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
 
             switch(task){
+                case get_settings:
+                    dataResult = App.networkService.Master(Task.get_settings,null);
+                    break;
                 case get_master:
                     dataResult = App.networkService.Master(Task.get_master,null);
                     break;
@@ -119,14 +128,44 @@ public class WelcomeActivity extends AppCompatActivity {
             backgroundTask = null;
             //showProgress(false);
             switch(task) {
+                case get_settings:
+                    if(dataResult.Status){
+                        settings = (Map<String, Object>) dataResult.Data;
+                        for(String key : settings.keySet()){
+                            System.out.println("settings("+key+") = "+settings.get(key));
+                        }
+                        int current_app_version = App.getAppVersion();
+                        int app_version = ((Double)settings.get("app_version")).intValue();
+                        if(current_app_version < app_version){
+                            System.out.println("New app version detected");
+                            App.goToAppUpdate(WelcomeActivity.this);
+                        }else{
+                            System.out.println("App version is latest.");
+                            current_settings = App.getSettings();
+                            int current_master_date = ((Double)current_settings.get("master_data")).intValue();
+                            int master_data = ((Double)settings.get("master_data")).intValue();
+                            if(current_master_date < master_data){
+                                backgroundTask = new BackgroundTask(Task.update_master);
+                                backgroundTask.execute((Void) null);
+                            }else{
+                                openApp();
+                            }
+                        }
+                    }
+                    break;
                 case get_master:
                     App.last_update_count = System.currentTimeMillis();
-                    App.setLastSync();
+                    settings = new HashMap<String, Object>();
+                    settings.put("app_version",App.getAppVersion());
+                    settings.put("master_data",System.currentTimeMillis());
+                    App.updateSettings(App.gson.toJson(settings));
+                    App.updateLastUpdate(App.last_update_count);
                     openApp();
                     break;
                 case update_master:
                     App.last_update_count = System.currentTimeMillis();
-                    App.setLastSync();
+                    App.updateSettings(App.gson.toJson(settings));
+                    App.updateLastUpdate(App.last_update_count);
                     openApp();
                     break;
             }

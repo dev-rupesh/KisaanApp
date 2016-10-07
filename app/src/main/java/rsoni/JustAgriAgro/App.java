@@ -3,12 +3,17 @@ package rsoni.JustAgriAgro;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDex;
@@ -16,8 +21,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -117,13 +124,24 @@ public class App extends Application{
         }
     }
 
-    public static long getLastSync(){
-        return mPrefs.getLong("last_update_count",0);
+    public static Map<String,Object> getSettings(){
+        Map<String, Object> settings = new Gson().fromJson(mPrefs.getString("app_settings",null), new TypeToken<HashMap<String, Object>>() {}.getType());
+        return settings;
     }
 
-    public static void setLastSync(){
+    public static void updateSettings(String setting_json){
         SharedPreferences.Editor editor = mPrefs.edit();
-        editor.putLong("last_update_count", last_update_count);
+        editor.putString("app_settings", setting_json);
+        editor.commit();
+    }
+
+    public static long getLastUpdate(){
+        return mPrefs.getLong("last_update",0);
+    }
+
+    public static void updateLastUpdate(long time){
+        SharedPreferences.Editor editor = mPrefs.edit();
+        editor.putLong("last_update", time);
         editor.commit();
     }
 
@@ -194,6 +212,12 @@ public class App extends Application{
         getDataSyncCheck();
     }
 
+    public static void goToAppUpdate(Activity activity){
+        Intent intent = new Intent(Intent.ACTION_VIEW , Uri.parse("market://details?id="+context.getPackageName()));
+        activity.startActivity(intent);
+        activity.finish();
+    }
+
     public static boolean checkForLogin(final Context context) {
 
         if (isAppRegistered(context))
@@ -240,6 +264,18 @@ public class App extends Application{
         InputMethodManager imm = (InputMethodManager) v.getContext()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+
+    public static int getAppVersion(){
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        int versionCode = packageInfo.versionCode;
+        return versionCode;
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)

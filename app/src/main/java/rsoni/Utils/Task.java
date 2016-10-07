@@ -11,5 +11,5 @@ public enum Task {
 	news_list_web,news_list_db,get_news_details,news_list_sort,add_news,delete_news,
 	crop_search,buyer_or_seller_search, buyer_search, seller_search,
 	setting_version,
-	list_commodity_price,add_commodity_price, search_commodity_price, delete_commodity_price, get_master, update_master, get_user_profile, list_market, update_mandi_master, update_commodity_master, change_password, update_commodity_price
+	list_commodity_price,add_commodity_price, search_commodity_price, delete_commodity_price, get_master, update_master, get_user_profile, list_market, update_mandi_master, update_commodity_master, change_password, get_settings, update_commodity_price
 }

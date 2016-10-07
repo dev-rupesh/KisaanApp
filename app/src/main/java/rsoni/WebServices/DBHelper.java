@@ -82,7 +82,20 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// TODO Auto-generated method stub
+		System.out.println("On DB Update called....");
+		List<String> tables = new ArrayList<String>();
+		Cursor cursor = db.rawQuery("SELECT * FROM sqlite_master WHERE type='table';", null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			String tableName = cursor.getString(1);
+			if (!tableName.equals("android_metadata") && !tableName.equals("sqlite_sequence"))
+				tables.add(tableName);
+			cursor.moveToNext();
+		}
+		cursor.close();
+		for(String tableName:tables) {
+			db.execSQL("DROP TABLE IF EXISTS " + tableName);
+		}
 		onCreate(db);
 	}
 
@@ -94,8 +107,8 @@ public class DBHelper extends SQLiteOpenHelper {
 	
 	public int getLastNewsId() {
 		SQLiteDatabase db = this.getReadableDatabase();
-		String sql = "";		
-			sql = "select max(newsitemid) from news";		
+		String sql = "";
+		sql = "select max(newsitemid) from news";
 		Cursor res = db.rawQuery(sql, null);
 		res.moveToFirst();		
 		int id = res.getInt(0);

@@ -82,6 +82,9 @@ public class NetworkService {
 		String json = "";
 		ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
 		switch (task) {
+			case get_settings:
+				url+="settings.json";
+				return getResponce(url, Task.get, task, param);
 			case get_master:
 				url+="master.json";
 				return getResponce(url, Task.get, task, param);
@@ -408,6 +411,7 @@ public class NetworkService {
 				dataResult = dataParser.News(json, mode);
 				break;
 
+			case get_settings:
 			case update_master:
 			case get_master:
 				System.out.println("get_master_json : "+json);

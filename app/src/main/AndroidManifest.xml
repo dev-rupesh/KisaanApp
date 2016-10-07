@@ -28,16 +28,7 @@
         <activity
             android:name="rsoni.Activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name="rsoni.Activity.WelcomeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -49,12 +40,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="rsoni.Activity.LoginActivity"
-            android:label="@string/title_activity_login" />
-        <activity
-            android:name="rsoni.Activity.RegisterActivity"
-            android:label="@string/title_activity_register" />
+        <activity android:name="rsoni.Activity.LoginActivity" />
+        <activity android:name="rsoni.Activity.RegisterActivity"/>
         <activity android:name="rsoni.Activity.ForgotPassActivity" />
         <activity android:name="rsoni.Activity.ProfileActivity" />
         <activity android:name="rsoni.Activity.WeatherReportActivity" />
@@ -95,9 +82,7 @@
 
         <activity android:name="rsoni.Activity.NewsDetailsActivity" />
         <activity android:name="rsoni.Activity.BuyerSalerDetailsActivity" />
-        <activity
-            android:name="rsoni.JustAgriAgro.MandiOnMapActivity"
-            android:label="@string/title_activity_mandi_on_map" />
+        <activity android:name="rsoni.JustAgriAgro.MandiOnMapActivity"/>
         <activity android:name="rsoni.Activity.SettingsActivity"></activity>
     </application>
 
