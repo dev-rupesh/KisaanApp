@@ -16,7 +16,7 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.*;
 
-import rsoni.kisaanApp.R;
+import rsoni.JustAgriAgro.R;
 import rsoni.urlimageviewhelper.UrlImageViewCallback;
 import rsoni.urlimageviewhelper.UrlImageViewHelper;
 import org.apache.http.HttpEntity;

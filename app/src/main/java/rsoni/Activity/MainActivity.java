@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import rsoni.JustAgriAgro.App;
 import rsoni.JustAgriAgro.MandiOnMapActivity;
-import rsoni.kisaanApp.R;
+import rsoni.JustAgriAgro.R;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

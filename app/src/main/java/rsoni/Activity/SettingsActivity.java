@@ -18,9 +18,9 @@ import android.widget.Toast;
 import java.util.Map;
 
 import rsoni.JustAgriAgro.App;
+import rsoni.JustAgriAgro.R;
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
-import rsoni.kisaanApp.R;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener{
 

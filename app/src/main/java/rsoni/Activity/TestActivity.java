@@ -11,7 +11,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import rsoni.JustAgriAgro.App;
-import rsoni.kisaanApp.R;
+import rsoni.JustAgriAgro.R;
 import rsoni.modal.Commodity;
 import rsoni.modal.CommodityCat;
 import rsoni.modal.District;

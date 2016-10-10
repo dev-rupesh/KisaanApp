@@ -4,7 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import rsoni.kisaanApp.R;
+import rsoni.JustAgriAgro.R;
+
 
 public class WeatherReportActivity extends AppCompatActivity {
 

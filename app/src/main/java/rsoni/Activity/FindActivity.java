@@ -25,10 +25,10 @@ import java.util.Map;
 
 import rsoni.Adapter.BuyListAdaptor;
 import rsoni.Adapter.SaleListAdaptor;
+import rsoni.JustAgriAgro.R;
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
 import rsoni.JustAgriAgro.App;
-import rsoni.kisaanApp.R;
 import rsoni.modal.Business;
 import rsoni.modal.BuyNode;
 import rsoni.modal.District;

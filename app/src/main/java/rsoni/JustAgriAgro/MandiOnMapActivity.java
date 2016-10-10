@@ -31,7 +31,6 @@ import java.util.List;
 import rsoni.Activity.BuyerSalerDetailsActivity;
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
-import rsoni.kisaanApp.R;
 import rsoni.modal.Market;
 import rsoni.modal.UserProfile;
 

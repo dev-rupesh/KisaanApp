@@ -13,7 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import rsoni.kisaanApp.R;
+import rsoni.JustAgriAgro.R;
 import rsoni.modal.NewsItem;
 
 

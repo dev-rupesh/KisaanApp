@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rsoni.Adapter.NewsListAdaptor;
+import rsoni.JustAgriAgro.R;
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
 import rsoni.JustAgriAgro.App;
-import rsoni.kisaanApp.R;
 import rsoni.modal.NewsItem;
 
 public class NewsActivity extends AppCompatActivity {

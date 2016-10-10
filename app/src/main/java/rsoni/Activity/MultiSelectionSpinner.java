@@ -16,7 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import rsoni.kisaanApp.R;
+import rsoni.JustAgriAgro.R;
 import rsoni.modal.Business;
 
 public class MultiSelectionSpinner extends Spinner implements
@@ -48,7 +48,7 @@ public class MultiSelectionSpinner extends Spinner implements
     public MultiSelectionSpinner(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        simple_adapter = new ArrayAdapter<>(context,R.layout.my_spiner_dropdown_item);
+        simple_adapter = new ArrayAdapter<>(context, R.layout.my_spiner_dropdown_item);
         super.setAdapter(simple_adapter);
     }
 

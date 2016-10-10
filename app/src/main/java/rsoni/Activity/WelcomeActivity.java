@@ -13,10 +13,10 @@ import android.widget.TextView;
 import java.util.HashMap;
 import java.util.Map;
 
+import rsoni.JustAgriAgro.R;
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
 import rsoni.JustAgriAgro.App;
-import rsoni.kisaanApp.R;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.

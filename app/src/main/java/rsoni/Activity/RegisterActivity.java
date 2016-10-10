@@ -20,10 +20,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import rsoni.JustAgriAgro.R;
 import rsoni.Utils.DataResult;
 import rsoni.Utils.Task;
 import rsoni.JustAgriAgro.App;
-import rsoni.kisaanApp.R;
 import rsoni.modal.AppUser;
 
 /**

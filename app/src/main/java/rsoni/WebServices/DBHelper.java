@@ -45,7 +45,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	private HashMap hp;
 	public DBHelper(Context context) {
-		super(context, DATABASE_NAME, null, 1);
+		super(context, DATABASE_NAME, null, 3);
 	}
 	public DBHelper(Context context, String name, CursorFactory factory,int version) {
 		super(context, name, factory, version);

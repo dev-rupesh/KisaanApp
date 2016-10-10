@@ -3,7 +3,8 @@ package rsoni.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import rsoni.kisaanApp.R;
+import rsoni.JustAgriAgro.R;
+
 
 public class NewsDetailsActivity extends AppCompatActivity {
 

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import rsoni.JustAgriAgro.App;
-import rsoni.kisaanApp.R;
+import rsoni.JustAgriAgro.R;
 import rsoni.modal.Business;
 import rsoni.modal.SaleNode;
 
