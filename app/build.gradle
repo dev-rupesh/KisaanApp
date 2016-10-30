@@ -8,8 +8,8 @@ android {
         applicationId "rsoni.JustAgriAgro"
         minSdkVersion 17
         //targetSdkVersion 17
-        versionCode 4
-        versionName "4.0"
+        versionCode 5
+        versionName "5.0"
         multiDexEnabled true
     }
     signingConfigs {
