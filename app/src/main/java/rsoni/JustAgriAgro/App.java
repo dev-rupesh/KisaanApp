@@ -61,6 +61,8 @@ public class App extends Application{
 
     //public static List<Business> businesses = null;
     public static long last_update_count = 0;
+    public static long profile_update_count = 0;
+    public static boolean isactive = false;
 
     @Override
     public void onCreate() {
@@ -98,6 +100,20 @@ public class App extends Application{
         }else{
             appUser = null;
         }
+    }
+
+
+
+    public static void getUserAuthUpdateCount(){
+        App.profile_update_count = mPrefs.getLong("profile_update_count",0);
+        App.isactive = mPrefs.getBoolean("isactive",true);
+    }
+
+    public static void updateUserAuthUpdateCount(){
+        SharedPreferences.Editor editor = mPrefs.edit();
+        editor.putLong("profile_update_count", profile_update_count);
+        editor.putBoolean("isactive", isactive);
+        editor.commit();
     }
 
     public static void getUserProfile() {

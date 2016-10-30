@@ -55,7 +55,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
                 if(App.mydb.getStates(false).isEmpty()|| current_settings == null){
                     getMasterData();
-                }else if(System.currentTimeMillis() - App.last_update_count > 10000){
+                }else if(System.currentTimeMillis() - App.last_update_count > 36000000){
                     SyncSettings();
                 }else{
                     openApp();
@@ -131,6 +131,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 case get_settings:
                     if(dataResult.Status){
                         settings = (Map<String, Object>) dataResult.Data;
+                        App.updateSettings(App.gson.toJson(settings));
                         for(String key : settings.keySet()){
                             System.out.println("settings("+key+") = "+settings.get(key));
                         }

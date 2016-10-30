@@ -227,6 +227,10 @@ public class DataParser {
 					result.Data = AppUser.getAppUserByJsonObject(response.getJSONObject("data"));
 				}else if(mode == Task.change_password){
 
+				}else if(mode == Task.user_validation){
+					Map<String, Object> retMap = new Gson().fromJson(response.getJSONObject("data").toString(), new TypeToken<HashMap<String, Object>>() {}.getType());
+					result.Data = retMap;
+					//result.Status = true;
 				}
 
 			} catch (JSONException e) {

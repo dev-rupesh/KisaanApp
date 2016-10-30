@@ -119,7 +119,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
         App.last_update_count = App.getLastUpdate();
 
-        if(System.currentTimeMillis() - App.last_update_count > 20000){
+        if(System.currentTimeMillis() - App.last_update_count > 28800000){
             backgroundTask = new BackgroundTask(Task.get_settings);
             backgroundTask.execute((Void) null);
         }else{

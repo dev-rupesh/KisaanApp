@@ -41,6 +41,7 @@
         <activity android:name="rsoni.Activity.WeatherReportActivity" />
         <activity android:name="rsoni.Activity.NewsActivity" />
         <activity android:name="rsoni.Activity.BuyerActivity" />
+        <activity android:name="rsoni.Activity.InactiveDetailsActivity" />
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

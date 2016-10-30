@@ -72,6 +72,10 @@ public class NetworkService {
 			param.add(new BasicNameValuePair("old_password", (String) data[0]));
 			param.add(new BasicNameValuePair("new_password", (String) data[1]));
 			return getResponce(url,Task.post,task,param);
+		}else if (task == Task.user_validation){
+			url+="auth/user-validation";
+			param.add(new BasicNameValuePair("user_id", ""+appUser.id));
+			return getResponce(url,Task.post,task,param);
 		}
 		return null;
 
@@ -364,6 +368,7 @@ public class NetworkService {
 			case email_register:
 			case fb_register:
 			case g_register:
+			case user_validation:
 				dataResult = dataParser.UserAuth(json, mode);
 				break;
 

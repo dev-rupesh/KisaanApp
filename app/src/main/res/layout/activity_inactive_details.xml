@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/dp20"
+    android:paddingLeft="@dimen/dp20"
+    android:paddingRight="@dimen/dp20"
+    android:paddingTop="@dimen/dp20"
+    tools:context="rsoni.Activity.AboutUsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold|italic"
+            android:textColor="@color/colorGreen"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textSize="46sp"
+            android:text="JustAgriAgro"/>
+
+        <TextView
+            android:id="@+id/tv_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:textStyle="bold|italic"
+            android:textScaleX="2"
+            android:gravity="center"
+            android:lineSpacingExtra="4sp"
+            android:text="We are a trading service provider company that provide good trading services to help both parties wants to trade all over in india and engaged in import/export trading."/>
+
+    </LinearLayout>
+
+</RelativeLayout>
